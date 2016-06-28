@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>InnovatorsMaker | Login</title>
+
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="font-awesome/css/font-awesome.css" rel="stylesheet">
+
+    <link href="css/animate.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+
+</head>
+
+<body class="gray-bg">
+
+    <div class="loginColumns animated fadeInDown">
+        <div class="row">
+
+            <div class="col-md-6">
+                <h2 class="font-bold">Welcome to InnovatorsMaker</h2>
+
+                <p>
+                   The platform for Education towards Innovation.
+                </p>
+
+                <p>
+                    This platform support the use of Challenge Based Learning for Entrepreneurial Education.
+                </p>
+            </div>
+            <div class="col-md-6">
+                <div class="ibox-content">
+                    <form id="form-login" class="m-t">
+                        <div class="form-group">
+                            <input id="input-username" type="email" class="form-control" placeholder="enter your email" required="">
+                        </div>
+                        <div class="form-group">
+                            <input id="input-password" type="password" class="form-control" placeholder="Password" required="">
+                        </div>
+                        <button id="btn-login" class="btn btn-primary block full-width m-b">Login</button>
+
+                        <!-- <a href="#"> -->
+                            <!-- <small>Forgot password?</small> -->
+                        <!-- </a> -->
+
+                        <p class="text-muted text-center">
+                            <small>Are not registered to a class?</small>
+                        </p>
+                        <a class="btn btn-sm btn-white btn-block" href="cbl_register.html">Register to class</a>
+                    </form>
+                    <p class="m-t">
+                        <small>Based on Bootstrap 3 &copy; 2014</small>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <hr/>
+        <div class="row">
+            <div class="col-md-6">
+                Centro de Informática - UFPE
+            </div>
+            <div class="col-md-6 text-right">
+               <small>© 2016-2017</small>
+            </div>
+        </div>
+
+        <div class="modal inmodal" id="register-student-modal" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog">
+            <div class="modal-content animated bounceInRight">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                        <i class="fa fa-laptop modal-icon"></i>
+                        <h4 class="modal-title">Register Student</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group"><label>Student Email</label> 
+                            <input id="student-email-input" type="email" placeholder="Enter your email" class="form-control">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
+                        <button id="btn-save-student-registration" type="button" class="btn btn-primary">Register Student</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <!-- Mainly scripts -->
+    <script src="js/jquery-2.1.1.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/plugins/metisMenu/jquery.metisMenu.js"></script>
+    <script src="js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+
+    <script type="text/javascript" src="http://www.parsecdn.com/js/parse-1.2.18.min.js"></script>
+    <script type="text/javascript">
+        Parse.initialize("YALt9tjcUpW61Hz5aIPYbehm9uCgh5NXXRVM18T6", "5wwhJ6hfqu8cG4s6jMKMQWrmImiQKDTE9trvgL6x");
+    </script>
+
+    <script src="https://www.gstatic.com/firebasejs/live/3.0/firebase.js"></script>
+
+
+    <script type="text/javascript">
+        // Initialize Firebase
+        var config = {
+            apiKey: "AIzaSyD0jgyMEgjNXHNN95sbf-i0Xxzo9QybHxI",
+            authDomain: "midyear-castle-816.firebaseapp.com",
+            databaseURL: "https://midyear-castle-816.firebaseio.com",
+            storageBucket: "midyear-castle-816.appspot.com",
+        };
+        var mainApp = firebase.initializeApp(config);
+
+        $(function() {
+            firebase.auth().onAuthStateChanged(function(user) {
+              if (user) {
+                // User is signed in.
+                console.log('>>> 0 <<<');
+                window.location = 'cinove_management.html';       
+              } else {
+                // No user is signed in.
+                console.log('>>> 1 <<<');
+              }
+            });            
+        });
+        $('#form-login').submit(function(event){
+            event.preventDefault();
+            var userName = $('#input-username').val().trim();
+            var password = $('#input-password').val().trim();
+            firebase.auth().signInWithEmailAndPassword(userName, password).catch(function(e) {
+                console.log(e);
+            })
+        });
+    </script>
+
+</body>
+
+</html>

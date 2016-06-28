@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>INNOVATORSMAKER | Reflections</title>
+
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="font-awesome/css/font-awesome.css" rel="stylesheet">
+    <link href="css/plugins/iCheck/custom.css" rel="stylesheet">
+    <link href="css/animate.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+    <link href="css/plugins/fullcalendar/fullcalendar.css" rel="stylesheet">
+    <link href="css/plugins/fullcalendar/fullcalendar.print.css" rel='stylesheet' media='print'>
+
+    <style type="text/css">
+        #page-wrapper {
+            margin: 0;
+        }
+
+        .wrapper-content {
+            padding: 5px;
+        }
+
+        .widget {
+            margin: 0;
+        }
+
+        .mailbox-header {
+            padding-top: 10px;
+        }
+
+        .widget.navy-bg {
+            border: solid 1px;
+            color: #1ab394;
+            background: #fff;
+        }
+
+        .mailbox-content {
+            padding: 0;
+        }
+
+        .reflections-items-body {
+            padding: 0;
+        }
+
+        .social-avatar {
+            padding: 0;
+            padding-bottom: 0;
+        }
+
+        .student-reflection-item {
+            min-height: 100px;
+        }
+
+        .student-reflection-item p {
+            margin-top: 10px;
+            margin-bottom: 0;
+        }
+
+        .btn-student-profile-show {
+            width: 68px;
+        }
+
+        .navbar-top-links li a {
+            min-height: 30px;
+        }
+
+        .nav {
+            margin-top: 5px;
+            margin-bottom: 10px;
+        }
+
+        .nav > li > a {
+            padding: 10px 0;
+            color: #676a6c;            
+        }
+
+        .nav > li.active {
+            border-left: none;
+        }
+
+        .nav > li.active > a {
+            color: #676a6c;            
+        }
+
+        .nav-second-level li a {
+            padding: 7px 10px 7px 10px;
+        }
+
+        .nav > li.active {
+            background: #e7eaec;
+            color: #19aa8d;
+        }
+
+        .btn-show-reflections {
+            width: 60px;
+        }
+
+        .btn-propose {
+            width: 100%;
+        }
+
+        .separator-reflection-timeline-item > .row > .content {
+            min-height: 30px;
+        }
+
+        .timeline-item .date {
+            width: 70px;
+        }
+
+        .reflection-media-type-form {
+            padding: 10px;
+            height: 40px;
+        }
+
+        .reflection-media-type-form label {
+            margin: 0;
+        }
+
+        .new-reflection-modal-body {
+            padding: 0;
+        }
+
+        .new-reflection-textarea {
+            width: 100%;
+            padding: 10px;
+            border: none;
+        }
+
+        .personality-img {
+            width: 60px;
+        }
+
+        .student-pending-reflections-row > td {
+            position: relative;
+        }
+
+        .student-email {
+            position: absolute;
+            top: 22px;
+            left: 8px;
+        }
+
+        .num-student-pending-reflections {
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        img.member-photo.img-circle {
+            height: 60px;
+            width: 60px;
+        }
+
+        .team-name-p {
+            color: #fff;
+            position: relative;
+            padding: 10px;
+            background: rgba(0,0,0,0.42);
+            margin: 0;            
+        }
+
+        .team-members {
+            margin: 0;
+        }
+
+        .team-members img.img-circle {
+            margin-top: 15px;
+            width: 80px;
+            height: 80px;
+        }                
+
+        .reflection-timeline-item .content {
+            text-align: justify;
+            line-height: 1.8em;
+        }
+        
+
+    </style>
+</head>
+
+<body>
+
+    <div id="wrapper">
+        <div id="page-wrapper" class="gray-bg">
+            <div class="row border-bottom">
+                <nav class="navbar navbar-static-top white-bg" role="navigation" style="margin-bottom: 0">
+                    <ul class="nav navbar-top-links navbar-right">
+                        <li>
+                            <span class="m-r-sm text-muted welcome-message"><span class="cbl-class-name"></span></span>
+                        </li>
+                        <li>
+                            <a data-toggle="dropdown" class="dropdown-toggle" href="#" aria-expanded="false">
+                             <span class="text-muted text-xs block"><span class="user-name"></span> <b class="caret"></b></span> </span> 
+                            </a>
+                            <ul class="dropdown-menu animated fadeInRight m-t-xs">
+                                <!-- <li><a href="profile.html">Profile</a></li> -->
+                                <!-- <li><a href="contacts.html">Contacts</a></li> -->
+                                <!-- <li><a href="mailbox.html">Mailbox</a></li> -->
+                                <li><a id="menu-manage-class" href="cbl_manage_class.html">Students profiles</a></li>
+                                <li><a id="menu-students-emails" href="#">Students emails</a></li>
+                                <li class="divider"></li>
+                                <li><a id="menu-teams" href="cbl_teams.html">Challenges</a></li>
+                                <li class="divider"></li>
+                                <li><a id="menu-teams" href="cbl_classes.html">Classes</a></li>
+                                <!-- <li><a id="menu-teams" href="cbl_teams.html">Sprints</a></li> -->
+                                <li class="divider"></li>
+                                <li><a id="menu-logout" href="cbl_login_two_columns.html">Logout</a></li>
+                            </ul>                            
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+
+            <div class="wrapper wrapper-content">
+                <div class="row">
+                    <div class="col-lg-2">
+                        <div class="ibox float-e-margins">
+                            <div class="ibox-content mailbox-content">
+                                <div class="file-manager">
+                                    <div class="space-25"></div>
+                                    <h5>PITCH</h5>
+                                    <ul class="folder-list m-b-md" style="padding: 0">
+                                        <li class="active">
+                                            <a href="#"><i class="fa fa-th-large"></i> <span class="nav-label">Demanda</span> <span class="fa arrow"></span></a>
+                                            <ul class="nav nav-second-level collapse in">
+                                                <li><a href="index.html">Total</a></li>
+                                                <li><a href="dashboard_2.html">Eventos</a></li>
+                                                <li class="active"><a href="dashboard_3.html">Coworking</a></li>
+                                                <li><a href="dashboard_4_1.html">Formação Empreendedora</a></li>
+                                                <li><a href="dashboard_4_1.html">Disciplinas</a></li>
+                                            </ul>
+                                        </li>
+                                        <li class="">
+                                            <a href="#"><i class="fa fa-th-large"></i> <span class="nav-label">Ocupação</span> <span class="fa arrow"></span></a>
+                                            <ul class="nav nav-second-level collapse in">
+                                                <li><a href="index.html">Total</a></li>
+                                                <li><a href="dashboard_2.html">Eventos</a></li>
+                                                <li class="active"><a href="dashboard_3.html">Coworking</a></li>
+                                                <li><a href="dashboard_4_1.html">Formação Empreendedora</a></li>
+                                                <li><a href="dashboard_4_1.html">Disciplinas</a></li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                    <a id="btn-new-reflection-statement" type="button" class="btn btn-primary btn-propose" data-toggle="modal" data-target="#new-reflection-statement-modal" class="btn btn-block btn-primary compose-mail" href="#">new</a>
+                                    <div class="clearfix"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-8 reflections-panel">
+                        <div class="ibox-title">
+                            <h5>DOTC</h5>
+                            <small>Taxa de demanda de ocupação (%) das horas disponibilizadas por times empreendedores com tecnologia do portfolio.</small>
+                        </div>
+
+                        <div class="ibox float-e-margins">
+                            <div class="ibox-content">
+                                <div>
+                                    <span class="pull-right text-right">
+                                    <small>Taxa de demanda de ocupação (%) do coworking do Pitch por times empreendedores que utilizam tecnologias do portfólio no mês:</small>
+                                        <br/>
+                                        Demanda total: 160h
+                                    </span>
+                                    <h1 class="m-b-xs">30%</h1>
+                                    <h3 class="font-bold no-margins">
+                                        Demanda de Ocupação (%) média no período.
+                                    </h3>
+                                </div>
+
+                                <div>
+                                    <canvas id="lineChart" height="70"></canvas>
+                                </div>
+
+                                <div class="m-t-md">
+                                    <small class="pull-right">
+                                        <i class="fa fa-clock-o"> </i>
+                                        Update on 16.07.2015
+                                    </small>
+                                   <small>
+                                       <strong>Analysis of sales:</strong> The value has been changed over time, and last month reached a level over $50,000.
+                                   </small>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="wrapper wrapper-content animated fadeInRight">
+                            <div class="row">
+                                <div class="col-lg-3">
+                                    <div class="ibox">
+                                        <div class="ibox-content">
+                                            <h5>Meta (%)</h5>
+                                            <h1 class="no-margins"><span id="goal-value">30</span>%</h1>
+                                            <div class="stat-percent font-bold text-navy">40% <i class="fa fa-bolt"></i></div>
+                                            <small>Demanda total</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3">
+                                    <div class="ibox">
+                                        <div class="ibox-content">
+                                            <h5>Demanda mensal (%)</h5>
+                                            <h1 class="no-margins">30%</h1>
+                                            <div class="stat-percent font-bold text-navy">40% <i class="fa fa-bolt"></i></div>
+                                            <small>Demanda total</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3">
+                                    <div class="ibox">
+                                        <div class="ibox-content">
+                                            <h5>Disponibilidade (h)</h5>
+                                            <h1 class="no-margins"><span id="hours-available-value">40</span>h</h1>
+                                            <div class="stat-percent font-bold text-danger">12% <i class="fa fa-level-down"></i></div>
+                                            <small>Demanda total</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3">
+                                    <div class="ibox">
+                                        <div class="ibox-content">
+                                            <h5>Demanda mensal (h)</h5>
+                                            <h1 class="no-margins"><span>40</span>h</h1>
+                                            <div class="stat-percent font-bold text-danger">24% <i class="fa fa-level-down"></i></div>
+                                            <small>Demanda total</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="pending-reflections-list reflections-list animated fadeInRight">
+                            <div class="mail-box-header">
+                                <h2>
+                                    Demanda dos Times Empreendedores
+                                    <span class="ratio-students-reflections label label-danger pull-right"><span class="total-pending-reflections">0</span>/<span class="total-students-reflections">0</span></span>
+                                </h2>
+                            </div>
+                            <div class="">
+                                <div id="entrepreneur-teams" class="row">
+                                    <div class="entrepreneur-team col-lg-4">
+                                        <div class="ibox">
+                                            <div class="ibox-title">
+                                                <span class="team-label label label-primary pull-right"></span>
+                                                <h5 class="team-name">IT-01 - Design Team</h5>
+                                            </div>
+                                            <div class="ibox-content">
+                                                <h4>Propósito da <span class="team-name">Design Team</span></h4>
+                                                <p>
+                                                    Gerar impacto sustentável na sociedade a partir da tecnologia do Centro de Informática. 
+                                                </p>
+                                                <div>
+                                                    <span>nível de maturidade:</span>
+                                                    <div class="stat-percent"><span>ideia</span></div>
+                                                    <div class="progress progress-mini">
+                                                        <div style="width: 20%;" class="progress-bar"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="row  m-t-sm">
+                                                    <div class="col-sm-4">
+                                                        <div class="font-bold">DEMANDADO</div>
+                                                        <span>12</span>h
+                                                    </div>
+                                                    <div class="col-sm-4">
+                                                        <div class="font-bold">ALOCADO</div>
+                                                        <span>6</span>h
+                                                    </div>
+                                                    <div class="col-sm-4">
+                                                        <div class="font-bold">UTILIZADO</div>
+                                                        <span>6</span>h
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>                            
+                                </div>
+                            </div>                            
+                        </div>
+
+                        <div class="pending-reflections-list reflections-list animated fadeInRight">
+                            <div class="mail-box-header">
+                                <h2>
+                                    Demanda dos Empreendedores
+                                    <span class="ratio-students-reflections label label-danger pull-right"><span class="total-pending-reflections">0</span>/<span class="total-students-reflections">0</span></span>
+                                </h2>
+                            </div>
+                            <div class="mail-box client-list">
+                                <table class="table">
+                                    <tbody class="entrepreneurs-table-body">
+                                        <tr class="entrepreneur-row">
+                                            <td class="client-avatar"><img alt="image" src="img/a2.jpg"></td>
+                                            <td><a data-toggle="tab" href="#contact-1" class="entrepreneur-name client-link">Cristiano Araújo</a>
+                                            <small class="student-email"></small>cca2@cin.ufpe.br</td>
+                                            <td><span class="school-level">PhD</span></td>
+                                            <td><span class="affiliation-info">Busca do 1M</span></td>
+                                            <td><span class="affiliation-info">HUSTLER</span></td>
+                                            <td><span class="affiliation-info">10H</span></td>
+                                            <td><span class="affiliation-info">VOXAR</span></td>
+                                            <td><span class="affiliation-info">VoxarPuzzle</span></td>
+                                            <td><img class="personality16-img" src="img/esfj.png" style="height: 30px;"></td>
+                                            <td class="num-student-pending-reflections client-status"><span class="label label-danger pull-right">10</span></td>
+                                        </tr>
+                                    </tbody>                        
+                                </table>
+                            </div>                            
+                        </div>
+                        <div class="ibox-content">
+                            <div id="calendar"></div>
+                        </div>                        
+                    </div>
+                    <div class="col-lg-2">
+                        <div class="ibox">
+                            <div class="ibox-content">
+                                <h5>TOP</h5>
+                                <small>Taxa de ocupação (%) das horas do Pitch por pessoas externas à equipe do CInove</small>
+                            </div>
+                        </div>
+                        <div class="ibox">
+                            <div class="ibox-content">
+                                <h5>TDOTP</h5>
+                                <small>Taxa de demanda de ocupação (%) das horas disponibilizadas por times empreendedores com tecnologia do portfolio.</small>
+                            </div>
+                        </div>
+                        <div class="ibox">
+                            <div class="ibox-content">
+                                <h5>DOTC</h5>
+                                <small>Demanda de ocupação (h) das horas disponibilizadas por times empreendedores com tecnologia do portfolio.</small>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="footer">
+                <div class="pull-right">10GB of <strong>250GB</strong> Free.</div>
+                <div>
+                    <strong>Copyright</strong> Example Company &copy; 2014-2015
+                </div>
+            </div>
+        </div>
+
+        <div class="modal inmodal" id="new-teacher-reflection-modal" tabindex="-1" role="dialog" aria-hidden="true" student-reflection-statement-id="" teacher-reflection-statement-id="P34QuDoziO">
+            <div class="modal-dialog">
+                <div class="modal-content animated">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                        <h4 class="modal-title">Teacher Reflection</h4>
+                        <small class="font-bold">I have learned from these reflections that...</small>
+                    </div>
+                    <div class="new-reflection-modal-body modal-body">
+                        <textarea class="new-reflection-textarea" rows="10"placeholder="in this activity..."></textarea>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
+                        <button id="btn-save-new-teacher-reflection" type="button" class="btn btn-primary">send reflection</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal inmodal" id="new-reflection-statement-modal" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content animated">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                        <h4 class="modal-title">Disponibilização do Pitch</h4>
+                        <small class="font-bold">Disponibilizar horas do Pitch</small>
+                    </div>
+                    <div class="new-reflection-modal-body modal-body">
+                        <textarea class="new-reflection-statement-textarea new-reflection-textarea" rows="5" placeholder="in this activity..."></textarea>
+                    </div>
+                    <div class="modal-footer">
+                        <div class="progress progress-small">
+                            <div style="width: 0%;" class="progress-bar"></div>
+                        </div>
+                        <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
+                        <button id="btn-save-new-reflection-statement" type="button" class="btn btn-primary">Save reflection</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal inmodal" id="new-reflection-statement-modal" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content animated">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                        <h4 class="modal-title">New Reflection</h4>
+                        <small class="font-bold">Propose a new reflection to your class</small>
+                    </div>
+                    <div class="new-reflection-modal-body modal-body">
+                        <textarea class="new-reflection-statement-textarea new-reflection-textarea" rows="5" placeholder="in this activity..."></textarea>
+                    </div>
+                    <div class="modal-footer">
+                        <div class="progress progress-small">
+                            <div style="width: 0%;" class="progress-bar"></div>
+                        </div>
+                        <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
+                        <button id="btn-save-new-reflection-statement" type="button" class="btn btn-primary">Save reflection</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal inmodal" id="students-emails-modal" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content animated">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                        <h4 class="modal-title">Students emails</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p class="students-emails-list"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mainly scripts -->
+    <script src="js/jquery-2.1.1.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/plugins/metisMenu/jquery.metisMenu.js"></script>
+    <script src="js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+
+    <!-- Custom and plugin javascript -->
+    <script src="js/inspinia.js"></script>
+    <script src="js/plugins/pace/pace.min.js"></script>
+
+    <!-- Peity -->
+    <script src="js/plugins/peity/jquery.peity.min.js"></script>
+
+    <!-- Peity -->
+    <script src="js/demo/peity-demo.js"></script>
+
+    <script type="text/javascript" src="js/underscore-1.8.3.js"></script>
+
+    <script src="js/plugins/fullcalendar/moment.min.js"></script>
+
+    <!-- Full Calendar -->
+    <script src="js/plugins/fullcalendar/fullcalendar.min.js"></script>
+
+
+    <script type="text/javascript" src="http://www.parsecdn.com/js/parse-1.2.18.min.js"></script>
+    <script type="text/javascript">
+        Parse.initialize("YALt9tjcUpW61Hz5aIPYbehm9uCgh5NXXRVM18T6", "5wwhJ6hfqu8cG4s6jMKMQWrmImiQKDTE9trvgL6x");
+
+    </script>
+
+
+    <script src="https://www.gstatic.com/firebasejs/live/3.0/firebase.js"></script>
+    <script>
+        var entrepreneursDict = {};
+        var $entrepreneurTeamRef = $('.entrepreneur-team').detach();
+        var $entrepreneurRowRef = $('.entrepreneur-row').detach();
+
+        // Initialize Firebase
+        var config = {
+            apiKey: "AIzaSyD0jgyMEgjNXHNN95sbf-i0Xxzo9QybHxI",
+            authDomain: "midyear-castle-816.firebaseapp.com",
+            databaseURL: "https://midyear-castle-816.firebaseio.com",
+            storageBucket: "midyear-castle-816.appspot.com",
+        };
+        var mainApp = firebase.initializeApp(config);
+
+        $(function() {
+
+            // firebase.database().ref('portfolio').push({'name':'VoxarPuzzle'});
+            // firebase.database().ref('portfolio').push({'name':'VoxarDynamics'});
+            // firebase.database().ref('portfolio').push({'name':'OpenRedu'});
+            // firebase.database().ref('portfolio').push({'name':'iKapp'});
+            // firebase.database().ref('portfolio').push({'name':'Sticker Book'});
+            // firebase.database().ref('portfolio').push({'name':'Augmented Reality Blocks'});
+            // firebase.database().ref('portfolio').push({'name':'Voxar Render'});
+            // firebase.database().ref('portfolio').push({'name':'RT2'});
+            // firebase.database().ref('portfolio').push({'name':'DARC-DARP'});
+
+            // var Team = Parse.Object.extend('Team');
+            // var query = new Parse.Query(Team);
+            // query.include('members');
+            // query.find(function(teams) {
+            //     _.each(teams, function(team) {                    
+            //         fTeam = {
+            //             'name': team.get('name'),
+            //             'purpose': 'meu Propósito',
+            //             'values': ['valor1', 'valor2'],
+            //             'members': [],
+            //             'usesPortfolio': true
+            //         }
+            //         members = team.get('members');
+            //         _.each(members, function(member) {
+            //             fMember = {
+            //                 'name': member.get('name'),
+            //                 'email': member.get('email')
+            //             }
+            //             fTeam['members'].push(fMember)
+            //         })
+            //         firebase.database().ref('teams').push(fTeam);
+            //     })
+            // })
+
+            // var query = new Parse.Query(Parse.User);
+            // query.find(function(users) {
+            //     _.each(users, function(user) {
+            //         firebase.auth().createUserWithEmailAndPassword(user.get('email'), '123456').catch(function(e) {
+            //             console.log(e);
+            //         })
+            //     })                
+            // })
+        })
+
+
+    </script>
+
+    <!-- ChartJS-->
+    <script src="js/plugins/chartJs/Chart.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            firebase.auth().onAuthStateChanged(function(user) {
+              if (user) {
+                // User is signed in.
+                $('.user-name').text('Cristiano Araújo');
+              } else {
+                // No user is signed in.
+              }
+            });            
+
+            var lineData = {
+                labels: ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul"],
+                datasets: [
+                    {
+                        label: "Example dataset",
+                        fillColor: "rgba(220,220,220,0.5)",
+                        strokeColor: "rgba(220,220,220,1)",
+                        pointColor: "rgba(220,220,220,1)",
+                        pointStrokeColor: "#fff",
+                        pointHighlightFill: "#fff",
+                        pointHighlightStroke: "rgba(220,220,220,1)",
+                        data: [10, 20, 20, 30, 40, 40, 40]
+                    },
+                    {
+                        label: "Example dataset",
+                        fillColor: "rgba(26,179,148,0.5)",
+                        strokeColor: "rgba(26,179,148,0.7)",
+                        pointColor: "rgba(26,179,148,1)",
+                        pointStrokeColor: "#fff",
+                        pointHighlightFill: "#fff",
+                        pointHighlightStroke: "rgba(26,179,148,1)",
+                        data: [10, 10, 20, 20, 30, 40, 40]
+                    }
+                ]
+            };
+
+            var lineOptions = {
+                scaleShowGridLines: true,
+                scaleGridLineColor: "rgba(0,0,0,.05)",
+                scaleGridLineWidth: 1,
+                bezierCurve: true,
+                bezierCurveTension: 0.4,
+                pointDot: true,
+                pointDotRadius: 4,
+                pointDotStrokeWidth: 1,
+                pointHitDetectionRadius: 20,
+                datasetStroke: true,
+                datasetStrokeWidth: 2,
+                datasetFill: true,
+                responsive: true,
+            };
+
+
+            var ctx = document.getElementById("lineChart").getContext("2d");
+            var myNewChart = new Chart(ctx).Line(lineData, lineOptions);
+
+            firebase.database().ref('PitchCoworking/goal').on('value', function(snapshot) {
+                goal = snapshot.val();
+                $('#goal-value').text(goal);
+            });
+            firebase.database().ref('PitchCoworking/hoursAvailable').on('value', function(snapshot) {
+                goal = snapshot.val();
+                $('#hours-available-value').text(goal);
+            });
+
+            firebase.database().ref('teams').on('child_changed', function(snapshot) {
+                teams = snapshot.val();
+            });
+
+            firebase.database().ref('teams').on('child_added', function(snapshot) {
+                team = snapshot.val();
+                    $team = $entrepreneurTeamRef.clone();
+                    $team.find('.team-name').text(team['name']);
+
+                    if (team['usesPortfolio']) {
+                        $team.find('.team-label').text('portfolio');
+                    }
+
+                    $team.appendTo($('#entrepreneur-teams'));
+            });
+
+            firebase.database().ref('entrepreneurs').on('child_added', function(snapshot) {
+                entrepreneur = snapshot.val();
+                $entrepreneur = $entrepreneurRowRef.clone();
+
+                schoolLevel = entrepreneur['levelOfEducation'];
+                if (schoolLevel == 'PHD') {
+                    schoolLevel = 'PhD';
+                }else if (schoolLevel == 'UNDER_GRAD') {
+                    schoolLevel = 'graduação';
+                }
+                $entrepreneur.find('.entrepreneur-name').text(entrepreneur['name']);
+                $entrepreneur.find('.school-level').text(schoolLevel);
+                $entrepreneur.appendTo($('.entrepreneurs-table-body'));
+
+                entrepreneursDict[entrepreneur['email']] = snapshot;
+            });
+
+            firebase.database().ref('entrepreneurs').on('value', function(snapshot) {
+                // console.log(snapshot.val())
+                // var Team = Parse.Object.extend('Team');
+                // var query = new Parse.Query(Team);
+                // query.include('members');
+                // query.find(function(teams) {
+                //     _.each(teams, function(team) {                    
+                //         fTeam = {
+                //             'name': team.get('name'),
+                //             'purpose': 'meu Propósito',
+                //             'values': ['valor1', 'valor2'],
+                //             'members': {},
+                //             'usesPortfolio': true
+                //         }
+                //         members = team.get('members');
+                //         _.each(members, function(member) {
+                //             fMember = entrepreneursDict[member.get('email')];
+                //             fTeam['members'][fMember.key] = fMember.val();
+                //         })
+                //         firebase.database().ref('teams').push(fTeam);
+                //     })
+                // })
+
+            });
+
+            firebase.database().ref('PitchCoworking/teams').on('child_removed', function(snapshot) {
+                team = snapshot.val();
+                console.log(team.key);
+            });
+
+
+            firebase.database().ref('PitchCoworking/teams').push({'name':'MonaMigs', 'usesPortfolio':true});    
+
+            firebase.database().ref('PitchCoworking/months/' + (new Date().getMonth())).on('value', function(snapshot) {
+                    date = new Date();
+                    events = snapshot.val();
+                    month = snapshot.key;
+                    events = [];
+                    for (i = 0; i < 24; i++) {
+                        title = snapshot.val()['days']['20']['hours']['8:00']['table1'];
+                        event = {
+                            title: title, 
+                            start: new Date(date.getFullYear(), date.getMonth(), 20, i, 0),
+                            end: new Date(date.getFullYear(), date.getMonth(), 20, i + 1, 0)
+                        }                        
+                        if (title == 'FREE') {
+                            event['color'] = 'green';
+                        }else if (title == 'NOT_AVAILABLE') {
+                            event['color'] = 'red';
+                        }
+                        events.push(event);
+                        title = snapshot.val()['days']['20']['hours']['8:00']['table2'];
+                        event = {
+                            title: title, 
+                            start: new Date(date.getFullYear(), date.getMonth(), 20, i, 0),
+                            end: new Date(date.getFullYear(), date.getMonth(), 20, i + 1, 0)
+                        }                        
+                        if (title == 'FREE') {
+                            event['color'] = 'green';
+                        }else if (title == 'NOT_AVAILABLE') {
+                            event['color'] = 'red';
+                        }
+                        events.push(event);
+                        title = snapshot.val()['days']['20']['hours']['8:00']['table3'];
+                        event = {
+                            title: title, 
+                            start: new Date(date.getFullYear(), date.getMonth(), 20, i, 0),
+                            end: new Date(date.getFullYear(), date.getMonth(), 20, i + 1, 0)
+                        }                        
+                        if (title == 'FREE') {
+                            event['color'] = 'green';
+                        }else if (title == 'NOT_AVAILABLE') {
+                            event['color'] = 'red';
+                        }
+                        events.push(event);
+                    }
+
+                    $('#calendar').fullCalendar({
+                        header: {
+                            left: 'prev,next today',
+                            center: 'title',
+                            right: 'month,agendaWeek,agendaDay'
+                        },
+                        editable: true,
+                        droppable: false, // this allows things to be dropped onto the calendar
+                        events: events
+                    });
+            })        
+
+        });
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>INSPINIA | Register</title>
+
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="font-awesome/css/font-awesome.css" rel="stylesheet">
+    <link href="css/plugins/iCheck/custom.css" rel="stylesheet">
+    <link href="css/animate.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+
+</head>
+
+<body class="gray-bg">
+
+<style type="text/css">
+    .class-name-panel {
+        border-color: #1ab394;
+        color: #1ab394;
+    }
+</style>
+    <div class="middle-box text-center loginscreen   animated fadeInDown">
+        <div>
+            <h3>Register to InnovatorsMaker</h3>
+            <p>write the registration code given by your teacher</p>
+            <div class="m-t">
+                <div class="form-group">
+                    <input id="registration-code-input" type="email" class="form-control" placeholder="text" required="">
+                </div>
+                <div class="student-valid-visible hide">
+                    <div class="class-name-panel panel panel-default">
+                        <div class="panel-body">
+                            <span class="class-name"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="student-valid-visible hide">
+                <div class="form-group">
+                    <input id="email-input" type="email" class="form-control" placeholder="Email" required="">
+                </div>
+                <div class="form-group">
+                    <input id="password-input" type="password" class="form-control" placeholder="Password">
+                </div>
+                <div class="form-group">
+                    <input id="name-input" type="text" class="form-control" placeholder="Name">
+                </div>
+                <div class="form-group">
+                    <input id="affiliation-input" type="text" class="form-control" placeholder="major">
+                </div>
+                <!-- <div class="form-group"> -->
+                        <!-- <div class="checkbox i-checks"><label> <input type="checkbox"><i></i> Agree the terms and policy </label></div> -->
+                <!-- </div> -->
+                <button id="btn-register" class="btn btn-primary block full-width m-b">Register</button>
+
+                <p class="text-muted text-center"><small>Already have an account?</small></p>
+                <a class="btn btn-sm btn-white btn-block" href="cbl_login_two_columns.html">Login</a>
+                </div>
+            </div>
+            <p class="m-t"> <small>Inspinia we app framework base on Bootstrap 3 &copy; 2014</small> </p>
+        </div>
+    </div>
+
+    <!-- Mainly scripts -->
+    <script src="js/jquery-2.1.1.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <!-- iCheck -->
+    <script src="js/plugins/iCheck/icheck.min.js"></script>
+
+    <script type="text/javascript" src="js/underscore-1.8.3.js"></script>
+
+
+    <script type="text/javascript" src="http://www.parsecdn.com/js/parse-1.2.18.min.js"></script>
+    <script type="text/javascript">
+        Parse.initialize("YALt9tjcUpW61Hz5aIPYbehm9uCgh5NXXRVM18T6", "5wwhJ6hfqu8cG4s6jMKMQWrmImiQKDTE9trvgL6x");
+    </script>
+
+    <script>
+        var currentCBLClass;
+
+        $(document).ready(function(){
+            $('.i-checks').iCheck({
+                checkboxClass: 'icheckbox_square-green',
+                radioClass: 'iradio_square-green',
+            });
+
+            $('#registration-code-input').change(function() {
+                var registrationCode = $(this).val();
+                var CBLClass = Parse.Object.extend('CBLClass');
+                var query = new Parse.Query(CBLClass);
+                query.equalTo('registrationCode', registrationCode);
+                query.find().then(function(classes) {
+                    if (classes.length == 1) {
+                        currentCBLClass = classes[0];
+                        $('.class-name').text(currentCBLClass.get('name'));
+                        $('.student-valid-visible').removeClass('hide');
+                        $('#registration-code-input').attr('readonly', 'true');
+                        $('#email-input').focus();
+                    }else {
+                        alert('The registration code is invalid. Talk to your teacher!');
+                    }
+                })
+            })
+
+            $('#email-input').change(function() {
+                var email = $(this).val().trim();
+                if (email == 'teste@teste.com') {
+                    $('#password-input').val('1');
+                    $('#name-input').val('Teste');
+                    $('#affiliation-input').val('Teste');
+                }
+            })
+
+            $('#btn-register').click(function() {
+                var email = $('#email-input').val().trim();
+                var name = $('#name-input').val().trim();
+                var password = $('#password-input').val().trim();
+                var affiliation = $('#affiliation-input').val().trim();
+
+                if ((name != '') && (password != '') && (affiliation != '')) {
+                    var user = new Parse.User();
+                    user.set('username', email);
+                    user.set('password', password);
+                    user.set('email', email);
+                    user.set('name', name);
+                    user.set('isStudent', true);
+                    if (affiliation != '') {
+                        user.set('affiliation', affiliation);
+                    }
+                    user.set('currentCBLClass', currentCBLClass);
+                    user.set('currentCBLSprint', currentCBLClass.get('cblSprints')[0]);
+                    user.addUnique('cblClasses', currentCBLClass);
+
+                    user.signUp(null, {
+                        success: function(usr) {
+                            var ActivityStatement = Parse.Object.extend('ActivityStatement');
+                            var Activity = Parse.Object.extend('Activity');
+
+                            var activityStatementQuery = new Parse.Query(ActivityStatement);
+                            activityStatementQuery.equalTo('cblClass', currentCBLClass);
+                            activityStatementQuery.ascending('createdAt');
+                            return activityStatementQuery.find().then(function(statements) {
+                                var promise = Parse.Promise.as();
+                                _.each(statements, function(statement) {
+                                    var activity = new Activity();
+                                    activity.set('author', usr);
+                                    activity.set('statement', statement);
+                                    activity.set('cblClass', statement.get('cblClass'));
+                                    activity.set('cblSprint', statement.get('cblSprint'));
+                                    activity.set('isDone', false);
+                                    promise = promise.then(function() {
+                                        return activity.save().then(function(a) {
+                                            console.log('>>> saved activity <<<')
+                                            statement.addUnique('activities', a);
+                                            return statement.save().then(function() {
+                                                console.log('>>> updated statement <<<')
+                                            });
+                                        });
+                                    })
+                                })
+                                return promise;
+                            }).then(function() {
+                                currentCBLClass.addUnique('students', usr);
+                                currentCBLClass.save();
+                            }).then(function(cblClass) {
+                                window.location = 'cbl_login_two_columns.html';
+                            })
+                        }
+                    })
+                }else {
+                    alert('name or password fields are empty!');
+                }
+            })
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,930 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>INSPINIA | Dashboard v.3</title>
+
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="font-awesome/css/font-awesome.css" rel="stylesheet">
+
+    <!-- Morris -->
+    <link href="css/plugins/morris/morris-0.4.3.min.css" rel="stylesheet">
+
+    <link href="css/animate.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+
+</head>
+
+<body class="fixed-navigation">
+    <div id="wrapper">
+    <nav class="navbar-default navbar-static-side" role="navigation">
+        <div class="sidebar-collapse">
+            <ul class="nav metismenu" id="side-menu">
+                <li class="nav-header">
+                    <div class="dropdown profile-element"> <span>
+                            <img alt="image" class="img-circle" src="img/profile_small.jpg" />
+                             </span>
+                        <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+                            <span class="clear"> <span class="block m-t-xs"> <strong class="user-name font-bold">David Williams</strong>
+                             </span> <span class="text-muted text-xs block">Perfil <b class="caret"></b></span> </span> </a>
+                        <ul class="dropdown-menu animated fadeInRight m-t-xs">
+                            <li><a href="profile.html">Profile</a></li>
+                            <li><a href="contacts.html">Contacts</a></li>
+                            <li><a href="mailbox.html">Mailbox</a></li>
+                            <li class="divider"></li>
+                            <li><a href="login.html">Logout</a></li>
+                        </ul>
+                    </div>
+                    <div class="logo-element">
+                        IN+
+                    </div>
+                </li>
+                <li><button id="btn-test">Test</button></li>
+                <li class="kpi-name-option">
+                    <a href="#"><i class="fa fa-pie-chart"></i> <span class="kpi-label nav-label">Todos</span></a>
+                </li>
+<!--                 <li>
+                    <a href="metrics.html"><i class="fa fa-pie-chart"></i> <span class="nav-label">Eventos</span></a>
+                </li>
+                <li class="offer-kpi">
+                    <a href="metrics.html"><i class="fa fa-pie-chart"></i> <span class="label-text nav-label">Coworking</span></a>
+                </li>
+                <li>
+                    <a href="metrics.html"><i class="fa fa-pie-chart"></i> <span class="nav-label">Mind the Bizz</span></a>
+                </li>
+                <li>
+                    <a href="metrics.html"><i class="fa fa-pie-chart"></i> <span class="nav-label">Disciplinas</span></a>
+                </li> -->
+            </ul>
+        </div>
+    </nav>
+
+        <div id="page-wrapper" class="gray-bg">
+        <div class="row border-bottom">
+        <nav class="navbar navbar-static-top white-bg" role="navigation" style="margin-bottom: 0">
+        <div class="navbar-header">
+            <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#"><i class="fa fa-bars"></i> </a>
+            <form role="search" class="navbar-form-custom" action="search_results.html">
+                <div class="form-group">
+                    <input type="text" placeholder="Search for something..." class="form-control" name="top-search" id="top-search">
+                </div>
+            </form>
+        </div>
+            <ul class="nav navbar-top-links navbar-right">
+                <li>
+                    <span class="m-r-sm text-muted welcome-message">Welcome to INSPINIA+ Admin Theme.</span>
+                </li>
+                <li class="dropdown">
+                    <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
+                        <i class="fa fa-envelope"></i>  <span class="label label-warning">16</span>
+                    </a>
+                    <ul class="dropdown-menu dropdown-messages">
+                        <li>
+                            <div class="dropdown-messages-box">
+                                <a href="profile.html" class="pull-left">
+                                    <img alt="image" class="img-circle" src="img/a7.jpg">
+                                </a>
+                                <div>
+                                    <small class="pull-right">46h ago</small>
+                                    <strong>Mike Loreipsum</strong> started following <strong>Monica Smith</strong>. <br>
+                                    <small class="text-muted">3 days ago at 7:58 pm - 10.06.2014</small>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <div class="dropdown-messages-box">
+                                <a href="profile.html" class="pull-left">
+                                    <img alt="image" class="img-circle" src="img/a4.jpg">
+                                </a>
+                                <div>
+                                    <small class="pull-right text-navy">5h ago</small>
+                                    <strong>Chris Johnatan Overtunk</strong> started following <strong>Monica Smith</strong>. <br>
+                                    <small class="text-muted">Yesterday 1:21 pm - 11.06.2014</small>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <div class="dropdown-messages-box">
+                                <a href="profile.html" class="pull-left">
+                                    <img alt="image" class="img-circle" src="img/profile.jpg">
+                                </a>
+                                <div>
+                                    <small class="pull-right">23h ago</small>
+                                    <strong>Monica Smith</strong> love <strong>Kim Smith</strong>. <br>
+                                    <small class="text-muted">2 days ago at 2:30 am - 11.06.2014</small>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <div class="text-center link-block">
+                                <a href="mailbox.html">
+                                    <i class="fa fa-envelope"></i> <strong>Read All Messages</strong>
+                                </a>
+                            </div>
+                        </li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
+                        <i class="fa fa-bell"></i>  <span class="label label-primary">8</span>
+                    </a>
+                    <ul class="dropdown-menu dropdown-alerts">
+                        <li>
+                            <a href="mailbox.html">
+                                <div>
+                                    <i class="fa fa-envelope fa-fw"></i> You have 16 messages
+                                    <span class="pull-right text-muted small">4 minutes ago</span>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <a href="profile.html">
+                                <div>
+                                    <i class="fa fa-twitter fa-fw"></i> 3 New Followers
+                                    <span class="pull-right text-muted small">12 minutes ago</span>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <a href="grid_options.html">
+                                <div>
+                                    <i class="fa fa-upload fa-fw"></i> Server Rebooted
+                                    <span class="pull-right text-muted small">4 minutes ago</span>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <div class="text-center link-block">
+                                <a href="notifications.html">
+                                    <strong>See All Alerts</strong>
+                                    <i class="fa fa-angle-right"></i>
+                                </a>
+                            </div>
+                        </li>
+                    </ul>
+                </li>
+
+
+                <li>
+                    <a href="login.html">
+                        <i class="fa fa-sign-out"></i> Log out
+                    </a>
+                </li>
+                <li>
+                    <a class="right-sidebar-toggle">
+                        <i class="fa fa-tasks"></i>
+                    </a>
+                </li>
+            </ul>
+
+        </nav>
+        </div>
+            <div class="wrapper wrapper-content">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="ibox-title" style="height: 70px;">
+                            <h5 style="width:70%"><span id="KPI-metric-name">TDOTC</span> - <span id="KPI-metric-description">Taxa de demanda de ocupação do coworking (%) das horas disponibilizadas, por times empreendedores que utilizam tecnologia do portfolio de inovação.</span></h5>
+                            <div class="pull-right">
+                                <div class="btn-group">
+                                    <!-- <button type="button" class="btn btn-xs btn-white active">Hoje</button> -->
+                                    <button id="btn-show-KPI-timeline-daily" type="button" class="btn-show-timeline-daily btn btn-xs btn-white">Diária</button>
+                                    <button id="btn-show-KPI-timeline-weekly" type="button" class="btn-show-timeline-weekly btn btn-xs btn-white">Semanal</button>
+                                    <button type="button" class="btn btn-xs btn-white">Mensal</button>
+                                    <!-- <button type="button" class="btn btn-xs btn-white">Anual</button> -->
+                                </div>
+                            </div>                                                        
+                        </div>
+
+                        <div class="ibox float-e-margins">
+                            <div class="ibox-content">
+                                <div>
+                                    <canvas id="lineChart" height="70"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="row">
+                    <div class="col-lg-4">
+                        <div class="ibox">
+                            <div class="ibox-content" style="height:115px;">
+                                <h5>Meta Diária</h5>
+                                <h1 class="no-margins" style="text-align:center;"><span id="KPI-current-daily-goal">30</span></h1>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="ibox">
+                            <div class="ibox-content" style="height:115px;">
+                                <h5>Meta Semanal</h5>
+                                <h1 class="no-margins" style="text-align:center;"><span id="KPI-current-weekly-goal">30</span></h1>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="ibox">
+                            <div class="ibox-content" style="height:115px;">
+                                <h5>Meta Mensal</h5>
+                                <h1 class="no-margins" style="text-align:center;"><span id="KPI-current-monthly-goal">30</span></h1>
+                            </div>
+                        </div>
+                    </div>
+<!--                     <div class="col-lg-4">
+                        <div class="ibox">
+                            <div class="ibox-content" style="height:115px;">
+                                <h5>Meta Anual</h5>
+                                <h1 class="no-margins" style="text-align:center;"><span id="KPI-goal-value">30</span></h1>
+                            </div>
+                        </div>
+                    </div>
+ -->
+                    <div class="col-lg-4">
+                        <div class="ibox">
+                            <div class="ibox-content">
+                                <h5>Valor diário atual</h5>
+                                <h1 class="no-margins"><span id="KPI-current-daily-value">30%</span></h1>
+                                <div class="stat-percent font-bold text-navy"><span id="KPI-previous-daily-value">40%</span> <i class="fa fa-bolt"></i></div>
+                                <small>Valor anterior e tendência</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="ibox">
+                            <div class="ibox-content">
+                                <h5>Valor semanal atual</h5>
+                                <h1 class="no-margins"><span id="KPI-current-weekly-value">30%</span></h1>
+                                <div class="stat-percent font-bold text-navy"><span id="KPI-previous-weekly-value">40%</span> <i class="fa fa-bolt"></i></div>
+                                <small>Valor anterior e tendência</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="ibox">
+                            <div class="ibox-content">
+                                <h5>Valor mensal atual</h5>
+                                <h1 class="no-margins"><span id="KPI-current-monthly-value">40%</span></h1>
+                                <div class="stat-percent font-bold text-navy"><span id="KPI-previous-monthly-value">40%</span> <i class="fa fa-bolt"></i></div>
+                                <small>Valor anterior e tendência</small>
+                            </div>
+                        </div>
+                    </div>
+<!--                     <div class="col-lg-4">
+                        <div class="ibox">
+                            <div class="ibox-content">
+                                <h5>Valor anual atual</h5>
+                                <h1 class="no-margins">30%</h1>
+                                <div class="stat-percent font-bold text-navy">40% <i class="fa fa-bolt"></i></div>
+                                <small>Valor anterior e tendência</small>
+                            </div>
+                        </div>
+                    </div> -->
+                </div>
+            </div>
+        <div class="footer">
+            <div class="pull-right">
+                10GB of <strong>250GB</strong> Free.
+            </div>
+            <div>
+                <strong>Copyright</strong> Example Company &copy; 2014-2015
+            </div>
+        </div>
+
+        </div>
+    </div>
+
+
+    <!-- Mainly scripts -->
+    <script src="js/jquery-2.1.1.js"></script>
+
+    <script type="text/javascript">
+        $kpiNameOptionRef = $('.kpi-name-option').detach()
+    </script>
+
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/plugins/metisMenu/jquery.metisMenu.js"></script>
+    <script src="js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+
+    <!-- Flot -->
+    <script src="js/plugins/flot/jquery.flot.js"></script>
+    <script src="js/plugins/flot/jquery.flot.tooltip.min.js"></script>
+    <script src="js/plugins/flot/jquery.flot.spline.js"></script>
+    <script src="js/plugins/flot/jquery.flot.resize.js"></script>
+    <script src="js/plugins/flot/jquery.flot.pie.js"></script>
+    <script src="js/plugins/flot/jquery.flot.symbol.js"></script>
+    <script src="js/plugins/flot/curvedLines.js"></script>
+
+    <!-- Peity -->
+    <script src="js/plugins/peity/jquery.peity.min.js"></script>
+    <script src="js/demo/peity-demo.js"></script>
+
+    <!-- Custom and plugin javascript -->
+    <script src="js/inspinia.js"></script>
+    <script src="js/plugins/pace/pace.min.js"></script>
+
+    <!-- jQuery UI -->
+    <script src="js/plugins/jquery-ui/jquery-ui.min.js"></script>
+
+    <!-- Jvectormap -->
+    <script src="js/plugins/jvectormap/jquery-jvectormap-2.0.2.min.js"></script>
+    <script src="js/plugins/jvectormap/jquery-jvectormap-world-mill-en.js"></script>
+
+    <!-- Sparkline -->
+    <script src="js/plugins/sparkline/jquery.sparkline.min.js"></script>
+
+    <!-- Sparkline demo data  -->
+    <script src="js/demo/sparkline-demo.js"></script>
+
+    <!-- ChartJS-->
+    <script src="js/plugins/chartJs/Chart.min.js"></script>
+
+
+    <!-- MomentJS -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.13.0/moment.min.js"></script>
+
+    <script>
+        var metricName
+        var lineData = {
+            labels: [],
+            datasets: [
+                {
+                    label: "Example dataset",
+                    fillColor: "rgba(220,220,220,0.5)",
+                    strokeColor: "rgba(220,220,220,1)",
+                    pointColor: "rgba(220,220,220,1)",
+                    pointStrokeColor: "#fff",
+                    pointHighlightFill: "#fff",
+                    pointHighlightStroke: "rgba(220,220,220,1)",
+                    data: []
+                },
+                {
+                    label: "Example dataset",
+                    fillColor: "rgba(26,179,148,0.5)",
+                    strokeColor: "rgba(26,179,148,0.7)",
+                    pointColor: "rgba(26,179,148,1)",
+                    pointStrokeColor: "#fff",
+                    pointHighlightFill: "#fff",
+                    pointHighlightStroke: "rgba(26,179,148,1)",
+                    data: []
+                }
+            ]
+        };
+
+        var lineOptions = {
+            scaleShowGridLines: true,
+            scaleGridLineColor: "rgba(0,0,0,.05)",
+            scaleGridLineWidth: 1,
+            bezierCurve: true,
+            bezierCurveTension: 0.4,
+            pointDot: true,
+            pointDotRadius: 4,
+            pointDotStrokeWidth: 1,
+            pointHitDetectionRadius: 20,
+            datasetStroke: true,
+            datasetStrokeWidth: 2,
+            datasetFill: true,
+            responsive: true,
+        };
+
+        $(document).ready(function() {
+            // setup();
+            $('#btn-test').click(function() {
+                test()
+            })
+
+            $('#btn-show-KPI-timeline-daily').click(function() {
+                showMetricTimelineDaily(metricName);
+            })
+
+            $('#btn-show-KPI-timeline-weekly').click(function() {
+                showMetricTimelineWeekly(metricName);
+            })
+
+        });
+    </script>
+
+    <script type="text/javascript">                
+        function updateMetric(kpiName, newVal) {
+            $('#' + kpiName + '-goal-value').text(newVal);
+        }
+
+        function updateMetricDescription(kpiName, newVal) {
+            $('#' + kpiName + '-metric-description').text(newVal);
+        }
+
+        function updateMetricTimeline(kpiName, weeks) {  
+            availability = weeks['availability']
+            startDate = new Date(weeks['start'])
+            year = startDate.getYear()
+            month = startDate.getMonth()
+            day = startDate.getDate()
+
+            for (var i = 0; i < 14; i++) {
+                currentLabelDate = new Date(year,month, day++)
+                currentLabel = '' + currentLabelDate.getDate() + '/' + currentLabelDate.getMonth()
+                lineData['labels'].push(currentLabel)
+            }
+            var ctx = document.getElementById("lineChart").getContext("2d");
+            var myNewChart = new Chart(ctx).Line(lineData, lineOptions);
+        }
+
+        function showMetricTimelineWeekly(kpiName) {
+            lineData['labels'] = []
+            lineData['datasets'][0]['data'] = []
+            lineData['datasets'][1]['data'] = []
+
+            demandRef = firebase.database().ref('KPIs/Coworking/Acquisition/' + kpiName + '/weeks/').orderByChild('start').limitToFirst(5)
+
+            demandRef.on('child_added', function(snapshot) {
+                val = snapshot.val();
+                startWeekDay = moment(val['start'])
+                endWeekDay = moment(startWeekDay).add(6, 'Days')
+                goal = val['goal']
+                value = val['value']
+    
+                lineData['labels'].push(startWeekDay.format('DD/MM') + ' - ' + endWeekDay.format('DD/MM'))
+                lineData['datasets'][0]['data'].push(goal)
+                lineData['datasets'][1]['data'].push(value)
+                var ctx = document.getElementById("lineChart").getContext("2d");
+                var myNewChart = new Chart(ctx).Line(lineData, lineOptions);
+            })
+        }
+
+        function showMetricTimelineDaily(kpiName) {
+            lineData['labels'] = []
+            lineData['datasets'][0]['data'] = []
+            lineData['datasets'][1]['data'] = []
+
+            firstDay = moment().startOf('month').valueOf()
+            numDays = moment().daysInMonth()
+            demandRef = firebase.database().ref('KPIs/Coworking/Acquisition/' + kpiName + '/days/').orderByChild('day').startAt(firstDay).limitToFirst(numDays)
+
+            demandRef.on('child_added', function(snapshot) {
+                val = snapshot.val();
+                day = val['day']
+                goal = val['goal']
+                value = val['value']
+    
+                lineData['labels'].push(moment(day).format('DD'))
+                lineData['datasets'][0]['data'].push(goal)
+                lineData['datasets'][1]['data'].push(value)
+                var ctx = document.getElementById("lineChart").getContext("2d");
+                var myNewChart = new Chart(ctx).Line(lineData, lineOptions);
+            })
+
+            demandRef.on('child_changed', function(snapshot) {
+                val = snapshot.val();
+                day = val['day']
+                goal = val['goal']
+                value = val['value']
+    
+                values = lineData['datasets'][1]['data']
+                labels = lineData['labels']
+                label = moment(day).format('DD')
+                position = 0
+                for (i = 0; i < labels.length; i++) {
+                    if (labels[i] == label) {
+                        position = i
+                        break
+                    }
+                }             
+
+                lineData['datasets'][0]['data'][position] = goal
+                lineData['datasets'][1]['data'][position] = value
+                var ctx = document.getElementById("lineChart").getContext("2d");
+                var myNewChart = new Chart(ctx).Line(lineData, lineOptions);
+            })
+        }
+    </script>
+    <script src="https://www.gstatic.com/firebasejs/live/3.0/firebase.js"></script>
+    <script>
+        var weeklyDemands = []
+
+        var coworkingAcquisitionMetrics = {}
+
+        // Initialize Firebase
+        var config = {
+            apiKey: "AIzaSyD0jgyMEgjNXHNN95sbf-i0Xxzo9QybHxI",
+            authDomain: "midyear-castle-816.firebaseapp.com",
+            databaseURL: "https://midyear-castle-816.firebaseio.com",
+            storageBucket: "midyear-castle-816.appspot.com",
+        };
+        var mainApp = firebase.initializeApp(config);        
+
+        kpisRef = firebase.database().ref('/Offers/Coworking/KPIs/Acquisition/');        
+
+        kpisRef.on('child_added', function(snapshot) {
+            coworkingAcquisitionMetrics[snapshot.key] = snapshot.val()
+            var kpiName = snapshot.key
+            kpiDescription = snapshot.val()['Description']
+            $kpiNameOption = $kpiNameOptionRef.clone()
+            $kpiNameOption.find('.kpi-label').text(kpiName)
+            $kpiNameOption.find('a').addClass(kpiName + '-kpi-link')
+            $kpiNameOption.appendTo($('#side-menu'))
+
+            firebase.database().ref('/KPIs/Coworking/Acquisition/' + kpiName + '/goal').on('value', function(snapshot) {
+                val = snapshot.val();
+                updateMetric(kpiName, val);
+            })
+
+            firebase.database().ref('/Offers/Coworking/KPIs/Acquisition/' + kpiName + '/Description').on('value', function(snapshot) {
+                val = snapshot.val();
+                updateMetricDescription(kpiName, val);
+            })
+
+            //setup weeks beginning on Jun 01 2016
+            beginDate = moment().startOf('month')
+            finalDate = moment().startOf('month').add(1, 'Months')
+
+            startWeek = moment(beginDate).startOf('week')
+            endWeek = moment(finalDate).endOf('week')
+            durationDays = Math.round(moment.duration(endWeek - startWeek).asDays())
+            durationWeeks = Math.round(moment.duration(endWeek - startWeek).asWeeks())
+
+            periodRef = firebase.database().ref('/Coworking/Acquisition/Days/').orderByChild('day').limitToFirst(durationDays)
+
+            $('.' + kpiName + '-kpi-link').click(function() {
+                metricName = kpiName
+                metricDescription = coworkingAcquisitionMetrics[kpiName]['Description']
+
+                $('#KPI-metric-name').text(metricName)
+                $('#KPI-metric-description').text(metricDescription)                
+
+                firebase.database().ref('/KPIs/Coworking/Acquisition/' + metricName + '/currentGoalsAndValues/').on('value', function(snapshot) {
+
+                    var currentGoalsAndValues = snapshot.val()
+                    currentGoals = currentGoalsAndValues['goals']
+                    currentValues = currentGoalsAndValues['values']
+
+                    $('#KPI-current-daily-value').text(currentValues['dailyValue'])
+                    $('#KPI-current-weekly-value').text(currentValues['weeklyValue'])
+                    $('#KPI-current-monthly-value').text(currentValues['monthlyValue'])
+
+                    $('#KPI-previous-daily-value').text(currentValues['previousDailyValue'])
+                    $('#KPI-previous-weekly-value').text(currentValues['previousWeeklyValue'])
+                    $('#KPI-previous-monthly-value').text(currentValues['previousMonthlyValue'])
+
+                    $('#KPI-current-daily-goal').text(currentGoals['dailyGoal'])
+                    $('#KPI-current-weekly-goal').text(currentGoals['weeklyGoal'])
+                    $('#KPI-current-monthly-goal').text(currentGoals['monthlyGoal'])
+
+                    periodRef.on('value', function(snapshot) {
+                        if (snapshot.val()) {
+                            calcMetric(kpiName, currentGoals['dailyGoal'], currentGoals['weeklyGoal'], startWeek, endWeek).then(function() {
+                                showMetricTimelineDaily(metricName);
+                            });
+                        }
+                    })
+
+                })
+            })
+        })
+
+        function calcMetric(metric, dailyGoal, weeklyGoal, startDate, finalDate) {
+            //Aqui fazer os calculos das métricas de aquisição do Coworking
+            var updates = {}
+            var durationAsDays = Math.round(moment.duration(finalDate - startDate).asDays())
+
+            for (i = 0; i < durationAsDays; i++) {
+                var day = moment(startDate).add(i, 'days').valueOf()
+                updates['/KPIs/Coworking/Acquisition/' + metric + '/days/' + day] = {day: day, goal:dailyGoal, value:0}
+            }
+
+            var durationAsWeeks = Math.round(moment.duration(finalDate - startDate).asWeeks())
+            for (i = 0; i < durationAsWeeks; i++) {
+                var day = moment(startDate).add(i, 'weeks').valueOf()
+                updates['/KPIs/Coworking/Acquisition/' + metric + '/weeks/' + day] = {start: day, goal: weeklyGoal, value: 0}
+            }
+
+            return firebase.database().ref().update(updates).then(function() {
+                ref = firebase.database().ref('/Coworking/Acquisition/Days/').endAt(finalDate.valueOf())
+                var dailyDemands = {}
+                ref.on('value', function(snapshot) {
+                    var days = snapshot.val()
+
+                    for (d in days) {
+                        day = days[d]['day']
+                        var startWeekDay = moment(day).startOf('week').valueOf()
+                        var availability = days[d]['availability']
+                        var teamDemands = days[d]['teamDemands']
+                        for (teamDemand in teamDemands) {
+                            var teamSchedules = teamDemands[teamDemand]['schedules']
+                            for (teamSchedule in teamSchedules) {
+                                schedule = teamSchedules[teamSchedule]
+                                switch (metric) {
+                                    //AQUI DEFINIR COMO SÃO CALCULADAS AS MÉTRICAS
+                                    case ('DOT'): {
+                                        //
+                                        updates['/KPIs/Coworking/Acquisition/DOT/days/' + day]['value'] += schedule
+                                        updates['/KPIs/Coworking/Acquisition/DOT/weeks/' + startWeekDay]['value'] += schedule
+                                        break
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    return firebase.database().ref().update(updates)
+                })                            
+            })
+
+                // switch(metric) {
+                //     case ('DOT'): {
+                //         var durationAsDays = Math.round(moment.duration(finalDate - startDate).asDays())
+
+                //         var updates = {}                            
+                //         for (i = 0; i < durationAsDays; i++) {
+                //             var day = moment(startDate).add(i, 'days').valueOf()
+                //             updates['/KPIs/Coworking/Acquisition/DOT/days/' + day] = {day: day, goal:96, value:0}
+                //         }                    
+                //         break;
+                //     }
+                //     case ('TDOTC'): {
+                //         var durationAsDays = Math.round(moment.duration(finalDate - startDate).asDays())
+
+                //         var updates = {}                            
+                //         for (i = 0; i < durationAsDays; i++) {
+                //             var day = moment(startDate).add(i, 'days').valueOf()
+                //             updates['/KPIs/Coworking/Acquisition/TDOTC/days/' + day] = {day: day, goal:40, value:0}
+                //         }
+
+                //         var durationAsWeeks = Math.round(moment.duration(finalDate - startDate).asWeeks())
+                //         var weeklyDemands = {}
+                //         for (i = 0; i < durationAsWeeks; i++) {
+                //             var day = moment(startDate).add(i, 'weeks').valueOf()
+                //             updates['/KPIs/Coworking/Acquisition/TDOTC/weeks/' + day] = {start: day, goal:40, value:0}
+                //             weeklyDemands[day] = {start: day, end: moment(day).add(6, 'days').valueOf(), demand: 0, availability: 0}
+                //         }
+
+
+                //         firebase.database().ref().update(updates).then(function() {
+                //             ref = firebase.database().ref('/Coworking/Acquisition/Days/').endAt(finalDate.valueOf())
+                //             var dailyDemands = {}
+                //             ref.on('value', function(snapshot) {
+                //                 var updates = {}
+                //                 var days = snapshot.val()
+
+                //                 for (d in days) {
+                //                     // var day = snapshot.key
+                //                     day = days[d]['day']
+                //                     var startWeekDay = moment(day).startOf('week').valueOf()
+                //                     var availability = days[d]['availability']
+                //                     if (!dailyDemands[day]) {
+                //                         dailyDemands[day] = {availability: availability, value:0, demand:0}
+                //                     }
+
+                //                     var teamDemands = days[d]['teamDemands']
+                //                     for (teamDemand in teamDemands) {
+                //                         var teamSchedules = teamDemands[teamDemand]['schedules']
+                //                         for (teamSchedule in teamSchedules) {
+                //                             schedule = teamSchedules[teamSchedule]
+                //                             dailyDemands[day]['demand'] += schedule
+
+                //                             for (weeklyDemand in weeklyDemands) {
+                //                                 weekDemand = weeklyDemands[weeklyDemand]
+                //                                 if ((day >= weekDemand['start']) && day <= (weekDemand['end'])) {
+                //                                     weeklyDemands[startWeekDay]['demand'] += schedule
+                //                                     weeklyDemands[startWeekDay]['availability'] += availability
+                //                                     weeklyDemands[startWeekDay]['value'] = Math.round((weeklyDemands[startWeekDay]['demand']/weeklyDemands[startWeekDay]['availability']) * 100)
+                //                                 }
+                //                             }
+                //                         }
+                //                     }
+                //                     if (dailyDemands[day]['availability'] != 0) {   
+                //                         dailyDemands[day]['value'] = Math.round((dailyDemands[day]['demand']/dailyDemands[day]['availability'])*100)
+                //                     }
+
+                //                     updates['/KPIs/Coworking/Acquisition/TDOTC/days/' + day + '/value/'] = dailyDemands[day]['value']
+                //                     updates['/KPIs/Coworking/Acquisition/TDOTC/weeks/' + startWeekDay + '/value/'] = weeklyDemands[startWeekDay]['value']
+                //                 }
+                //                 firebase.database().ref().update(updates)
+                //             })                            
+                //         })
+                //         //Calc daily values
+                //         //Calc weekly values
+                //         // var startWeek = moment().startOf('month').startOf('week').valueOf()
+                //         // var endWeek = moment().endOf('month').endOf('week').valueOf()
+
+                //         // var nextStartWeek = moment(startWeek).add(7, 'days').valueOf()
+                //         // var weekDemands = 0
+                //         // var daysDemands = {}
+                //         // var weekHoursDemand = 0 
+                //         // var weekHoursAvailability = 0
+                //         // for (day in dailyDemands) {
+                //         //     daysDemands[day] = 0
+
+                //         //     dayDemands = dailyDemands[day]
+                //         //     if (dayDemands['day'] >= nextStartWeek) {
+                //         //         var update = {}
+                //         //         if (weekHoursAvailability > 0) {
+                //         //             update['KPIs/Coworking/Acquisition/TDOTC/weeks/' + startWeek + '/value/'] = Math.round((weekHoursDemand/weekHoursAvailability) * 100)
+                //         //         }else {
+                //         //             update['KPIs/Coworking/Acquisition/TDOTC/weeks/' + startWeek + '/value/'] = 0
+                //         //         }
+                //         //         update['KPIs/Coworking/Acquisition/TDOTC/weeks/' + startWeek + '/start/'] = startWeek
+                //         //         update['KPIs/Coworking/Acquisition/TDOTC/weeks/' + startWeek + '/goal/'] = 40
+                //         //         update['KPIs/Coworking/Acquisition/TDOTC/weeks/' + startWeek + '/isUpdate/'] = true
+
+                //         //         firebase.database().ref().update(update)
+                //         //         startWeek = moment(dayDemands['day']).startOf('week').valueOf()
+                //         //         nextStartWeek = moment(startWeek).add(7, 'days').valueOf()
+                //         //         weekHoursDemand = 0
+                //         //         weekHoursAvailability = 0
+                //         //     }
+                //         //     availability = dayDemands['availability']
+                //         //     weekHoursAvailability += availability
+                //         //     teamDemands = dayDemands['teamDemands']
+                //         //     for (tID in teamDemands) {
+                //         //         // schedules = teamDemands[tID]
+                //         //         dayHoursDemand = 0
+                //         //         for (schedule in teamDemands[tID]['schedules']) {
+                //         //             dayHoursDemand += teamDemands[tID]['schedules'][schedule]
+                //         //             weekHoursDemand += dayHoursDemand
+                //         //         }
+                //         //         daysDemands[day] = dayHoursDemand
+                //         //         dayDemand = Math.round((dayHoursDemand/availability) * 100)
+                //         //         update = {}
+                //         //         update['/KPIs/Coworking/Acquisition/TDOTC/days/' + dayDemands['day'] + '/value/'] = dayDemand
+                //         //         update['/KPIs/Coworking/Acquisition/TDOTC/days/' + dayDemands['day'] + '/day/'] = dayDemands['day']
+                //         //         update['/KPIs/Coworking/Acquisition/TDOTC/days/' + dayDemands['day'] + '/goal/'] = 40
+                //         //         firebase.database().ref().update(update)
+                //         //     }
+                //         // }
+                //         // break;
+                //     }
+                // }
+            // }
+        }
+    </script>
+
+    <script type="text/javascript">
+        function test() {
+            entrepreneursDict = {}
+            teamsDict = {}
+            teamsList = []
+
+            //setup weeks beginning on Jun 01 2016
+            beginDate = moment().startOf('month')
+            finalDate = moment().startOf('month').add(1, 'Months')
+
+            startWeek = moment(beginDate).startOf('week')
+            endWeek = moment(finalDate).endOf('week')
+            durationDays = moment.duration(endWeek - startWeek).asDays()
+
+            entrepreneursRef = firebase.database().ref('/entrepreneurs')
+            entrepreneursRef.on('value', function(snapshot) {
+                entrepreneursDict = snapshot.val()
+
+                teamsRef = firebase.database().ref('/teams')
+                teamsRef.on('value', function(snapshot) {
+                    teamsDict = snapshot.val()
+                    for (team in teamsDict) {
+                        teamsList.push(team)
+                    }
+
+                    numTimerIntervals = 10
+
+                    availability = 96
+                    numSeats = 4
+
+                        daysToAdd = Math.round(Math.random() * durationDays)
+                        console.log('>>> days to add: ' + daysToAdd)
+                        teamIndex = Math.round(Math.random() * 10)
+
+                        hoursToAdd = Math.round(Math.random() * 9)
+                        var newDay = moment(startWeek).add(daysToAdd, 'days').valueOf()
+                        // var newDay = 1464750000000
+                        hourScheduled = moment(newDay).add(8 + hoursToAdd, 'hours').valueOf()
+
+                        updates = {}
+                        updates['/Coworking/Acquisition/Days/' + newDay + '/availability'] = 96
+                        updates['/Coworking/Acquisition/Days/' + newDay + '/day/'] = newDay
+                        updates['/Coworking/Acquisition/Days/' + newDay + '/teamDemands/' + teamsList[teamIndex] + '/schedules/' + hourScheduled] = 4
+
+                        firebase.database().ref().update(updates)
+                })
+            })
+        }
+
+        function setup () {
+            entrepreneursDict = {}
+            teamsDict = {}
+            teamsList = []
+
+            entrepreneursRef = firebase.database().ref('/entrepreneurs')
+            entrepreneursRef.on('value', function(snapshot) {
+                entrepreneursDict = snapshot.val()
+
+                teamsRef = firebase.database().ref('/teams')
+                teamsRef.on('value', function(snapshot) {
+                    teamsDict = snapshot.val()
+                    for (team in teamsDict) {
+                        teamsList.push(team)
+                    }
+
+                    //setup weeks beginning on Jun 01 2016
+                    beginDate = moment().startOf('month')
+                    finalDate = moment().startOf('month').add(1, 'Months')
+
+                    startWeek = moment(beginDate).startOf('week')
+                    endWeek = moment(finalDate).endOf('week')
+                    durationDays = moment.duration(endWeek - startWeek).asDays()
+                    durationWeeks = moment.duration(endWeek - startWeek).asWeeks()
+
+                    // for (i = 0; i < durationWeeks; i++) {
+                    //     startDay = moment(startWeek).add(1 * i, 'Weeks')
+                    //     endDay = moment(startDay).add(6, 'Dasy')
+
+                    //     var pitchCoworkingOffer = {
+                    //         'isUpdate': true,
+                    //         'goal' : 40,
+                    //         'value': Math.round(Math.random() * 140),
+                    //         'startWeekDay': startDay.valueOf(),
+                    //     }
+                    //     offerKey = firebase.database().ref('/KPIs/Coworking/Acquisition/TDOTC/weeks/').push(pitchCoworkingOffer).key;
+                    // }
+
+                    for (i = 0; i < durationDays; i++) {
+                        day = moment(startWeek)
+                        day = day.add(i, 'Days')
+                        var pitchCoworkingOffer = {
+                            'isUpdate': true,
+                            'goal' : 40,
+                            'value': 0,
+                            'day': day.valueOf(),
+                        }
+                        offerKey = firebase.database().ref('/KPIs/Coworking/Acquisition/TDOTC/days/' + day).set(pitchCoworkingOffer).key;
+                        var pitchCoworkingDemand = {
+                            'numSeats': 0,
+                            'responsible': {'id':'-KKhvWzhCdxPZNBWC3TS', 'name':'Kiev Gama', 'email':'kiev@cin.ufpe.br', 'phone':'(081) 98172-1670'},
+                            'team': {
+                                'id': '-KKidtqGo7rXYpcW3vwn',
+                                'name': 'Arte de Rua',
+                                'usesPortfolio': true,
+                                'hasMsC': true,
+                                'hasPhD': false
+                            }
+                        }
+
+                        // key = firebase.database().ref('/Coworking/Acquisition/days/' + offerKey + '/availability/').set({'sun':96, 'mon':96, 'tue':96, 'wed':96, 'thu':96, 'fri':96, 'sat':96});
+
+                        // key = firebase.database().ref('/Coworking/Acquisition/days/' + offerKey + '/teamDemands/').push(pitchCoworkingDemand);
+                    }
+
+                    //setup weeks beginning on Jun 01 2016
+                    // beginDate = moment().startOf('month')
+                    // finalDate = moment().startOf('month').add(1, 'Months')
+
+                    // startWeek = moment(beginDate).startOf('week')
+                    // endWeek = moment(finalDate).endOf('week')
+                    // durationDays = moment.duration(endWeek - startWeek).asDays()
+                    // durationWeeks = moment.duration(endWeek - startWeek).asWeeks()
+                    
+                    // team = teamsDict[teamsList[0]]
+                    // for (i = 0; i < 7; i++) {
+                    //     day = moment(startWeek).add(i, 'Days')
+                    //     firebase.database().ref('/Coworking/Acquisition/Days/' + day.valueOf()).set(
+                    //         {
+                    //             'availability':96,
+                    //             'day': day.valueOf()
+                    //         }
+                    //     )
+
+                    //     firebase.database().ref('/Coworking/Acquisition/Days/' + day.valueOf() + '/teamDemands/' + teamsList[0]).set({'numSeats': 4,
+                    //             'schedules': [moment(day).hour(8).valueOf()]
+                    //             })
+                    // }                    
+
+                })
+            })
+
+            //
+
+            // offerKey = '-KKx970y7c7KPv4aNtz3'
+
+
+            // i = 0
+            // for (day in {sun:'sun', mon:'mon', tue:'tue', wed:'wed', thu:'thu', fri:'fri', sat:'sat'}) {
+            //     startInterval = new Date(startDate)
+            //     endInterval = new Date(endDate)
+            //     startInterval.setDate(startInterval.getDate() + i)
+            //     endInterval.setDate(endInterval.getDate() + i)
+            //     i++;
+            //     interval = {'start':startInterval.valueOf(), 'end':endInterval.valueOf()};
+            //     refString = '/Coworking/Acquisition/weeks/' + offerKey + '/teamDemands/' + key.key + '/schedules/' + day + '/';
+            //     firebase.database().ref(refString).set(interval);
+            // }
+        }
+    </script>
+</body>
+</html>

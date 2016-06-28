@@ -1,0 +1,2227 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>INSPINIA | Reflection Box</title>
+
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="font-awesome/css/font-awesome.css" rel="stylesheet">
+    <link href="css/plugins/iCheck/custom.css" rel="stylesheet">
+    <link href="css/animate.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+
+    <link href="css/plugins/cropper/cropper.min.css" rel="stylesheet">
+
+
+    <style type="text/css">
+        #page-wrapper {
+            margin: 0;
+        }
+
+        .reflections-items-body {
+            padding: 0;
+        }
+
+        .btn-new-reflection {
+            margin: 0;
+        }
+
+        .new-reflection-button-separator {
+            text-align: center;
+            padding: 10px;
+            font-weight: 700;            
+        }
+
+        .navbar-top-links li a {
+            min-height: 30px;
+            padding: 15px 0;
+        }
+
+        .separator-reflection-timeline-item > .row > .content {
+            min-height: 30px;
+        }
+
+        .content {
+            position: relative;
+        }
+
+        .content .btn-edit-activity {
+            display: none;
+        }
+
+        .content:hover .btn-edit-activity {
+            display: block;
+        }
+
+        .btn-edit-activity {
+            position: absolute;
+            right: 10px;
+            top: 10px;
+        }
+
+        .btn-edit-team {
+            color: #fff;
+            z-index: 100;
+        }
+
+        .btn-edit-big-idea {
+            color: #fff;
+            z-index: 100;
+        }
+
+        .btn-register-personality {
+            width: 100%;
+        }
+
+        .personality-img {
+            width: 60px;
+            float: left;
+        }
+
+        .member-photo.img-circle {
+            height: 60px;
+        }
+
+        img.new-team-member-personality16-img {
+            height: 60px;
+        }
+
+        #new-team-modal .modal-dialog {
+            width: 900px;
+        }
+
+        #new-big-idea-modal .modal-dialog {
+            /*width: 900px;*/
+        }
+
+        #new-team-modal .modal-header {
+            padding: 15px 15px;
+        }
+
+        .new-team-member-remove:hover {
+            cursor: pointer;
+        }
+
+        .new-team-member-row img.member-photo.img-circle {
+            height: 60px;
+        }
+
+        .team-name-p {
+            color: #fff;
+            position: relative;
+            padding: 10px;
+            background: rgba(0,0,0,0.42);
+            margin: 0;            
+        }
+
+        .team-members {
+            margin: 0;
+        }
+
+        .team-members img.img-circle {
+            margin-top: 15px;
+            width: 100px;
+            height: 100px;
+        }
+
+        .twitter-typeahead {
+            width: 100%;
+        }
+
+        typeahead,
+        .tt-query,
+        .tt-hint {
+          height: 30px;
+          padding: 8px 12px;
+          font-size: 14px;
+          line-height: 30px;
+          border: 2px solid #ccc;
+          -webkit-border-radius: 8px;
+             -moz-border-radius: 8px;
+                  border-radius: 8px;
+          outline: none;
+        }
+
+        .typeahead {
+          background-color: #fff;
+        }
+
+        .typeahead:focus {
+          border: 2px solid #0097cf;
+        }
+
+        .tt-query {
+          -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+             -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+                  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+        }
+
+        .tt-hint {
+          color: #999
+        }
+
+        .tt-menu {
+          width: 422px;
+          margin: 12px 0;
+          padding: 8px 0;
+          background-color: #fff;
+          border: 1px solid #ccc;
+          border: 1px solid rgba(0, 0, 0, 0.2);
+          -webkit-border-radius: 8px;
+             -moz-border-radius: 8px;
+                  border-radius: 8px;
+          -webkit-box-shadow: 0 5px 10px rgba(0,0,0,.2);
+             -moz-box-shadow: 0 5px 10px rgba(0,0,0,.2);
+                  box-shadow: 0 5px 10px rgba(0,0,0,.2);
+        }
+
+        .tt-suggestion {
+          padding: 3px 20px;
+          font-size: 18px;
+          line-height: 24px;
+        }
+
+        .tt-suggestion:hover {
+          cursor: pointer;
+          color: #fff;
+          background-color: #0097cf;
+        }
+
+        .tt-suggestion.tt-cursor {
+          color: #fff;
+          background-color: #0097cf;
+
+        }
+
+        .tt-suggestion p {
+          margin: 0;
+        }        
+
+    </style>
+    <style type="text/css">
+        .new-reflection-modal-body {
+            padding: 0;
+        }
+
+        .new-video-reflection-input {
+            width: 100%;
+            padding: 10px;
+            border: none;
+        }
+
+        .reflection-timeline-item .content {
+            text-align: justify;
+            line-height: 1.8em;
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <div id="wrapper">
+        <div id="page-wrapper" class="gray-bg">
+            <div class="row border-bottom">
+                <nav class="navbar navbar-static-top white-bg" role="navigation" style="margin-bottom: 0">
+                    <ul class="nav navbar-top-links navbar-right">
+                        <li>
+                            <span class="m-r-sm text-muted welcome-message"><span class="cbl-class-name"></span></span>
+                        </li>
+                        <li>
+                            <a data-toggle="dropdown" class="dropdown-toggle" href="#" aria-expanded="false">
+                             </span> <span class="text-muted text-xs block"><span class="user-name"></span> <b class="caret"></b></span> </span> 
+                            </a>
+                            <ul class="dropdown-menu animated fadeInRight m-t-xs">
+                                <!-- <li><a href="profile.html">Profile</a></li> -->
+                                <!-- <li><a href="contacts.html">Contacts</a></li> -->
+                                <!-- <li><a href="mailbox.html">Mailbox</a></li> -->
+                                <!-- <li class="divider"></li> -->
+                                <!-- <li><a id="menu-found-team" href="#">New Team</a></li> -->
+                                <li><a id="menu-personality16" href="#">16 Personalities</a></li>
+                                <li><a id="menu-change-password" href="#">Change password</a></li>
+                                <li><a id="menu-logout" href="cbl_login_two_columns.html">Logout</a></li>
+                            </ul>                            
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+
+            <div class="wrapper wrapper-content">        
+                <div class="row animated fadeInRight">
+                    <div class="col-lg-2" style="padding:0">
+                        <div class="ibox float-e-margins">
+                            <div class="ibox-content mailbox-content">
+                                <div class="file-manager">
+                                    <h5>REFLECTIONS</h5>
+                                    <ul class="folder-list m-b-md" style="padding: 0">
+                                        <li><a href="#" class="menu-show-reflections"> <i class="fa fa-certificate"></i> All<span class="label label-primary pull-right"><span class="total-done-reflections">4</span></span></a></li>
+                                        <li><a href="#" class="menu-show-pending-reflections-list"> <i class="fa fa-certificate"></i> Pending<span class="label label-danger pull-right"><span class="total-pending-reflections">4</span></span></a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+<!--                         <div class="ibox float-e-margins">
+                            <div class="ibox-content mailbox-content">
+                                <div class="file-manager">
+                                    <h5>Personality</h5>
+                                    <ul class="category-list" style="padding: 0">
+                                        <li><a href="#"> <i class="fa fa-circle text-navy"></i><span class="role">Undefined</span></a></li>
+                                        <li><a href="#"> <i class="fa fa-circle text-danger"></i><span class="personality">Undefined</span></a></li>
+                                        <li><a href="#"> <i class="fa fa-circle text-primary"></i><span class="strategy">Undefined</span></a></li>
+                                    </ul>
+                                    <div class="text-center">
+                                        <img class="personality-img" src="img/estp.png">
+                                    </div>
+                                </div>
+                            </div>
+                        </div> -->
+                    </div>
+                    <div class="col-lg-10">
+                        <div class="ibox float-e-margins">
+                            <div class="ibox-title">
+                                <h5>Activities Timeline</h5>
+                            </div>
+
+                            <div class="ibox-content activities-timeline">
+                                <div class="separator-reflection-timeline-item reflection-timeline-item timeline-item">
+                                    <div class="row">
+                                        <div class="col-xs-3 date">
+                                        </div>
+                                        <div class="col-xs-9 content">
+                                            <h2 class="cbl-sprint-separator-name text-center">Sprint#0</h2>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="video-reflection-timeline-item reflection-timeline-item timeline-item">
+
+                                    <div class="row">
+                                        <div class="col-xs-3 date">
+                                            <i class="fa fa-file-video-o"></i>
+                                        </div>
+                                        <div class="col-xs-9 content">
+                                        <a href="#"><span class="btn-edit-reflection btn-edit-activity fa fa-edit"></span></a>
+                                            <p class="m-b-xs"><strong class="reflection-statement">Nestas duas semanas...</strong></p>
+                                            <a class="video-reflection-link" href="https://www.dropbox.com/s/cuhxf87apf637w5/innovatorsmaker-cbl-reflections.mov?dl=0" target="_blank"><span class="fa fa-play-circle-o fa-4x"></span></a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="pending-reflection-timeline-item reflection-timeline-item timeline-item">
+                                    <div class="row">
+                                        <div class="col-xs-3 date">
+                                            <i class="fa fa-file-text"></i>
+                                        </div>
+                                        <div class="col-xs-9 content">
+                                            <a href="#"><span class="btn-edit-reflection btn-edit-activity fa fa-edit"></span></a>
+                                            <p class="m-b-xs"><strong class="reflection-statement"></strong></p>
+                                            <p class="reflection-text"></p>
+                                            <div class="new-reflection-buttons">
+                                                <div class="div-new-text-reflection col-xs-5">
+                                                    <button type="button" data-toggle="modal" data-target="#new-reflection-modal" class="btn-new-text-reflection btn-new-reflection btn btn-block btn-outline btn-primary">text reflection</button>
+                                                </div>
+                                                <div class="new-reflection-button-separator col-xs-2">OR</div>
+                                                <div class="div-new-video-reflection col-xs-5">
+                                                    <button type="button" data-toggle="modal" data-target="#new-video-reflection-modal" class="btn-new-video-reflection btn btn-block btn-outline btn-primary">video reflection</button>
+                                                </div>                                                
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="pending-personality16-item timeline-item">
+                                    <div class="row">
+                                        <div class="col-xs-3 date">
+                                            <i class="fa fa-file-text"></i>
+                                        </div>
+                                        <div class="col-xs-9 content">
+                                            <p class="reflection-text">Register your personality</p>
+                                            <div class="new-reflection-buttons">
+                                                <div class="div-new-activity col-xs-5">
+                                                    <button type="button" data-toggle="modal" data-target="#personality16-modal" class="btn-register-personality btn-new-reflection btn btn-block btn-outline btn-primary">register your personality</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="pending-new-team-item timeline-item">
+                                    <div class="row">
+                                        <div class="col-xs-3 date">
+                                            <i class="fa fa-file-text"></i>
+                                        </div>
+                                        <div class="col-xs-9 content">
+                                            <p><strong class="activity-statement">Create a new team</strong></p>
+                                            <div class="new-reflection-buttons">
+                                                <div class="div-new-activity col-xs-5">
+                                                    <button type="button" data-toggle="modal" data-target="#new-team-modal" class="btn-new-team btn-new-reflection btn btn-block btn-outline btn-primary">new team</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="pending-challenge timeline-item">
+                                    <div class="timeline-item-content">
+                                        <div class="row">
+                                            <div class="col-xs-3 date">
+                                                <i class="fa fa-file-text"></i>
+                                            </div>
+                                            <div class="col-xs-9 content">
+                                                <p><strong class="activity-statement"></strong></p>
+                                                <div class="new-reflection-buttons">
+                                                    <div class="div-new-activity col-xs-5">
+                                                        <a type="button" href="cbl_challenge.html" class="btn-new-challenge btn-new-reflection btn btn-block btn-outline btn-primary">new challenge</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>                                        
+                                    </div>
+                                </div>
+
+                                <div class="pending-big-idea-item timeline-item">
+                                    <div class="timeline-item-content">
+                                        <div class="row">
+                                            <div class="col-xs-3 date">
+                                                <i class="fa fa-file-text"></i>
+                                            </div>
+                                            <div class="col-xs-9 content">
+                                                <p><strong class="activity-statement"></strong></p>
+                                                <div class="new-reflection-buttons">
+                                                    <div class="div-new-activity col-xs-5">
+                                                        <button type="button" class="btn-new-big-idea btn-new-reflection btn btn-block btn-outline btn-primary">new big idea</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>                                        
+                                    </div>
+                                </div>
+
+
+<!--                                 <div class="big-idea-item timeline-item">
+                                    <div class="timeline-item-content">
+                                        <div class="row">
+                                            <div class="col-xs-3 date">
+                                                <i class="fa fa-file-text"></i>
+                                            </div>
+                                            <div class="col-xs-9 content">
+                                                <div class="" style="padding: 10px 0;">
+                                                    <div class="row">
+                                                        <div class="col-xs-12 text-left">
+                                                            <img class="big-idea-icon pull-left" src="img/Icones-CBL/Big-Idea.png" style="height: 50px; margin-right: 20px;">
+                                                            <span> Big Idea </span>
+                                                            <h3 class="big-idea-text font-bold">Economia & Viagem</h3>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-10" style="text-align: center; margin-top: 20px;">
+                                                            <img class="big-idea-image" src="" style="width: 500px;">         
+                                                        </div>
+                                                        <div class="col-md-2" style="text-align: center;">
+                                                            <div class="row" style="margin:20px 0;"><a href="#" class="big-idea-pdf-file-link" target="_blank"><span class="fa fa-file-pdf-o fa-2x"></span></a></div>
+                                                            <div class="row" style="margin:20px 0;"><a href="#" class="big-idea-presentation-file-link" target="_blank"><span class="fa fa-file-powerpoint-o fa-2x"></span></a></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+ -->
+
+                                <div class="big-idea-item timeline-item">
+                                    <div class="row">
+                                        <div class="col-xs-3 date">
+                                            <i class="fa fa-users"></i>
+                                        </div>
+                                        <div class="col-xs-9 content" style="position:relative; max-height: 350px; overflow: hidden; padding: 0;">
+                                            <div class="img-wrapper" style="position: absolute;height: 1280px;z-index: 0;">
+                                                <img class="team-members-background-img" src="img/office-co-working_385-19323250.jpg" style="position: absolute; height: 100%;">
+                                            </div>
+                                            <a href="#"><span class="btn-edit-big-idea btn-edit-activity fa fa-edit"></span></a>                                       
+                                            <p class="team-name-p m-b-xs"><strong class="team-name">Big Chicken</strong><i class="challenge-name pull-right" style="margin-right: 40px;"></i></p>
+                                            <div class="panel panel-default" style="">
+                                                <div class="panel-body" style="
+                                                    border: solid 1px #fff;
+                                                    z-index: 1000;
+                                                    position: relative;
+                                                    color: #fff;
+                                                    margin: 20px;
+                                                    border-radius: 5px;
+                                                    background: rgba(0,0,0,0.42);">
+                                                    <img class="big-idea-icon pull-left" src="img/Icones-CBL/Big-Idea.png" style="height: 50px; margin-right: 20px;">
+                                                    <span> Big Idea </span>
+                                                    <h3><span class="big-idea-text font-bold">Educação &amp; Turismo</span>
+                                                    <div class="pull-right" style="position: absolute; right: 0;">
+                                                        <a href="#" class="big-idea-img-file-link" target="_blank" style="color:#fff; margin-right: 20px;"><span class="fa fa-file-image-o"></span>
+                                                        </a>
+                                                        <a href="#" class="big-idea-pdf-file-link" target="_blank" style="color:#fff; margin-right: 20px;"><span class="fa fa-file-pdf-o"></span>
+                                                        </a>
+                                                        <a href="#" class="big-idea-presentation-file-link" target="_blank" style="color:#fff; margin-right: 20px;"><span class="fa fa-file-powerpoint-o"></span></a>
+                                                    </div></h3>  
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="team-timeline-item timeline-item">
+                                    <div class="row">
+                                        <div class="col-xs-3 date">
+                                            <i class="fa fa-users"></i>
+                                        </div>
+                                        <div class="col-xs-9 content" style="position:relative; max-height: 350px; overflow: hidden; padding: 0;">
+                                            <div class="img-wrapper" style="position: absolute;height: 1280px;">
+                                                <img class="team-members-background-img" src="img/office-co-working_385-19323250.jpg" style="position: absolute; height: 100%;">
+                                            </div>
+                                            <a href="#"><span class="btn-edit-team btn-edit-activity fa fa-edit"></span></a>                                       
+                                            <p class="team-name-p m-b-xs"><strong class="team-name">Big Chicken</strong><i class="challenge-name pull-right" style="margin-right: 40px;"></i></p>
+                                            <div>
+                                                <div class="team-members row">
+                                                    <div class="team-member col-md-3" style="height:150px; background-color: rgba(0, 0, 0, 0.22);
+">                                                        <div class="row text-center">
+                                                            <div class="col-md-12">
+                                                                <img alt="member" class="member-photo img-circle" src="img/a1.jpg" style="border:solid #fff;"> 
+                                                            </div>
+                                                        </div>
+                                                        <div class="row text-center">
+                                                            <div class="member-name col-md-12" style="color:#fff; font-weight: 700;">Cristiano Araújo</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="personality16-item timeline-item">
+                                    <div class="row">
+                                        <div class="col-xs-3 date">
+                                            <i class="fa fa-file-text"></i>
+                                        </div>
+                                        <div class="col-xs-9 content">
+                                            <ul class="category-list pull-right" style="padding: 0">
+                                                <li><a href="#"> <i class="fa fa-circle text-navy"></i><span class="role">Undefined</span></a></li>
+                                                <li><a href="#"> <i class="fa fa-circle text-danger"></i><span class="personality">Undefined</span></a></li>
+                                                <li><a href="#"> <i class="fa fa-circle text-primary"></i><span class="strategy">Undefined</span></a></li>
+                                            </ul>
+                                            <div class="text-center">
+                                                <img class="personality-img" src="img/estp.png">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer">
+                <div class="pull-right">10GB of <strong>250GB</strong> Free.</div>
+                <div>
+                    <strong>Copyright</strong> Example Company &copy; 2014-2015
+                </div>
+            </div>
+        </div>        
+    </div>
+
+    <div class="modal inmodal" id="new-team-modal" tabindex="-1" role="dialog" aria-hidden="true" team-id="">
+        <div class="modal-dialog">
+            <div class="modal-content animated">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title">Who is joining you in the team?</h4>
+                </div>
+                <div id="new-team-modal-body" class="found-new-team modal-body">
+                    <input id="new-team-member-name" type="text" class="typeahead form-control modal-form-control" placeholder="member name"></input>
+                    <table class="new-team-table table table-hover table-mail">
+                    <tbody>
+                    <tr class="new-team-member-row">
+                        <td>
+                            <div class="col-md-4">
+                                <img alt="member" class="member-photo img-circle" src="img/a1.jpg">
+                            </div>
+                            <div class="col-md-8">
+                                <div class="row">
+                                    <span class="new-team-member-name">Cristiano Araújo</span>
+                                </div>
+                                <div class="row">
+                                    <small class="new-team-member-name"></small>
+                                </div>
+                                <div class="row">
+                                    <small class="new-team-member-affiliation"></small>
+                                </div>                                    
+                            </div>
+                        </td>
+                        <td><img class="new-team-member-personality16-img" src="img/intp.png"></td>
+                        <td>
+                            <div class="row">
+                                <span class="new-team-member-personality16-role">Analyst</span>
+                            </div>
+                            <div class="row">
+                                <small class="new-team-member-personality16-personality">Architect</small>
+                            </div>
+                            <div class="row">
+                                <small class="new-team-member-personality16-strategy">Constant Improvement</small>
+                            </div>                                    
+                        </td>
+                        <td class="new-team-member-remove"><span class="fa fa-times"></span></td>
+                    </tr>
+                    </tbody>
+                    </table>
+                    <div class="existing-team hide" style="position:relative; max-height: 350px; overflow: hidden; padding: 0;">
+                        <div class="img-wrapper" style="position: absolute;height: 1280px;">
+                            <img class="team-members-background-img" src="img/office-co-working_385-19323250.jpg" style="position: absolute; height: 100%;">
+                        </div>                                        
+                        <p class="team-name-p m-b-xs"><strong class="team-name">Big Chicken</strong><i class="challenge-name pull-right" style="margin-right: 40px;"></i>
+                            <button id="reject-team-btn" type="button" class="close">
+                                <span aria-hidden="true">×</span>
+                                <span class="sr-only">Close</span>
+                            </button>
+                        </p>                        
+                        <div>
+                            <div class="team-members row">
+                                <div class="team-member col-md-3" style="height:150px; background-color: rgba(0, 0, 0, 0.22);
+">
+                                    <div class="row text-center">
+                                        <div class="col-md-12">
+                                            <img alt="member" class="member-photo img-circle" src="img/a1.jpg" style="border:solid #fff;"> 
+                                        </div>
+                                    </div>
+                                    <div class="row text-center">
+                                        <div class="member-name col-md-12" style="color:#fff; font-weight: 700;">Cristiano Araújo</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>                    
+                </div>
+                <div id="new-team-name-modal-body" class="modal-body found-new-team-name hide">
+                    <input id="team-name" class="form-control modal-form-control" placeholder="team name..."></input>
+                </div>
+                <div class="go-to-new-team-name-footer found-new-team modal-footer hide">
+                    <button id="btn-go-to-new-team-name" type="button" class="btn btn-primary">next</button>
+                </div>
+                <div class="join-existing-team-footer found-new-team modal-footer hide">
+                    <button id="join-existing-team-btn" type="button" class="btn btn-primary">join team</button>
+                </div>
+                <div class="found-new-team-name modal-footer hide">
+                    <button id="btn-go-to-previous-new-team" type="button" class="btn btn-white pull-left">Previous</button>
+                    <button id="btn-register-new-team" type="button" class="btn btn-primary pull-right hide">Register Team</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal inmodal" id="personality16-modal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content animated">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title">16 Personalities</h4>
+                    <!-- <small class="reflection-statement font-bold">Propose a new reflection to your class</small> -->
+                </div>
+                <div class="modal-body">
+                    <div class="ibox-content">
+                        <div class="row">
+                            <div class="col-sm-12 b-r">
+                                <form role="form">
+                                    <select id="personlity-select" class="form-control m-b">
+                                        <option value="none">NONE</option>
+                                        <option value="intj-a">INTJ-A</option>
+                                        <option value="intp-a">INTP-A</option>
+                                        <option value="entj-a">ENTJ-A</option>
+                                        <option value="entp-a">ENTP-A</option>
+                                        <option value="intj-t">INTJ-T</option>
+                                        <option value="intp-t">INTP-T</option>
+                                        <option value="entj-t">ENTJ-T</option>
+                                        <option value="entp-t">ENTP-T</option>
+
+                                        <option value="infj-a">INFJ-A</option>
+                                        <option value="infp-a">INFP-A</option>
+                                        <option value="enfj-a">ENFJ-A</option>
+                                        <option value="enfp-a">ENFP-A</option>
+                                        <option value="infj-t">INFJ-T</option>
+                                        <option value="infp-t">INFP-T</option>
+                                        <option value="enfj-t">ENFJ-T</option>
+                                        <option value="enfp-t">ENFP-T</option>
+
+                                        <option value="istj-a">ISTJ-A</option>
+                                        <option value="isfj-a">ISFJ-A</option>
+                                        <option value="estj-a">ESTJ-A</option>
+                                        <option value="esfj-a">ESFJ-A</option>
+                                        <option value="istj-t">ISTJ-T</option>
+                                        <option value="isfj-t">ISFJ-T</option>
+                                        <option value="estj-t">ESTJ-T</option>
+                                        <option value="esfj-t">ESFJ-T</option>
+
+                                        <option value="istp-a">ISTP-A</option>
+                                        <option value="isfp-a">ISFP-A</option>
+                                        <option value="estp-a">ESTP-A</option>
+                                        <option value="esfp-a">ESFP-A</option>
+                                        <option value="istp-t">ISTP-T</option>
+                                        <option value="isfp-t">ISFP-T</option>
+                                        <option value="estp-t">ESTP-T</option>
+                                        <option value="esfp-t">ESFP-T</option>
+                                    </select>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <div class="text-center">
+                                    <img class="personality-img" src="img/estp.png">
+                                </div>                                
+                            </div>
+                            <div class="col-sm-8">
+                                <ul class="category-list" style="padding: 0">
+                                    <li><a href="#"> <i class="fa fa-circle text-navy"></i><span class="role">Analyst</span></a></li>
+                                    <li><a href="#"> <i class="fa fa-circle text-danger"></i><span class="personality">Logical</span></a></li>
+                                    <li><a href="#"> <i class="fa fa-circle text-primary"></i><span class="strategy">Social Engagement</span></a></li>
+                                </ul>                                
+                            </div>                            
+                        </div>
+                    </div>                
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
+                    <button id="btn-save-personality16" type="button" class="btn btn-primary">Save Personality</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal inmodal" id="change-password-modal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content animated">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title">Change Password</h4>
+                    <!-- <small class="reflection-statement font-bold">Propose a new reflection to your class</small> -->
+                </div>
+                <div class="modal-body">
+                    <div class="ibox-content">
+                        <div class="row">
+                            <div class="col-sm-12 b-r">
+                                <form role="form">
+                                    <div class="form-group"><label>New Password</label> <input id="input-new-password" type="password" placeholder="write new password" class="form-control"></div>
+                                    <div class="form-group"><label>Repeate New Password</label> <input id="input-repeat-new-password" type="password" placeholder="repeat password" class="form-control"></div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>                
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
+                    <button id="btn-save-new-password" type="button" class="btn btn-primary">change password</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal inmodal" id="new-reflection-modal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content animated">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title">New Reflection</h4>
+                    <small class="reflection-statement font-bold">Propose a new reflection to your class</small>
+                </div>
+                <div class="new-reflection-modal-body modal-body">
+                <style type="text/css">
+                    .new-reflection-modal-body {
+                        padding: 0;
+                    }
+
+                    .new-reflection-textarea {
+                        width: 100%;
+                        padding: 10px;
+                        border: none;
+                    }
+                </style>
+                    <textarea class="new-reflection-textarea" rows="20" placeholder="in this activity..."></textarea>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
+                    <button id="btn-save-new-text-reflection" type="button" class="btn btn-primary">Save reflection</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal inmodal" id="new-video-reflection-modal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content animated">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title">New Video Reflection</h4>
+                    <small class="reflection-statement font-bold">Propose a new reflection to your class</small>
+                </div>
+                <div class="new-reflection-modal-body modal-body">
+                    <input type="text" class="new-video-reflection-input" placeholder="write or paste the link to the reflection in video"></input>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
+                    <button id="btn-save-new-video-reflection" type="button" class="btn btn-primary">Save reflection</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal inmodal" id="new-big-idea-modal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content animated">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title">What is your team big idea?</h4>
+                    <small class="big-idea-statement font-bold">What is your team big idea</small>
+                </div>
+                <div class="modal-body"  style="position: relative;">
+                    <div class="loading-spinner hide" style="position: absolute; z-index: 1; background: white; width: 539px; top: 0;">
+                        <div class="sk-spinner sk-spinner-three-bounce" style="width:200px;">
+                            <div class="sk-bounce1"></div>
+                            <div class="sk-bounce2"></div>
+                            <div class="sk-bounce3"></div>
+                            <h4 class="loading-message">saving big idea...</h4>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <textarea class="input-big-idea-text form-control modal-form-control" placeholder="Big Idea is..."></textarea>  
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="image-crop" style="margin-top: 10px;">
+                                        <img style="width: 160px;" src="img/p3.jpg">
+                                    </div>
+                                    <div class="btn-group">
+                                        <label title="Upload image file" for="inputImage" class="btn btn-primary" style="width: 160px; margin-top: 10px; font-size: small;">
+                                            <input type="file" accept="image/*" name="file" id="inputImage" class="hide">
+                                            Upload Big Idea Image
+                                        </label>
+                                    </div>                                    
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="pdf-file-container" style="margin-top: 10px; text-align: center;">                                        
+                                                <div class="btn-group pull-left">
+                                                    <label title="Upload image file" for="inputPdfFile" class="btn btn-primary" style="font-size: small; width: 305px;">
+                                                        <input type="file" accept="pdf/*" name="file" id="inputPdfFile" class="hide">
+                                                        Upload pdf file
+                                                    </label>
+                                                    <span class="fa fa-file-pdf-o fa-2x pull-left" style="margin:3px 0 3px 20px;"></span>
+                                                </div>                                    
+                                            </div>                                            
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="presentation-file-container" style="margin-top: 40px; text-align: center;">                                        
+                                                <div class="btn-group pull-left">
+                                                    <label title="Upload image file" for="inputPresentationFile" class="btn btn-primary" style="font-size: small; width: 305px;">
+                                                        <input type="file"  name="file" id="inputPresentationFile" class="hide">
+                                                        Upload presentation file
+                                                    </label>
+                                                    <span class="fa fa-file-powerpoint-o fa-2x pull-left" style="margin:3px 0 3px 20px;"></span>
+                                                </div>                                    
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row" style="margin:5px; text-align: center; font-size:large;"> or </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <input class="form-control modal-form-control" placeholder="link to cloud version or repository of the document"></input>
+                                        </div>
+                                    </div>
+                                </div>
+<!--                                 <div class="col-md-7">
+                                    <div class="presentation-file-container" style="    
+                                    height: 207px;
+                                    border: solid 1px;
+                                    margin-top: 10px;
+                                    text-align: center;
+                                    border-radius: 5px;">
+                                        <div class="" style="margin-top: 10px; text-align: center;">
+                                            <span class="fa fa-file-powerpoint-o fa-3x"></span>
+                                        </div>
+                                        <div class="btn-group">
+                                            <label title="Upload image file" for="inputPresentationFile" class="btn btn-primary" style="width: 160px; margin-top: 10px; font-size: small;">
+                                                <input type="file" name="file" id="inputPresentationFile" class="hide">
+                                                Upload presentation
+                                            </label>
+                                        </div>                                    
+                                    </div>
+                                </div> -->
+                            </div>                  
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button id="btn-save-big-idea" type="button" class="btn btn-primary hide">Save big idea</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Mainly scripts -->
+    <script src="js/jquery-2.1.1.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/plugins/metisMenu/jquery.metisMenu.js"></script>
+    <script src="js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+
+    <!-- Custom and plugin javascript -->
+    <script src="js/inspinia.js"></script>
+    <script src="js/plugins/pace/pace.min.js"></script>
+
+    <script type="text/javascript" src="js/underscore-1.8.3.js"></script>
+
+    <!-- Typeahead-->
+    <script type="text/javascript" src="js/typeahead.bundle.js"></script>
+
+    <!-- Image cropper -->
+    <script src="js/plugins/cropper/cropper.min.js"></script>
+
+
+    <script type="text/javascript" src="http://www.parsecdn.com/js/parse-1.2.18.min.js"></script>
+    <script type="text/javascript">
+        Parse.initialize("YALt9tjcUpW61Hz5aIPYbehm9uCgh5NXXRVM18T6", "5wwhJ6hfqu8cG4s6jMKMQWrmImiQKDTE9trvgL6x");
+    </script>
+
+    <script type="text/javascript" src="js/innovatorsmaker-cbl.js"></script>
+
+
+    <script type="text/javascript">
+        var reflectionsDict = {};
+        var activitiesDict = {};
+        var newTeam = {'name':'', 'members':[]};
+        var studentTimeline;
+
+        var teamToJoin;
+
+
+        function displayPendingReflectionsList() {
+            $('.reflection-timeline-item').addClass('hide');
+            $('.pending-reflection-timeline-item').removeClass('hide');
+        }
+
+        function displayAllReflectionsList() {
+            $('.reflection-timeline-item').removeClass('hide');
+        }    
+
+        function displayPersonality(personality) {
+            var personalityPrefix = personality.substring(0,4);
+            var $personalityImg = $('.personality-img');
+            $personalityImg.attr('src', 'img/' + personalityPrefix + '.png');
+
+            switch(personality) {
+                case('none') : {
+                    break;
+                }
+                case('intj-a') : {
+                    $('.role').text('Analyst');
+                    $('.strategy').text('Confident Individualism');
+                    $('.personality').text('Architect');
+                    break;
+                }
+                case('intp-a') : {
+                    $('.role').text('Analyst');
+                    $('.strategy').text('Confident Individualism');
+                    $('.personality').text('Logician');
+                    break;
+                }
+                case('entj-a') : {
+                    $('.role').text('Analyst');
+                    $('.strategy').text('People Mastery');
+                    $('.personality').text('Commander');
+                    break;
+                }
+                case('entp-a') : {
+                    $('.role').text('Analyst');
+                    $('.strategy').text('People Mastery');
+                    $('.personality').text('Debater');
+                    break;
+                }
+                case('intj-t') : {
+                    $('.role').text('Analyst');
+                    $('.strategy').text('Constant Improvement');
+                    $('.personality').text('Architect');
+                    break;
+                }
+                case('intp-t') : {
+                    $('.role').text('Analyst');
+                    $('.strategy').text('Constant Improvement');
+                    $('.personality').text('Logician');
+                    break;
+                }
+                case('entj-t') : {
+                    $('.role').text('Analyst');
+                    $('.strategy').text('Social Engagement');
+                    $('.personality').text('Commander');
+                    break;
+                }
+                case('entp-t') : {
+                    $('.role').text('Analyst');
+                    $('.strategy').text('Social Engagement');
+                    $('.personality').text('Debater');
+                    break;
+                }
+
+                case('infj-a') : {
+                    $('.role').text('Diplomat');
+                    $('.strategy').text('Confident Individualism');
+                    $('.personality').text('Advocate');
+                    break;
+                }
+                case('infp-a') : {
+                    $('.role').text('Diplomat');
+                    $('.strategy').text('Confident Individualism');
+                    $('.personality').text('Mediator');
+                    break;
+                }
+                case('enfj-a') : {
+                    $('.role').text('Diplomat');
+                    $('.strategy').text('People Mastery');
+                    $('.personality').text('Protagonist');
+                    break;
+                }
+                case('enfp-a') : {
+                    $('.role').text('Diplomat');
+                    $('.strategy').text('People Mastery');
+                    $('.personality').text('Campaigner');
+                    break;
+                }
+                case('infj-t') : {
+                    $('.role').text('Diplomat');
+                    $('.strategy').text('Constant Improvement');
+                    $('.personality').text('Advocate');
+                    break;
+                }
+                case('infp-t') : {
+                    $('.role').text('Diplomat');
+                    $('.strategy').text('Constant Improvement');
+                    $('.personality').text('Mediator');
+                    break;
+                }
+                case('enfj-t') : {
+                    $('.role').text('Diplomat');
+                    $('.strategy').text('Social Engagement');
+                    $('.personality').text('Protagonist');
+                    break;
+                }
+                case('enfp-t') : {
+                    $('.role').text('Diplomat');
+                    $('.strategy').text('Social Engagement');
+                    $('.personality').text('Campaigner');
+                    break;
+                }
+
+                case('istj-a') : {
+                    $('.role').text('Sentinel');
+                    $('.strategy').text('Confident Individualism');
+                    $('.personality').text('Logistician');
+                    break;
+                }
+                case('isfj-a') : {
+                    $('.role').text('Sentinel');
+                    $('.strategy').text('Confident Individualism');
+                    $('.personality').text('Defender');
+                    break;
+                }
+                case('estj-a') : {
+                    $('.role').text('Sentinel');
+                    $('.strategy').text('People Mastery');
+                    $('.personality').text('Executive');
+                    break;
+                }
+                case('esfj-a') : {
+                    $('.role').text('Sentinel');
+                    $('.strategy').text('People Mastery');
+                    $('.personality').text('Consul');
+                    break;
+                }
+                case('istj-t') : {
+                    $('.role').text('Sentinel');
+                    $('.strategy').text('Constant Improvement');
+                    $('.personality').text('Logistician');
+                    break;
+                }
+                case('isfj-t') : {
+                    $('.role').text('Sentinel');
+                    $('.strategy').text('Constant Improvement');
+                    $('.personality').text('Defender');
+                    break;
+                }
+                case('estj-t') : {
+                    $('.role').text('Sentinel');
+                    $('.strategy').text('Social Engagement');
+                    $('.personality').text('Executive');
+                    break;
+                }
+                case('esfj-t') : {
+                    $('.role').text('Sentinel');
+                    $('.strategy').text('Social Engagement');
+                    $('.personality').text('Consul');
+                    break;
+                }
+
+                case('istp-a') : {
+                    $('.role').text('Explorer');
+                    $('.strategy').text('Confident Individualism');
+                    $('.personality').text('Virtuoso');
+                    break;
+                }
+                case('isfp-a') : {
+                    $('.role').text('Explorer');
+                    $('.strategy').text('Confident Individualism');
+                    $('.personality').text('Adventurer');
+                    break;
+                }
+                case('estp-a') : {
+                    $('.role').text('Explorer');
+                    $('.strategy').text('People Mastery');
+                    $('.personality').text('Entrepreneur');
+                    break;
+                }
+                case('esfp-a') : {
+                    $('.role').text('Explorer');
+                    $('.strategy').text('People Mastery');
+                    $('.personality').text('Entertainer');
+                    break;
+                }
+                case('istp-t') : {
+                    $('.role').text('Explorer');
+                    $('.strategy').text('Constant Improvement');
+                    $('.personality').text('Virtuoso');
+                    break;
+                }
+                case('isfp-t') : {
+                    $('.role').text('Explorer');
+                    $('.strategy').text('Constant Improvement');
+                    $('.personality').text('Adventurer');
+                    break;
+                }
+                case('estp-t') : {
+                    $('.role').text('Explorer');
+                    $('.strategy').text('Social Engagement');
+                    $('.personality').text('Entrepreneur');
+                    break;
+                }
+                case('esfp-t') : {
+                    $('.role').text('Explorer');
+                    $('.strategy').text('Social Engagement');
+                    $('.personality').text('Entertainer');
+                    break;
+                }
+            }
+
+        }
+
+        function updateReflection(reflection) {
+            var $timelineItem = $('.reflection-timeline-item[reflection-id=' + reflection.id + ']');
+            var $activityTimelineItem = $timelineItem.parents('.activity-timeline-item');
+            $activityTimelineItem.empty();
+
+            if (reflection.get('isVideo')) {
+                var $videoReflectionTimelineItem = $videoReflectionTimelineItemRef.clone();
+                var link = reflection.get('text');
+                $videoReflectionTimelineItem.find('.reflection-statement').text(statement);
+                $videoReflectionTimelineItem.find('.video-reflection-link').attr('href', link);
+                $videoReflectionTimelineItem.find('.new-reflection-buttons').remove();
+                $videoReflectionTimelineItem.attr('reflection-id', reflection.id);
+                $videoReflectionTimelineItem.appendTo($activityTimelineItem);
+            }else {
+                var $reflectionTimelineItem = $reflectionTimelineItemRef.clone();
+                var text = reflection.get('text');
+                var statement = reflection.get('reflectionStatement').get('text');
+                $reflectionTimelineItem.find('.reflection-statement').text(statement);
+                $reflectionTimelineItem.find('.reflection-text').text(text);
+                $reflectionTimelineItem.removeClass('pending-reflection-timeline-item');
+                $reflectionTimelineItem.attr('reflection-id', reflection.id);
+                $reflectionTimelineItem.find('.new-reflection-buttons').remove();
+                $reflectionTimelineItem.appendTo($activityTimelineItem);
+            }
+        }
+
+        function studentTeamByActivityStatement(student, statement) {
+            var Team = Parse.Object.extend('Team');
+            var teamQuery = new Parse.Query(Team);
+            teamQuery.equalTo('activityStatement', statement);
+            teamQuery.include('members');
+            teamQuery.equalTo('members', student);
+            return teamQuery.find().then(function(teams) {
+                if (teams.length == 1) {
+                    return teams[0];
+                }else {
+                    return null;
+                }
+            })
+        }
+    </script>
+
+    <script type="text/javascript">
+        var $newTeamMemberRowRef = $('.new-team-member-row').detach();
+        $socialFeedBoxRef = $('.social-feed-box');
+        $socialFeedBoxRef.detach();
+
+
+        var $reflectionStatementRef = $('.reflection-row').detach();
+        var $reflectionsPerStatementRef = $('.reflections-per-statement-list').detach();
+        var $sprintTimelineSeparatorRef = $('.separator-reflection-timeline-item').detach();
+        var $videoReflectionTimelineItemRef = $('.video-reflection-timeline-item').detach();
+        var $teamTimelineItemRef = $('.team-timeline-item').detach();
+        var $teamMemberRef = $teamTimelineItemRef.find('.team-member').detach();
+        var $reflectionTimelineItemRef = $('.reflection-timeline-item').detach();
+        var $pendingBigIdeaTimelineItemRef = $('.pending-big-idea-item').detach();
+        var $bigIdeaTimelineItemRef = $('.big-idea-item').detach();
+
+        $studentPendingReflectionsRowRef = $('.student-pending-reflections-row').detach();
+
+        // $sprintTimelineSeparatorRef = $('.separator-reflection-timeline-item').detach();
+        // $videoTimelineItemRef = $('.video-reflection-timeline-item').detach();
+        // $pendingPersonality16TimelineItemRef = $('.pending-personality16-item').detach();
+        // $personality16TimelineItemRef = $('.personality16-item').detach();
+        $pendingNewTeamTimelineItemRef = $('.pending-new-team-item').detach();
+        $pendingChallengeTimelineItemRef = $('.pending-challenge').detach();
+
+        // $teamTimelineItemRef = $('.team-timeline-item').detach();
+
+        // $timelineItemRef = $('.timeline-item').detach();
+
+
+        var currentReflectionId;
+        var currentCBLClass;
+        var currentCBLSprint;
+
+        var studentsDict = {};
+        var studentsByNameDict = {};
+
+        var newBigIdea = {'text':'', 'imgFile': null, 'pdfFile':'', 'presentationFile':'', 'team':null, 'challenge': null};
+
+        $(document).ready(function() {
+            var $image = $(".image-crop > img")
+            // $($image).cropper({
+            //     aspectRatio: 1.618,
+            //     preview: ".img-preview",
+            //     done: function(data) {
+            //         // Output the result data for cropping image.
+            //     }
+            // });
+
+            $('.input-big-idea-text').keyup(function() {
+                var text = $(this).val().trim();
+                newBigIdea['text'] = text;
+
+                if ((newBigIdea['text'] != '') && (newBigIdea['imgFile'] != null) && (newBigIdea['pdfFile'] != null) && (newBigIdea['presentationFile'] != null)) {
+                    $('#btn-save-big-idea').removeClass('hide');
+                }else {
+                    $('#btn-save-big-idea').addClass('hide');
+                }
+
+            })
+
+            if (window.FileReader) {
+                var $inputImage = $("#inputImage");
+                $inputImage.change(function() {
+                    var fileReader = new FileReader(),
+                            files = this.files,
+                            file;
+
+                    if (!files.length) {
+                        return;
+                    }
+
+                    file = files[0];
+
+                    newBigIdea['imgFile'] = file;
+
+                    if (/^image\/\w+$/.test(file.type)) {
+                        fileReader.readAsDataURL(file);
+                        fileReader.onload = function (e) {
+                            $image.attr('src', e.target.result);
+        
+                            var $modal = $('#new-big-idea-modal');
+                            var imgHeight = $modal.find('.image-crop').find('img').height();
+                            // $modal.find('.pdf-file-container').height(imgHeight);
+                            // $modal.find('.presentation-file-container').height(imgHeight);
+
+                            var loadingSpinnerHeight = $('#new-big-idea-modal').find('.modal-body').outerHeight();
+
+                            $modal.find('.loading-spinner').outerHeight(loadingSpinnerHeight);
+                            $modal.find('.loading-spinner').css('padding-top', (loadingSpinnerHeight/2) + 'px');
+
+                            var marginTop = (imgHeight - 39)/2;
+
+                            // $modal.find('.fa-file-pdf-o').css('margin-top', marginTop);
+                            // $modal.find('.fa-file-powerpoint-o').css('margin-top', marginTop);
+                        };
+                    } else {
+                        alert("Please choose an image file.");
+                    }
+
+                    if ((newBigIdea['text'] != '') && (newBigIdea['imgFile'] != null) && (newBigIdea['pdfFile'] != null) && (newBigIdea['presentationFile'] != null)) {
+                        $('#btn-save-big-idea').removeClass('hide');
+                    }else {
+                        $('#btn-save-big-idea').addClass('hide');
+                    }
+
+                });
+
+                var $inputPdfFile = $('#inputPdfFile');
+                $inputPdfFile.change(function() {
+                    var fileReader = new FileReader(),
+                            files = this.files,
+                            file;
+
+                    if (!files.length) {
+                        return;
+                    }
+
+                    file = files[0];
+
+                    if (/^application\/pdf/.test(file.type)) {
+                        newBigIdea['pdfFile'] = file;
+                        fileReader.readAsDataURL(file);
+                        fileReader.onload = function (e) {
+        
+                            var $modal = $('#new-big-idea-modal');
+                            $modal.find('.fa-file-pdf-o').css('color', '#1ab394');
+                        };
+                    } else {
+                        alert("Please choose pdf file.");
+                    }
+
+                    if ((newBigIdea['text'] != '') && (newBigIdea['imgFile'] != null) && (newBigIdea['pdfFile'] != null) && (newBigIdea['presentationFile'] != null)) {
+                        $('#btn-save-big-idea').removeClass('hide');
+                    }else {
+                        $('#btn-save-big-idea').addClass('hide');
+                    }
+
+                });
+                var $inputPresentationFile = $('#inputPresentationFile');
+                $inputPresentationFile.change(function() {
+                    var fileReader = new FileReader(),
+                            files = this.files,
+                            file;
+
+                    if (!files.length) {
+                        return;
+                    }
+
+                    file = files[0];
+
+                    if ((/ppt|pptx|pdf|key/).test(file.name)) {
+
+                        newBigIdea['presentationFile'] = file;
+                        fileReader.readAsDataURL(file);
+                        fileReader.onload = function (e) {
+        
+                            var $modal = $('#new-big-idea-modal');
+                            $modal.find('.fa-file-powerpoint-o').css('color', '#1ab394');
+                        };                        
+                    } else {
+                        alert("Please choose a presentation file (pdf, keynote or powerpoint.");
+                    }
+
+                    if ((newBigIdea['text'] != '') && (newBigIdea['imgFile'] != null) && (newBigIdea['pdfFile'] != null) && (newBigIdea['presentationFile'] != null)) {
+                        $('#btn-save-big-idea').removeClass('hide');
+                    }else {
+                        $('#btn-save-big-idea').addClass('hide');
+                    }
+
+                });
+            } else {
+                $inputImage.addClass("hide");
+            }     
+
+            $("#download").click(function() {
+                window.open($image.cropper("getDataURL"));
+            });
+
+            $("#zoomIn").click(function() {
+                $image.cropper("zoom", 0.1);
+            });
+
+            $("#zoomOut").click(function() {
+                $image.cropper("zoom", -0.1);
+            });
+
+            $("#rotateLeft").click(function() {
+                $image.cropper("rotate", 45);
+            });
+
+            $("#rotateRight").click(function() {
+                $image.cropper("rotate", -45);
+            });
+
+            $("#setDrag").click(function() {
+                $image.cropper("setDragMode", "crop");
+            });
+
+        })
+
+        $(function () {
+            var user = Parse.User.current();
+
+            if (user) {
+                $('.user-name').text(user.get('name'));
+
+                if(user.get('isStudent')) {
+                    $('.profile-text').text('Student');
+                }else {
+                    $('.profile-text').text('Teacher');
+                }
+
+
+                currentCBLClass = user.get('currentCBLClass');
+                currentCBLSprint = user.get('currentCBLSprint');
+
+                var CBLClass = Parse.Object.extend('CBLClass');
+                var cblClassQuery = new Parse.Query(CBLClass);
+                cblClassQuery.include('students');
+                cblClassQuery.get(currentCBLClass.id).then(function(cblClass) {
+                    currentCBLClass = cblClass;
+
+                    students = currentCBLClass.get('students').sort(function(a, b){
+
+                        if (!a) {
+                            return 1;
+                        }
+
+                        a = a.get('name');
+                        b = b.get('name');
+                        if (a > b) {
+                            return 1;
+                        }else if (a < b) {
+                            return -1;
+                        }else {
+                            return 0;
+                        }
+                    });
+
+                    var studentsNames = [];
+
+                    _.each(students, function(student) {
+                        studentsDict[student.get('email')] = student;
+                        studentsByNameDict[student.get('name')] = student;
+                        studentsNames.push(student.get('name'));
+                    })
+
+                    var substringMatcher = function(strs) {
+                      return function findMatches(q, cb) {
+                        var matches, substringRegex;
+
+                        // an array that will be populated with substring matches
+                        matches = [];
+
+                        // regex used to determine if a string contains the substring `q`
+                        substrRegex = new RegExp(q, 'i');
+
+                        // iterate through the pool of strings and for any string that
+                        // contains the substring `q`, add it to the `matches` array
+                        $.each(strs, function(i, str) {
+                          if (substrRegex.test(str)) {
+                            matches.push(str);
+                          }
+                        });
+
+                        cb(matches);
+                      };
+                    };
+
+                    $('.typeahead').typeahead({
+                      hint: true,
+                      highlight: true,
+                      minLength: 1
+                    },
+                    {
+                      name: 'studentsNames',
+                      source: substringMatcher(studentsNames)
+                    });
+
+                    $('.typeahead').bind('typeahead:select', function(ev, suggestion){
+                        var name = suggestion;
+                        if (name != '') {
+                            $(this).typeahead('val', '');                
+                            var email = studentsByNameDict[name].get('email');
+                            if (studentsDict[email]) {
+                                var student = studentsDict[email];
+
+                                studentTeamByActivityStatement(student, selectedActivity.get('statement')).then(function(team) {
+                                    if (team) {
+                                        teamToJoin = team;
+                                        $('.existing-team').removeClass('hide');
+                                        $('.existing-team').find('.team-name').text(team.get('name'));
+                                        $teamMembersRow = $('.existing-team').find('.team-members');
+                                        $teamMembersRow.empty();
+                                        var members = team.get('members');
+                                        _.each(members, function(member) {
+                                            $teamMember = $teamMemberRef.clone();
+                                            $teamMember.find('.member-name').text(member.get('name'));
+                                            $teamMember.appendTo($teamMembersRow);
+                                        })
+
+                                        $('.join-existing-team-footer').removeClass('hide');
+                                        $('#new-team-modal-body').find('.twitter-typeahead').addClass('hide');
+                                        $('#new-team-modal-body').find('.new-team-table').addClass('hide');
+
+                                        $('#reject-team-btn').click(function() {
+                                            $('.existing-team').addClass('hide');
+                                            $('.join-existing-team-footer').addClass('hide');
+                                            $('#new-team-modal-body').find('.twitter-typeahead').removeClass('hide');
+                                            $('#new-team-modal-body').find('.new-team-table').removeClass('hide');
+                                            $('#new-team-member-name').focus();
+                                        })
+                                    }else {
+                                        if (student.id != Parse.User.current().id) {
+                                            var personality16 = student.get('personality16');
+
+                                            var personality16Img;
+                                            var personality16Info;
+                                            if (personality16 && personality16 != 'none') {
+                                                personality16Img = getPersonality16Img(personality16);
+                                                personality16Info = getPersonality16Info(personality16);
+                                            }
+
+                                            if (!selectedTeam) {
+                                                newTeam['members'].push(student);
+                                            }else {
+                                                selectedTeam.addUnique('members', student);
+                                            }
+
+                                            var $teamMemberRow = $newTeamMemberRowRef.clone();
+                                            if (student.get('photo')) {
+                                                $teamMemberRow.find('.member-photo').attr('src',student.get('photo').url());
+                                            }
+                                            $teamMemberRow.find('.new-team-member-name').text(student.get('email'));
+                                            $teamMemberRow.find('.new-team-member-name').text(student.get('name'));
+                                            $teamMemberRow.find('.new-team-member-affiliation').text(student.get('affiliation'));
+
+                                            if (personality16 && personality16 != 'none') {
+                                                $teamMemberRow.find('.new-team-member-personality16-img').attr('src', personality16Img);
+                                                $teamMemberRow.find('.new-team-member-personality16-role').text(personality16Info['role']);
+                                                $teamMemberRow.find('.new-team-member-personality16-personality').text(personality16Info['personality']);
+                                                $teamMemberRow.find('.new-team-member-personality16-strategy').text(personality16Info['strategy']);
+                                            }
+                                            $teamMemberRow.attr('member-id', student.id);
+                                            $teamMemberRow.appendTo('.new-team-table').find('tbody');
+                                            $teamMemberRow.find('.new-team-member-remove').click(function() {
+                                                var members;
+                                                if (!selectedTeam) {
+                                                    members = newTeam['members'];
+                                                }else {
+                                                    members = selectedTeam.get('members');
+                                                }
+                                                var memberId = $(this).parents('tr').attr('member-id');
+
+                                                for (var i = 0; i < members.length; i++) {
+                                                    if (members[i].id == memberId) {
+                                                        if (!selectedTeam) {
+                                                            members.splice(i, 1);
+                                                            newTeam['members'] = members;
+                                                        }else {
+                                                            selectedTeam.remove('members', members[i]);
+                                                        }
+                                                        if (members.length == 1) {
+                                                            $('.go-to-new-team-name-footer').addClass('hide');
+                                                        }
+                                                        break;
+                                                    }
+                                                }
+                                                $(this).parents('tr').remove();
+                                            })
+                                            $('.go-to-new-team-name-footer').removeClass('hide');
+
+                                        }
+                                    }
+                                })
+                            }
+                        }
+                    })                    
+                    $('.cbl-class-name').text(currentCBLClass.get('name'));
+                }).then(function() {
+                    loadTimeline(user, currentCBLClass).then(function(timeline) {
+                        displayTimeline(timeline);
+                    })
+
+                    $('#new-big-idea-modal').on('shown.bs.modal', function() {
+                        var $modal = $(this);
+                        $modal.find('#btn-save-big-idea').addClass('hide');
+                        if (!bigIdeaBeingEdited) {
+                            newBigIdea['text'] = '';
+                            newBigIdea['imgFile'] = null;
+                            newBigIdea['pdfFile'] = null;
+                            newBigIdea['presentationFile'] = null;
+
+                            $('#inputPdfFile').val(null);
+                            $('#inputPresentationFile').val(null);
+
+                            $modal.find('.pdf-file-container > .fa').css('color','');
+                            $modal.find('.presentation-file-container > .fa').css('color','');
+
+                            $modal.find('.image-crop > img').attr('src', 'img/p3.jpg');
+
+                        }else {
+                            $modal.find('textarea').val(bigIdeaBeingEdited.get('text'))
+                            $modal.find('.pdf-file-container > .fa').css('color','#1ab394');
+                            $modal.find('.presentation-file-container > .fa').css('color','#1ab394');
+                            $modal.find('.image-crop > img').attr('src', bigIdeaBeingEdited.get('imgFile').url());                            
+                        }
+
+                        $modal.find('.image-crop > img').load(function() {
+                            
+                            var imgHeight = $modal.find('.image-crop').find('img').height();
+                            // $modal.find('.pdf-file-container').height(imgHeight);
+                            // $modal.find('.presentation-file-container').height(imgHeight);
+
+                            var loadingSpinnerHeight = $('#new-big-idea-modal').find('.modal-body').outerHeight();
+
+                            $modal.find('.loading-spinner').height(loadingSpinnerHeight);
+                            $modal.find('.loading-spinner').css('padding-top', (loadingSpinnerHeight/2) + 'px');
+
+                            // var marginTop = (imgHeight - 39)/2;
+
+                            // $modal.find('.fa-file-pdf-o').css('margin-top', marginTop);
+                            // $modal.find('.fa-file-powerpoint-o').css('margin-top', marginTop); 
+
+                        })
+
+                        $modal.find('textarea').focus();
+                    })
+
+                    $('#new-team-modal').on('shown.bs.modal', function (){ 
+                        var $modalTitle = $(this).parents('.modal').find('.modal-title');
+                        $modalTitle.text('Who is joining you in the team? ');
+
+                        // $('.found-new-team').removeClass('hide');
+                        $('.found-new-team-name').addClass('hide');
+                        $('#new-team-member-name').focus();
+
+                        $('.new-team-table').find('tbody').empty();
+
+                        var student = studentsDict[Parse.User.current().get('email')];
+                        var personality16 = student.get('personality16');
+
+                        var personality16Img;
+                        var personality16Info;
+                        if (personality16 && personality16 != 'none') {
+                            personality16Img = getPersonality16Img(personality16);
+                            personality16Info = getPersonality16Info(personality16);
+                        }
+
+                        if (!selectedTeam) {
+                            newTeam['members'] = [];
+
+                            newTeam['members'].push(student);
+
+
+                            var $teamMemberRow = $newTeamMemberRowRef.clone();
+                            if (student.get('photo')) {
+                                $teamMemberRow.find('.member-photo').attr('src',student.get('photo').url());
+                            }
+                            $teamMemberRow.find('.new-team-member-name').text(student.get('email'));
+                            $teamMemberRow.find('.new-team-member-name').text(student.get('name'));
+                            $teamMemberRow.find('.new-team-member-affiliation').text(student.get('affiliation'));
+
+                            if (personality16 && personality16 != 'none') {
+                                $teamMemberRow.find('.new-team-member-personality16-img').attr('src', personality16Img);
+                                $teamMemberRow.find('.new-team-member-personality16-role').text(personality16Info['role']);
+                                $teamMemberRow.find('.new-team-member-personality16-personality').text(personality16Info['personality']);
+                                $teamMemberRow.find('.new-team-member-personality16-strategy').text(personality16Info['strategy']);
+                            }
+                            $teamMemberRow.attr('member-id', student.id);
+                            $teamMemberRow.find('.new-team-member-remove').empty();
+                            $teamMemberRow.appendTo('.new-team-table').find('tbody');
+                        }else {
+                            var members = selectedTeam.get('members');
+                            _.each(members, function(member) {
+                                personality16 = member.get('personality16');
+
+                                if (personality16 && personality16 != 'none') {
+                                    personality16Img = getPersonality16Img(personality16);
+                                    personality16Info = getPersonality16Info(personality16);
+                                }
+
+                                var $teamMemberRow = $newTeamMemberRowRef.clone();
+                                if (member.get('photo')) {
+                                    $teamMemberRow.find('.member-photo').attr('src',member.get('photo').url());
+                                }
+                                $teamMemberRow.find('.new-team-member-name').text(member.get('email'));
+                                $teamMemberRow.find('.new-team-member-name').text(member.get('name'));
+                                $teamMemberRow.find('.new-team-member-affiliation').text(member.get('affiliation'));
+
+                                if (personality16 && personality16 != 'none') {
+                                    $teamMemberRow.find('.new-team-member-personality16-img').attr('src', personality16Img);
+                                    $teamMemberRow.find('.new-team-member-personality16-role').text(personality16Info['role']);
+                                    $teamMemberRow.find('.new-team-member-personality16-personality').text(personality16Info['personality']);
+                                    $teamMemberRow.find('.new-team-member-personality16-strategy').text(personality16Info['strategy']);
+                                }
+                                $teamMemberRow.attr('member-id', member.id);
+                                if (member.id == Parse.User.current().id) {
+                                    $teamMemberRow.find('.new-team-member-remove').empty();
+                                }
+                                $teamMemberRow.appendTo('.new-team-table').find('tbody');
+                            })
+
+                            $('.new-team-member-remove').click(function() {
+                                // var members = newTeam['members'];
+                                var memberId = $(this).parents('tr').attr('member-id');
+
+                                for (var i = 0; i < members.length; i++) {
+                                    if (members[i].id == memberId) {
+                                        members.splice(i, 1);
+                                        newTeam['members'] = members;
+                                        if (members.length == 1) {
+                                            $('.go-to-new-team-name-footer').addClass('hide');
+                                        }
+                                        break;
+                                    }
+                                }
+                                $(this).parents('tr').remove();
+                            })                        
+
+                        }
+                    })
+
+                    $('#btn-go-to-new-team-name').click(function() {
+                        var $modalTitle = $(this).parents('.modal').find('.modal-title');
+                        $modalTitle.text('Give your team a cool name!');
+                        $('.found-new-team').addClass('hide');
+                        $('.found-new-team-name').removeClass('hide');
+
+                        if (selectedTeam) {
+                            $('#team-name').val(selectedTeam.get('name'));
+                            $('#btn-register-new-team').removeClass('hide');
+                        }
+                    })
+
+                    $('#btn-go-to-previous-new-team').click(function() {
+                        var $modalTitle = $(this).parents('.modal').find('.modal-title');
+                        $modalTitle.text('Who is joining you in the team? ');
+                        $('.found-new-team').removeClass('hide');
+                        $('.found-new-team-name').addClass('hide');
+                    })
+
+                    $('#team-name').keyup(function() {
+                        var name = $(this).val().trim();
+                        if (name != '') {
+                            $('#btn-register-new-team').removeClass('hide');
+                        }else {
+                            $('#btn-register-new-team').addClass('hide');
+                        }
+                    })
+
+                    $('#join-existing-team-btn').click(function() {
+                        teamToJoin.addUnique('members', Parse.User.current());
+                        teamToJoin.save().then(function(team) {
+                            selectedActivity.set('newTeam', team);
+                            selectedActivity.set('isDone', true);
+                            return selectedActivity.save();
+                        }).then(function() {
+                            $('#new-team-modal').modal('hide');
+                            loadTimeline(Parse.User.current(), currentCBLClass).then(function(timeline) {
+                                displayTimeline(timeline);
+                            })                            
+                        })
+                    })
+
+                    $('#btn-register-new-team').click(function() {
+                        var name = $('#team-name').val().trim();
+
+                        if (!selectedTeam) {
+                            newTeam['name'] = name;
+                            var Team = Parse.Object.extend('Team');
+                            var team = new Team();
+                            team.set('name', name);
+                            team.set('members', newTeam['members']);
+                            team.set('cblClass', currentCBLClass);
+                            team.set('cblSprint', currentCBLSprint);
+                            team.set('cblCycle', selectedActivity.get('statement').get('cblChallenge'));
+                            team.set('isActive', true);
+                            team.set('activityStatement', selectedActivity.get('statement'));
+                            team.save().then(function(t) {
+                                var challenge = selectedActivity.get('statement').get('cblChallenge');
+                                challenge.addUnique('teams', t);
+                                return challenge.save().then(function() {
+                                    selectedActivity.set('newTeam', t);
+                                    selectedActivity.set('isDone', true);
+                                    return selectedActivity.save();
+                                })
+                            }).then(function() {
+                                $('#team-name').val('');
+                                $('.new-team-table tbody').empty();
+
+                                $('#new-team-modal').modal('hide');
+
+                                loadTimeline(Parse.User.current(), currentCBLClass).then(function(timeline) {
+                                    displayTimeline(timeline);
+                                })
+
+                                var Activity = Parse.Object.extend('Activity');
+
+                                var activityStatement = selectedActivity.get('statement');
+                                var members = newTeam['members'];
+                                var promise = Parse.Promise.as();
+                                _.each(members, function(member) {                                
+                                    if (member.id != Parse.User.current().id) {
+                                        var query = new Parse.Query(Activity);
+                                        query.equalTo('statement', activityStatement);
+                                        query.equalTo('author', member);
+                                        promise = promise.then(function() {
+                                            return query.find().then(function(activities) {
+                                                var activity = activities[0];
+                                                activity.set('isDone', true);
+                                                activity.set('newTeam', team);
+                                                return activity.save();
+                                            })                                        
+                                        })        
+                                    }
+                                })
+                            })
+                        }else {
+                            selectedTeam.set('name', name);
+                            selectedTeam.save().then(function() {
+                                loadTimeline(Parse.User.current(), currentCBLClass).then(function(timeline) {
+                                    displayTimeline(timeline);
+                                })
+
+                                $('#new-team-modal').modal('hide');
+
+                                var Activity = Parse.Object.extend('Activity');
+
+                                var activityStatement = selectedTeam.get('activityStatement');
+                                var members = selectedTeam.get('members');
+                                var promise = Parse.Promise.as();
+
+                                _.each(members, function(member) {                                
+                                    if (member.id != Parse.User.current().id) {
+                                        var query = new Parse.Query(Activity);
+                                        query.equalTo('statement', activityStatement);
+                                        query.equalTo('author', member);
+                                        promise = promise.then(function() {
+                                            return query.find().then(function(activities) {
+                                                var activity = activities[0];
+                                                activity.set('isDone', true);
+                                                activity.set('newTeam', selectedTeam);
+                                                return activity.save();
+                                            })                                        
+                                        })        
+                                    }
+                                })
+
+                            })
+                        }
+                    })
+
+                    $('#btn-save-big-idea').click(function() {
+                        $('.loading-spinner').removeClass('hide');
+                        var $modal = $(this).parents('.modal');
+                        var bigIdeaText = $modal.find('.input-big-idea-text').val().trim();
+                        var imgFile = newBigIdea['imgFile'];
+                        var pdfFile = newBigIdea['pdfFile'];
+                        var presentationFile = newBigIdea['presentationFile'];
+
+                        var imgFileType = imgFile.type.substring(6, imgFile.type.length);
+                        var parseImgFile = new Parse.File('bigIdeaImageFile.' + imgFileType, imgFile);
+                        var parsePdfFile = new Parse.File('bigIdeaPDFFile.pdf', pdfFile);
+
+                        var presentationFileType = (/ppt|pptx|key|pdf/).exec(presentationFile.name)[0];
+                        var parsePresentationFile = new Parse.File('bigIdeaPresentationFile.' + presentationFileType, presentationFile);
+
+                        $loadingMessage = $modal.find('.loading-message');
+                        $loadingMessage.text('Saving image file...');
+
+                        parseImgFile.save().then(function(pFile) {
+                            var parseImgFile = pFile;
+                            $loadingMessage.text('Saving presentation file...');
+                            return parsePresentationFile.save();
+                        }).then(function(pFile) {
+                            var parsePresentationFile = pFile;
+                            $loadingMessage.text('Saving pdf file...');
+                            return parsePdfFile.save();
+                        }).then(function(pFile) {
+                            parsePdfFile = pFile;
+                            var BigIdea = Parse.Object.extend('BigIdea');
+                            var bigIdea = new BigIdea();
+                            bigIdea.set('text', bigIdeaText);
+                            bigIdea.set('cblClass', currentCBLClass);
+                            bigIdea.set('cblSprint', currentCBLSprint);
+                            bigIdea.set('challenge', newBigIdea['challenge']);
+                            bigIdea.set('team', newBigIdea['team']);
+                            bigIdea.set('imgFile', parseImgFile);
+                            bigIdea.set('pdfFile', parsePdfFile);
+                            bigIdea.set('presentationFile', parsePresentationFile);
+                            $loadingMessage.text('Saving big idea file...');
+                            return bigIdea.save();
+                        }).then(function(bi) {
+                            var challenge = newBigIdea['challenge'];
+                            challenge.addUnique('bigIdeas', bi);
+                            var activity = newBigIdea['activity'];
+                            activity.set('bigIdea', bi);
+                            $loadingMessage.text('Updating challenge...');
+                            return challenge.save();
+                        }).then(function() {
+                            var team = newBigIdea['team'];
+                            team.set('bigIdea', newBigIdea['activity'].get('bigIdea'));
+                            return team.save();
+                        }).then(function(t) {
+                            var promises = [];
+                            var members = newBigIdea['team'].get('members');
+                            _.each(members, function(member) {
+                                var Activity = Parse.Object.extend('Activity');
+                                var activityQuery = new Parse.Query(Activity);
+                                activityQuery.equalTo('author', member);
+                                activityQuery.equalTo('statement', newBigIdea['activity'].get('statement'));
+                                promises.push(activityQuery.find().then(function(acts) {
+                                    if (acts.length == 1) {
+                                        var act = acts[0];
+                                        act.set('bigIdea', newBigIdea['activity'].get('bigIdea'));
+                                        act.set('isDone', true);
+                                        return act.save();
+                                    }
+                                }))
+                            })
+                            $loadingMessage.text('Updating team members...');
+
+                            return Parse.Promise.when(promises);
+                        }).then(function() {
+                            var $timelineItem = $('.pending-big-idea-item');
+                            $bigIdeaItemContent = $bigIdeaTimelineItemRef.find('.timeline-item-content').clone();
+                            $bigIdeaItemContent.find('.big-idea-text').text(bigIdeaText);
+                            $bigIdeaItemContent.find('.big-idea-image').attr('src', parseImgFile.url());
+                            $bigIdeaItemContent.find('.big-idea-pdf-file-link').attr('href', parsePdfFile.url());
+                            $bigIdeaItemContent.find('.big-idea-presentation-file-link').attr('href', parsePresentationFile.url());
+                            $timelineItem.empty();
+                            $bigIdeaItemContent.appendTo($timelineItem);
+                            $('.loading-spinner').addClass('hide');
+                            $modal.modal('hide');
+                        })
+                    })
+
+                    $('#btn-save-new-video-reflection').click(function() {
+                        var $modal = $(this).parents('#new-video-reflection-modal');
+
+                        var Reflection = Parse.Object.extend('Reflection');
+                        var query = new Parse.Query(Reflection);
+                        var $input = $(this).parents('.modal-dialog').find('.new-video-reflection-input');
+                        var link = $input.val().trim();
+
+                        if (link == '') {
+                            alert('You need to write the reflection :)...');
+                        }else {
+                            var reflection = reflectionsDict[currentReflectionId];
+                            // query.get(currentReflectionId).then(function(reflection) {
+                                reflection.set('text', link);
+                                reflection.set('isDone', true);
+                                reflection.set('isVideo', true);
+                                reflection.save().then(function() {
+                                    $input.val('');
+                                    $modal.modal('hide');
+                                    updateReflection(reflection);
+                                });
+                            // })                        
+                        }
+                    })                
+
+                    $('#btn-save-new-text-reflection').click(function() {
+                        var $modal = $(this).parents('#new-reflection-modal');
+
+                        var $textarea = $(this).parents('.modal-dialog').find('.new-reflection-textarea');
+                        var text = $textarea.val().trim();
+
+                        if (text == '') {
+                            alert('You need to write the reflection :)...');
+                        }else {
+                            var reflection = reflectionsDict[currentReflectionId];
+                                reflection.set('text', text);
+                                reflection.set('isDone', true);
+                                reflection.set('isVideo', false);
+                                reflection.save().then(function() {
+                                    $textarea.val('');
+                                    $modal.modal('hide');
+                                    updateReflection(reflection);
+                                });
+                        }
+                    })
+
+                    $('#new-reflection-modal').on("shown.bs.modal", function() {
+                        $('.new-reflection-textarea').focus();
+                    })
+
+                    $('#new-video-reflection-modal').on("shown.bs.modal", function() {
+                        $('.new-video-reflection-input').focus();
+                    })
+                })
+            }else {
+                window.location = "cbl_login_two_columns.html";
+            }
+        })
+
+        $('#menu-found-team').click(function() {
+            $('#new-team-modal').modal('show');
+            $('#team-name').val('');
+            $('#new-team-member-name').val('');
+            $('.twitter-typeahead').find('pre').text('');
+            $('#new-team-member-name').focus();
+        })
+
+        $('#menu-personality16').click(function() {
+            var user = Parse.User.current();
+            $('#personality16-modal').find('select').val(user.get('personality16'));
+            $('#personality16-modal').modal('show');
+        })
+
+        $('#menu-change-password').click(function() {
+            $('#change-password-modal').modal('show');
+        })
+
+        $('#personlity-select').change(function() {
+            var personality = $(this).val();
+            var personalityPrefix = personality.substring(0,4);
+            var $personalityImg = $(this).parents('#personality16-modal').find('.personality-img');
+
+            $personalityImg.attr('src', 'img/' + personalityPrefix + '.png');
+            var personalityPrefix = personality.substring(0,4);
+
+            switch(personality) {
+                case('none') : {
+                    break;
+                }
+                case('intj-a') : {
+                    $('.role').text('Analyst');
+                    $('.strategy').text('Confident Individualism');
+                    $('.personality').text('Architect');
+                    break;
+                }
+                case('intp-a') : {
+                    $('.role').text('Analyst');
+                    $('.strategy').text('Confident Individualism');
+                    $('.personality').text('Logician');
+                    break;
+                }
+                case('entj-a') : {
+                    $('.role').text('Analyst');
+                    $('.strategy').text('People Mastery');
+                    $('.personality').text('Commander');
+                    break;
+                }
+                case('entp-a') : {
+                    $('.role').text('Analyst');
+                    $('.strategy').text('People Mastery');
+                    $('.personality').text('Debater');
+                    break;
+                }
+                case('intj-t') : {
+                    $('.role').text('Analyst');
+                    $('.strategy').text('Constant Improvement');
+                    $('.personality').text('Architect');
+                    break;
+                }
+                case('intp-t') : {
+                    $('.role').text('Analyst');
+                    $('.strategy').text('Constant Improvement');
+                    $('.personality').text('Logician');
+                    break;
+                }
+                case('entj-t') : {
+                    $('.role').text('Analyst');
+                    $('.strategy').text('Social Engagement');
+                    $('.personality').text('Commander');
+                    break;
+                }
+                case('entp-t') : {
+                    $('.role').text('Analyst');
+                    $('.strategy').text('Social Engagement');
+                    $('.personality').text('Debater');
+                    break;
+                }
+
+                case('infj-a') : {
+                    $('.role').text('Diplomat');
+                    $('.strategy').text('Confident Individualism');
+                    $('.personality').text('Advocate');
+                    break;
+                }
+                case('infp-a') : {
+                    $('.role').text('Diplomat');
+                    $('.strategy').text('Confident Individualism');
+                    $('.personality').text('Mediator');
+                    break;
+                }
+                case('enfj-a') : {
+                    $('.role').text('Diplomat');
+                    $('.strategy').text('People Mastery');
+                    $('.personality').text('Protagonist');
+                    break;
+                }
+                case('enfp-a') : {
+                    $('.role').text('Diplomat');
+                    $('.strategy').text('People Mastery');
+                    $('.personality').text('Campaigner');
+                    break;
+                }
+                case('infj-t') : {
+                    $('.role').text('Diplomat');
+                    $('.strategy').text('Constant Improvement');
+                    $('.personality').text('Advocate');
+                    break;
+                }
+                case('infp-t') : {
+                    $('.role').text('Diplomat');
+                    $('.strategy').text('Constant Improvement');
+                    $('.personality').text('Mediator');
+                    break;
+                }
+                case('enfj-t') : {
+                    $('.role').text('Diplomat');
+                    $('.strategy').text('Social Engagement');
+                    $('.personality').text('Protagonist');
+                    break;
+                }
+                case('enfp-t') : {
+                    $('.role').text('Diplomat');
+                    $('.strategy').text('Social Engagement');
+                    $('.personality').text('Campaigner');
+                    break;
+                }
+
+                case('istj-a') : {
+                    $('.role').text('Sentinel');
+                    $('.strategy').text('Confident Individualism');
+                    $('.personality').text('Logistician');
+                    break;
+                }
+                case('isfj-a') : {
+                    $('.role').text('Sentinel');
+                    $('.strategy').text('Confident Individualism');
+                    $('.personality').text('Defender');
+                    break;
+                }
+                case('estj-a') : {
+                    $('.role').text('Sentinel');
+                    $('.strategy').text('People Mastery');
+                    $('.personality').text('Executive');
+                    break;
+                }
+                case('esfj-a') : {
+                    $('.role').text('Sentinel');
+                    $('.strategy').text('People Mastery');
+                    $('.personality').text('Consul');
+                    break;
+                }
+                case('istj-t') : {
+                    $('.role').text('Sentinel');
+                    $('.strategy').text('Constant Improvement');
+                    $('.personality').text('Logistician');
+                    break;
+                }
+                case('isfj-t') : {
+                    $('.role').text('Sentinel');
+                    $('.strategy').text('Constant Improvement');
+                    $('.personality').text('Defender');
+                    break;
+                }
+                case('estj-t') : {
+                    $('.role').text('Sentinel');
+                    $('.strategy').text('Social Engagement');
+                    $('.personality').text('Executive');
+                    break;
+                }
+                case('esfj-t') : {
+                    $('.role').text('Sentinel');
+                    $('.strategy').text('Social Engagement');
+                    $('.personality').text('Consul');
+                    break;
+                }
+
+                case('istp-a') : {
+                    $('.role').text('Explorer');
+                    $('.strategy').text('Confident Individualism');
+                    $('.personality').text('Virtuoso');
+                    break;
+                }
+                case('isfp-a') : {
+                    $('.role').text('Explorer');
+                    $('.strategy').text('Confident Individualism');
+                    $('.personality').text('Adventurer');
+                    break;
+                }
+                case('estp-a') : {
+                    $('.role').text('Explorer');
+                    $('.strategy').text('People Mastery');
+                    $('.personality').text('Entrepreneur');
+                    break;
+                }
+                case('esfp-a') : {
+                    $('.role').text('Explorer');
+                    $('.strategy').text('People Mastery');
+                    $('.personality').text('Entertainer');
+                    break;
+                }
+                case('istp-t') : {
+                    $('.role').text('Explorer');
+                    $('.strategy').text('Constant Improvement');
+                    $('.personality').text('Virtuoso');
+                    break;
+                }
+                case('isfp-t') : {
+                    $('.role').text('Explorer');
+                    $('.strategy').text('Constant Improvement');
+                    $('.personality').text('Adventurer');
+                    break;
+                }
+                case('estp-t') : {
+                    $('.role').text('Explorer');
+                    $('.strategy').text('Social Engagement');
+                    $('.personality').text('Entrepreneur');
+                    break;
+                }
+                case('esfp-t') : {
+                    $('.role').text('Explorer');
+                    $('.strategy').text('Social Engagement');
+                    $('.personality').text('Entertainer');
+                    break;
+                }
+            }
+        })
+
+        $('#btn-save-personality16').click(function() {
+            var personality = $('#personlity-select').val();
+            var user = Parse.User.current();
+
+            user.set('personality16', personality);
+            user.save().then(function() {
+                displayPersonality(personality);
+                $('#personality16-modal').modal('hide');
+            })
+        })
+
+        $('#btn-save-new-password').click(function() {
+            var newPassword = $('#input-new-password').val().trim();
+            var repeatNewPassword = $('#input-repeat-new-password').val().trim();
+
+            if (newPassword != '' && (newPassword == repeatNewPassword)) {
+                var user = Parse.User.current();
+                user.set('password', newPassword);
+                user.save(null).then(function(usr) {
+                    $('#input-repeat-new-password').val('');
+                    $('#input-new-password').val('');
+                    $('#change-password-modal').modal('hide');
+                })
+            }else {
+                alert('Passwords are different!');
+            }
+        })
+
+        $('#link-logout').click(function() {
+            Parse.User.logOut();
+        })
+
+    </script>
+
+</body>
+
+</html>

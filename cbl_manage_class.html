@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>INSPINIA | Reflection Box</title>
+
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="font-awesome/css/font-awesome.css" rel="stylesheet">
+    <link href="css/plugins/iCheck/custom.css" rel="stylesheet">
+    <link href="css/animate.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+
+    <style type="text/css">
+        #page-wrapper {
+            margin: 0;
+        }
+
+        .wrapper-content {
+            padding: 5px;
+        }
+
+        .widget {
+            margin: 0;
+        }
+
+        .mailbox-header {
+            padding-top: 10px;
+        }
+
+        .widget.navy-bg {
+            border: solid 1px;
+            color: #1ab394;
+            background: #fff;
+        }
+
+        .mailbox-content {
+            padding: 0;
+        }
+
+        .reflections-items-body {
+            padding: 0;
+        }
+
+        .social-avatar {
+            padding: 0;
+            padding-bottom: 0;
+        }
+
+
+        .navbar-top-links li a {
+            min-height: 30px;
+        }
+
+        .nav {
+            margin-top: 5px;
+            margin-bottom: 10px;
+        }
+
+        .nav > li > a {
+            padding: 10px 0;
+            color: #676a6c;            
+        }
+
+        .nav > li.active {
+            border-left: none;
+        }
+
+        .nav > li.active > a {
+            color: #676a6c;            
+        }
+
+        .nav-second-level li a {
+            padding: 7px 10px 7px 10px;
+        }
+
+        .nav > li.active {
+            background: #e7eaec;
+            color: #19aa8d;
+        }
+
+
+        .personality16-img {
+            width: 50px;
+            height: 50px;
+        }
+
+        .personality16-description {
+            font-size: smaller;
+        }
+
+        .role {
+            text-align: center;
+        }
+
+        .role.analysts {
+            background: #cfb6ed;
+        }
+
+        .role.diplomats {
+            background: #b5edbf;
+        }
+
+        .role.sentinels {
+            background: #8bede4;
+        }
+
+        .role.explorers {
+            background: #e8ed85;
+        }
+
+        .personality16-row > td {
+            position: relative;
+            text-align: center;
+        }
+
+        .num-personalities {
+            position: absolute;
+            font-size: 18px;
+            font-weight: 700;
+            color: red;
+            top: 0px;
+            left: 0px;
+        }
+
+        .num-total-students {
+            width: 50px;
+            height: 50px;
+            border-radius: 25px;
+            color: white;
+            background: #1ab394;
+            float: right;
+            position: absolute;
+            padding: 8px 18px;
+            top: 10px;
+            right: 10px;
+            font-size: x-large;
+        }
+
+        .student-email {
+            position: absolute;
+            top: 22px;
+            left: 8px;
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <div id="wrapper">
+        <div id="page-wrapper" class="gray-bg">
+            <div class="row border-bottom">
+                <nav class="navbar navbar-static-top white-bg" role="navigation" style="margin-bottom: 0">
+                    <ul class="nav navbar-top-links navbar-right">
+                        <li>
+                            <span class="m-r-sm text-muted welcome-message"><span class="cbl-class-name"></span></span>
+                        </li>
+                        <li>
+                            <a data-toggle="dropdown" class="dropdown-toggle" href="#" aria-expanded="false">
+                             <span class="text-muted text-xs block"><span class="user-name"></span> <b class="caret"></b></span> </span> 
+                            </a>
+                            <ul class="dropdown-menu animated fadeInRight m-t-xs">
+                                <!-- <li><a href="profile.html">Profile</a></li> -->
+                                <!-- <li><a href="contacts.html">Contacts</a></li> -->
+                                <!-- <li><a href="mailbox.html">Mailbox</a></li> -->
+                                <li><a id="menu-reflections" href="cbl_reflections_box.html">Reflections</a></li>
+                                <!-- <li class="divider"></li> -->
+                                <li><a id="menu-logout" href="cbl_login_two_columns.html">Logout</a></li>
+                            </ul>                            
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+
+            <div class="wrapper wrapper-content">
+                <div class="row">
+                    <div class="col-lg-2">
+                        <div class="ibox float-e-margins">
+                            <div class="ibox-content mailbox-content">
+                                <div class="file-manager">
+                                    <!-- <a id="btn-setup" type="button" class="btn btn-danger" href="#">setup</a> -->
+                                    <h5>Roles</h5>
+                                    <ul class="folder-list m-b-md" style="padding: 0">
+                                        <li><a href="#" class="menu-show-personality16"> <i class="fa fa-certificate"></i> <span>All</span><span class="label label-danger pull-right"><span class="num-roles">0</span></a></li>
+                                        <li><a href="#" class="menu-show-personality16"> <i class="fa fa-certificate"></i> <span>Analysts</span><span class="label label-danger pull-right"><span class="num-analysts">0</span></a></li>
+                                        <li><a href="#" class="menu-show-personality16"> <i class="fa fa-certificate"></i> <span>Diplomats</span><span class="label label-danger pull-right"><span class="num-diplomats">0</span></a></li>
+                                        <li><a href="#" class="menu-show-personality16"> <i class="fa fa-certificate"></i> <span>Sentinels</span><span class="label label-danger pull-right"><span class="num-sentinels">0</span></a></li>
+                                        <li><a href="#" class="menu-show-personality16"> <i class="fa fa-certificate"></i> <span>Explorers</span><span class="label label-danger pull-right"><span class="num-explorers">0</span></a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-10 reflections-panel">
+                        <div class="pending-reflections-list reflections-list animated fadeInRight">
+                            <div class="mail-box-header">
+                                <h2>
+                                    <span class="cbl-class-name"></span> Students Personalities
+                                </h2>
+                            </div>
+                            <div class="mail-box client-list">
+                                <table class="table">
+                                    <tbody class="students-pending-reflections-table-body">
+                                        <tr><td class="role analysts">Analysts</td></tr>
+                                        <tr class="personality16-row col-xs-3">
+                                            <td>
+                                                <img class="personality16-img" src="img/intj.png">
+                                                <small>Architect</small>
+                                                <span id="num-intj-personalities" class="num-personalities"></span>                                                
+                                            </td>
+                                            <td>
+                                                <span class="personality16-description">Imaginative and strategic thinkers, with a plan for everything.</span>
+                                            </td>
+                                        </tr>
+                                        <tr class="personality16-row col-xs-3">
+                                            <td>
+                                                <img class="personality16-img" src="img/intp.png">
+                                                <small>Logician</small>
+                                                <span id="num-intp-personalities" class="num-personalities"></span>                                                
+                                            </td>
+                                            <td>
+                                                <span class="personality16-description">Innovative inventors with an unquenchable thirst for knowledge.</span>
+                                            </td>
+                                        </tr>
+                                        <tr class="personality16-row col-xs-3">
+                                            <td>
+                                                <img class="personality16-img" src="img/entj.png">
+                                                <small>Commander</small>
+                                                <span id="num-entj-personalities" class="num-personalities"></span>
+                                            </td>
+                                            <td>                                            
+                                                <span class="personality16-description">Bold, imaginative and strong-willed leaders, always finding a way – or making one.</span>
+                                                
+                                            </td>
+                                        </tr>
+                                        <tr class="personality16-row col-xs-3">
+                                            <td>
+                                                <img class="personality16-img" src="img/entp.png">
+                                                <small>Debater</small>
+                                                <span id="num-entp-personalities" class="num-personalities"></span>
+                                            </td>
+                                            <td>
+                                                <span class="personality16-description">Smart and curious thinkers who cannot resist an intellectual challenge.</span>
+                                            </td>
+                                        </tr>
+                                        <tr><td class="role diplomats">Diplomats <span id="num-diplomats"></span></td></tr>
+                                        <tr class="personality16-row col-xs-3">
+                                            <td>
+                                                <img class="personality16-img" src="img/infj.png">
+                                                <span id="num-infj-personalities" class="num-personalities"></span>
+                                                <small>Advocate</small>
+                                            </td>
+                                            <td><span class="personality16-description">Quiet and mystical, yet very inspiring and tireless idealists.</span></td>
+                                        </tr>
+                                        <tr class="personality16-row col-xs-3">
+                                            <td>
+                                                <img class="personality16-img" src="img/infp.png">
+                                                <span id="num-infp-personalities" class="num-personalities"></span>
+                                                <small>Mediator</small>
+                                            </td>
+                                            <td><span class="personality16-description">Poetic, kind and altruistic people, always eager to help a good cause.</span></td>
+                                        </tr>
+                                        <tr class="personality16-row col-xs-3">
+                                            <td>
+                                                <img class="personality16-img" src="img/enfj.png">
+                                                <span id="num-enfj-personalities" class="num-personalities"></span>
+                                                <small>Protagonist</small>
+                                            </td>
+                                            <td><span class="personality16-description">Charismatic and inspiring leaders, able to mesmerize their listeners.</span></td>
+                                        </tr>
+                                        <tr class="personality16-row col-xs-3">
+                                            <td>
+                                                <img class="personality16-img" src="img/enfp.png">
+                                                <small>Campaingner</small>
+                                                <span id="num-enfp-personalities" class="num-personalities"></span>
+                                            </td>
+                                            <td><span class="personality16-description">Enthusiastic, creative and sociable free spirits, who can always find reason to smile.</span></td>
+                                        </tr>
+                                        <tr><td class="role sentinels">Sentinels <span id="num-sentinels"></span></td></tr>
+                                        <tr class="personality16-row col-xs-3">
+                                            <td>
+                                                <img class="personality16-img" src="img/istj.png">
+                                                <span id="num-istj-personalities" class="num-personalities"></span>
+                                                <small>Logistician</small>
+                                            </td>
+                                            <td><span class="personality16-description">Practical and fact-minded individuals, whose reliability cannot be doubted.</span></td>
+                                        </tr>
+                                        <tr class="personality16-row col-xs-3">
+                                            <td>
+                                                <img class="personality16-img" src="img/isfj.png">
+                                                <span id="num-isfj-personalities" class="num-personalities"></span>
+                                                <small>Defender</small>
+                                            </td>
+                                            <td><span class="personality16-description">Very dedicated and warm protectors, always ready to defend their loved ones.</span></td>
+                                        </tr>
+                                        <tr class="personality16-row col-xs-3">
+                                            <td>
+                                                <img class="personality16-img" src="img/estj.png">
+                                                <small>Executive</small>
+                                                <span id="num-estj-personalities" class="num-personalities"></span>
+                                            </td>
+                                            <td><span class="personality16-description">Excellent administrators, unsurpassed at managing things – or people.</span></td>
+                                        </tr>
+                                        <tr class="personality16-row col-xs-3">
+                                            <td>
+                                                <img class="personality16-img" src="img/esfj.png">
+                                                <span id="num-esfj-personalities" class="num-personalities"></span>
+                                                <small>Consult</small>
+                                            </td>
+                                            <td><span class="personality16-description">Smart and curious thinkers who cannot resist an intellectual challenge.</span></td>
+                                        </tr>
+                                        <tr><td class="role explorers">Explorers <span id="num-explorers"></span></td></tr>
+                                        <tr class="personality16-row col-xs-3">
+                                            <td>
+                                                <img class="personality16-img" src="img/istp.png">
+                                                <span id="num-istp-personalities" class="num-personalities"></span>
+                                                <small>Virtuoso</small>
+                                            </td>
+                                            <td><span class="personality16-description">Bold and practical experimenters, masters of all kinds of tools.</span></td>
+                                        </tr>
+                                        <tr class="personality16-row col-xs-3">
+                                            <td>
+                                                <img class="personality16-img" src="img/isfp.png">
+                                                <small>Adventurer</small>
+                                                <span id="num-isfp-personalities" class="num-personalities"></span>
+                                            </td>
+                                            <td><span class="personality16-description">Flexible and charming artists, always ready to explore experience something new.</span></td>
+                                        </tr>
+                                        <tr class="personality16-row col-xs-3">
+                                            <td>
+                                                <img class="personality16-img" src="img/estp.png">
+                                                <small>Entrepreneur</small>
+                                                <span id="num-estp-personalities" class="num-personalities"></span>
+                                            </td>
+                                            <td><span class="personality16-description">Smart, energetic and very perceptive people, who truly enjoy living on the edge.</span></td>
+                                        </tr>
+                                        <tr class="personality16-row col-xs-3">
+                                            <td>
+                                                <img class="personality16-img" src="img/esfp.png">
+                                                <small>Entertainer</small>
+                                                <span id="num-esfp-personalities" class="num-personalities"></span>
+                                            </td>
+                                            <td><span class="personality16-description">Spontaneous, energetic and enthusiastic people – life is never boring around them.</span></td>
+                                        </tr>
+
+                                    </tbody>                        
+                                </table>
+                            </div>                            
+                        </div>
+                        <div class="students-list students-info-list animated fadeInRight">
+                            <div class="mail-box-header">
+                                <h2>
+                                    Students List
+                                </h2>
+                                <span class="num-total-students">0</span>
+                            </div>
+                            <div class="mail-box client-list">
+                                <table class="table">
+                                    <tbody class="students-list-table-body">
+                                        <tr class="student-row">
+                                            <td class="client-avatar"><img alt="image" src="img/a2.jpg"></td>
+                                            <td style="position: relative;"><a data-toggle="tab" href="#contact-1" class="student-name client-link">Anthony Jackson</a>
+                                            <small class="student-email"></small></td>
+                                            <td><span class="affiliation-info">Bepid 2016</span></td>
+                                            <td><img class="personality16-img" src="img/esfj.png" style="height: 30px;"></td>
+                                            <td class="role">NONE</td>
+                                            <td class="personality">NONE</td>
+                                            <td class="strategy">NONE</td>
+                                        </tr>
+                                    </tbody>                        
+                                </table>
+                            </div>                            
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="footer">
+                <div class="pull-right">10GB of <strong>250GB</strong> Free.</div>
+                <div>
+                    <strong>Copyright</strong> Example Company &copy; 2014-2015
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mainly scripts -->
+    <script src="js/jquery-2.1.1.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/plugins/metisMenu/jquery.metisMenu.js"></script>
+    <script src="js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+
+    <!-- Custom and plugin javascript -->
+    <script src="js/inspinia.js"></script>
+    <script src="js/plugins/pace/pace.min.js"></script>
+
+    <!-- Peity -->
+    <script src="js/plugins/peity/jquery.peity.min.js"></script>
+
+    <!-- Peity -->
+    <script src="js/demo/peity-demo.js"></script>
+
+    <script type="text/javascript" src="js/underscore-1.8.3.js"></script>
+
+    <script type="text/javascript" src="http://www.parsecdn.com/js/parse-1.2.18.min.js"></script>
+    <script type="text/javascript">
+        Parse.initialize("YALt9tjcUpW61Hz5aIPYbehm9uCgh5NXXRVM18T6", "5wwhJ6hfqu8cG4s6jMKMQWrmImiQKDTE9trvgL6x");
+    </script>
+
+    <script type="text/javascript">
+        var totalNumDoneStudentsReflections = 0;
+        var totalStudentsReflections = 0;
+        var totalTeachersReflections = 0;
+        var totalReflectionStatements = 0;
+
+        $studentRowRef = $('.student-row').detach();
+
+        $navCBLClassRef = $('.nav-cbl-class-name').detach();
+        $navCBLSprintRef = $('.nav-cbl-sprint-name').detach();
+
+        function setup() {
+            var studentsDict = {};
+            var usersDict = {};
+
+            console.log('>>>> realizando setup <<<<'); 
+
+            var query = new Parse.Query(Parse.User);
+            query.find().then(function(students) {
+                var promise = Parse.Promise.as();
+                _.each(students, function(student) {
+                    student.set('personality16', 'none');
+                })
+                return promise;
+            }).then(function() {
+                console.log('>>> setup finalizado <<<');
+            })
+        }
+
+        function displayStudentsList(students) {
+            $('.students-list-table-body').empty();
+            $('.num-total-students').text(students.length);
+
+            studentsPendencies = {};
+            _.each(students, function(student) {
+                studentsPendencies[student.id] = [];
+            })
+
+            _.each(students, function(student) {
+                var personality16 = student.get('personality16');
+
+                if (personality16 && personality16 != '') {
+                    var personalityPrefix = personality16.substring(0,4);
+                    // if (studentsPendencies[student.id].length > 0) {
+                        $studentRow = $studentRowRef.clone();
+                        var $personalityImg = $studentRow.find('.personality16-img');
+                        $personalityImg.attr('src', 'img/' + personalityPrefix + '.png');
+
+                        switch(personality16) {
+                            case('none') : {
+                                break;
+                            }
+                            case('intj-a') : {
+                                $studentRow.find('.role').text('Analyst');
+                                $studentRow.find('.strategy').text('Confident Individualism');
+                                $studentRow.find('.personality').text('Architect');
+                                break;
+                            }
+                            case('intp-a') : {
+                                $studentRow.find('.role').text('Analyst');
+                                $studentRow.find('.strategy').text('Confident Individualism');
+                                $studentRow.find('.personality').text('Logician');
+                                break;
+                            }
+                            case('entj-a') : {
+                                $studentRow.find('.role').text('Analyst');
+                                $studentRow.find('.strategy').text('People Mastery');
+                                $studentRow.find('.personality').text('Commander');
+                                break;
+                            }
+                            case('entp-a') : {
+                                $studentRow.find('.role').text('Analyst');
+                                $studentRow.find('.strategy').text('People Mastery');
+                                $studentRow.find('.personality').text('Debater');
+                                break;
+                            }
+                            case('intj-t') : {
+                                $studentRow.find('.role').text('Analyst');
+                                $studentRow.find('.strategy').text('Constant Improvement');
+                                $studentRow.find('.personality').text('Architect');
+                                break;
+                            }
+                            case('intp-t') : {
+                                $studentRow.find('.role').text('Analyst');
+                                $studentRow.find('.strategy').text('Constant Improvement');
+                                $studentRow.find('.personality').text('Logician');
+                                break;
+                            }
+                            case('entj-t') : {
+                                $studentRow.find('.role').text('Analyst');
+                                $studentRow.find('.strategy').text('Social Engagement');
+                                $studentRow.find('.personality').text('Commander');
+                                break;
+                            }
+                            case('entp-t') : {
+                                $studentRow.find('.role').text('Analyst');
+                                $studentRow.find('.strategy').text('Social Engagement');
+                                $studentRow.find('.personality').text('Debater');
+                                break;
+                            }
+
+                            case('infj-a') : {
+                                $studentRow.find('.role').text('Diplomat');
+                                $studentRow.find('.strategy').text('Confident Individualism');
+                                $studentRow.find('.personality').text('Advocate');
+                                break;
+                            }
+                            case('infp-a') : {
+                                $studentRow.find('.role').text('Diplomat');
+                                $studentRow.find('.strategy').text('Confident Individualism');
+                                $studentRow.find('.personality').text('Mediator');
+                                break;
+                            }
+                            case('enfj-a') : {
+                                $studentRow.find('.role').text('Diplomat');
+                                $studentRow.find('.strategy').text('People Mastery');
+                                $studentRow.find('.personality').text('Protagonist');
+                                break;
+                            }
+                            case('enfp-a') : {
+                                $studentRow.find('.role').text('Diplomat');
+                                $studentRow.find('.strategy').text('People Mastery');
+                                $studentRow.find('.personality').text('Campaigner');
+                                break;
+                            }
+                            case('infj-t') : {
+                                $studentRow.find('.role').text('Diplomat');
+                                $studentRow.find('.strategy').text('Constant Improvement');
+                                $studentRow.find('.personality').text('Advocate');
+                                break;
+                            }
+                            case('infp-t') : {
+                                $studentRow.find('.role').text('Diplomat');
+                                $studentRow.find('.strategy').text('Constant Improvement');
+                                $studentRow.find('.personality').text('Mediator');
+                                break;
+                            }
+                            case('enfj-t') : {
+                                $studentRow.find('.role').text('Diplomat');
+                                $studentRow.find('.strategy').text('Social Engagement');
+                                $studentRow.find('.personality').text('Protagonist');
+                                break;
+                            }
+                            case('enfp-t') : {
+                                $studentRow.find('.role').text('Diplomat');
+                                $studentRow.find('.strategy').text('Social Engagement');
+                                $studentRow.find('.personality').text('Campaigner');
+                                break;
+                            }
+
+                            case('istj-a') : {
+                                $studentRow.find('.role').text('Sentinel');
+                                $studentRow.find('.strategy').text('Confident Individualism');
+                                $studentRow.find('.personality').text('Logistician');
+                                break;
+                            }
+                            case('isfj-a') : {
+                                $studentRow.find('.role').text('Sentinel');
+                                $studentRow.find('.strategy').text('Confident Individualism');
+                                $studentRow.find('.personality').text('Defender');
+                                break;
+                            }
+                            case('estj-a') : {
+                                $studentRow.find('.role').text('Sentinel');
+                                $studentRow.find('.strategy').text('People Mastery');
+                                $studentRow.find('.personality').text('Executive');
+                                break;
+                            }
+                            case('esfj-a') : {
+                                $studentRow.find('.role').text('Sentinel');
+                                $studentRow.find('.strategy').text('People Mastery');
+                                $studentRow.find('.personality').text('Consul');
+                                break;
+                            }
+                            case('istj-t') : {
+                                $studentRow.find('.role').text('Sentinel');
+                                $studentRow.find('.strategy').text('Constant Improvement');
+                                $studentRow.find('.personality').text('Logistician');
+                                break;
+                            }
+                            case('isfj-t') : {
+                                $studentRow.find('.role').text('Sentinel');
+                                $studentRow.find('.strategy').text('Constant Improvement');
+                                $studentRow.find('.personality').text('Defender');
+                                break;
+                            }
+                            case('estj-t') : {
+                                $studentRow.find('.role').text('Sentinel');
+                                $studentRow.find('.strategy').text('Social Engagement');
+                                $studentRow.find('.personality').text('Executive');
+                                break;
+                            }
+                            case('esfj-t') : {
+                                $studentRow.find('.role').text('Sentinel');
+                                $studentRow.find('.strategy').text('Social Engagement');
+                                $studentRow.find('.personality').text('Consul');
+                                break;
+                            }
+
+                            case('istp-a') : {
+                                $studentRow.find('.role').text('Explorer');
+                                $studentRow.find('.strategy').text('Confident Individualism');
+                                $studentRow.find('.personality').text('Virtuoso');
+                                break;
+                            }
+                            case('isfp-a') : {
+                                $studentRow.find('.role').text('Explorer');
+                                $studentRow.find('.strategy').text('Confident Individualism');
+                                $studentRow.find('.personality').text('Adventurer');
+                                break;
+                            }
+                            case('estp-a') : {
+                                $studentRow.find('.role').text('Explorer');
+                                $studentRow.find('.strategy').text('People Mastery');
+                                $studentRow.find('.personality').text('Entrepreneur');
+                                break;
+                            }
+                            case('esfp-a') : {
+                                $studentRow.find('.role').text('Explorer');
+                                $studentRow.find('.strategy').text('People Mastery');
+                                $studentRow.find('.personality').text('Entertainer');
+                                break;
+                            }
+                            case('istp-t') : {
+                                $studentRow.find('.role').text('Explorer');
+                                $studentRow.find('.strategy').text('Constant Improvement');
+                                $studentRow.find('.personality').text('Virtuoso');
+                                break;
+                            }
+                            case('isfp-t') : {
+                                $studentRow.find('.role').text('Explorer');
+                                $studentRow.find('.strategy').text('Constant Improvement');
+                                $studentRow.find('.personality').text('Adventurer');
+                                break;
+                            }
+                            case('estp-t') : {
+                                $studentRow.find('.role').text('Explorer');
+                                $studentRow.find('.strategy').text('Social Engagement');
+                                $studentRow.find('.personality').text('Entrepreneur');
+                                break;
+                            }
+                            case('esfp-t') : {
+                                $studentRow.find('.role').text('Explorer');
+                                $studentRow.find('.strategy').text('Social Engagement');
+                                $studentRow.find('.personality').text('Entertainer');
+                                break;
+                            }
+                        }
+
+                    // }                        
+                }else {
+                    $studentRow = $studentRowRef.clone();
+                    var $personalityImg = $studentRow.find('.personality16-img');
+                    $personalityImg.attr('src', 'img/' + personalityPrefix + '.png');
+
+                    $studentRow.find('.role').text('NOT DEFINED');
+                    $studentRow.find('.strategy').text('NOT DEFINED');
+                    $studentRow.find('.personality').text('NOT DEFINED');
+                }
+
+                if (student.get('photo')) {
+                    $studentRow.find('.client-avatar').find('img').attr('src', student.get('photo').url());
+                }
+                $studentRow.attr('student-id', student.id);
+                $studentRow.find('.student-name').text(student.get('name'));
+                $studentRow.find('.affiliation-info').text(student.get('affiliation'));
+                $studentRow.find('.student-email').text(student.get('email'));
+                $studentRow.find('.num-student-pending-reflections').text(studentsPendencies[student.id].length);
+                $studentRow.appendTo('.students-list-table-body');                            
+
+            })
+
+            $('.students-list-table-body .personality16-img').css('height', '30px');
+            $('.students-list-table-body .personality16-img').css('width', '30px');
+
+            $('.student-name').click(function() {
+                var studentId = $(this).parents('.student-row').attr('student-id');
+                displayStudentProfile(studentId);
+            })                
+        }
+
+
+        function displayPersonalities16(students) {
+            _.each(students, function(student) {
+                var personality16 = student.get('personality16')
+                if ((personality16 == 'intj-a') || (personality16 == 'intj-t')) {
+                    personalitiesDict['intj'].push(student);
+                }else if ((personality16 == 'intp-a') || (personality16 == 'intp-t')) {
+                    personalitiesDict['intp'].push(student);
+                }else if ((personality16 == 'entp-a') || (personality16 == 'entp-t')) {
+                    personalitiesDict['entp'].push(student);
+                }else if ((personality16 == 'entj-a') || (personality16 == 'entj-t')) {
+                    personalitiesDict['entj'].push(student);
+                }else if ((personality16 == 'infj-a') || (personality16 == 'infj-t')) {
+                    personalitiesDict['infj'].push(student);
+                }else if ((personality16 == 'infp-a') || (personality16 == 'infp-t')) {
+                    personalitiesDict['infp'].push(student);
+                }else if ((personality16 == 'enfj-a') || (personality16 == 'enfj-t')) {
+                    personalitiesDict['enfj'].push(student);
+                }else if ((personality16 == 'enfp-a') || (personality16 == 'enfp-t')) {
+                    personalitiesDict['enfp'].push(student);
+                }else if ((personality16 == 'istj-a') || (personality16 == 'istj-t')) {
+                    personalitiesDict['istj'].push(student);
+                }else if ((personality16 == 'isfj-a') || (personality16 == 'isfj-t')) {
+                    personalitiesDict['isfj'].push(student);
+                }else if ((personality16 == 'estj-a') || (personality16 == 'estj-t')) {
+                    personalitiesDict['estj'].push(student);
+                }else if ((personality16 == 'esfj-a') || (personality16 == 'esfj-t')) {
+                    personalitiesDict['esfj'].push(student);
+                }else if ((personality16 == 'istp-a') || (personality16 == 'istp-t')) {
+                    personalitiesDict['istp'].push(student);
+                }else if ((personality16 == 'isfp-a') || (personality16 == 'isfp-t')) {
+                    personalitiesDict['isfp'].push(student);
+                }else if ((personality16 == 'estp-a') || (personality16 == 'estp-t')) {
+                    personalitiesDict['estp'].push(student);
+                }else if ((personality16 == 'esfp-a') || (personality16 == 'esfp-t')) {
+                    personalitiesDict['esfp'].push(student);
+                }
+            })
+
+            $('#num-intj-personalities').text(personalitiesDict['intj'].length);
+            $('#num-intp-personalities').text(personalitiesDict['intp'].length);
+            $('#num-entj-personalities').text(personalitiesDict['entj'].length);
+            $('#num-entp-personalities').text(personalitiesDict['entp'].length);
+
+            $('#num-infj-personalities').text(personalitiesDict['infj'].length);
+            $('#num-infp-personalities').text(personalitiesDict['infp'].length);
+            $('#num-enfj-personalities').text(personalitiesDict['enfj'].length);
+            $('#num-enfp-personalities').text(personalitiesDict['enfp'].length);
+
+            $('#num-istj-personalities').text(personalitiesDict['istj'].length);
+            $('#num-isfj-personalities').text(personalitiesDict['isfj'].length);
+            $('#num-estj-personalities').text(personalitiesDict['estj'].length);
+            $('#num-esfj-personalities').text(personalitiesDict['esfj'].length);
+
+            $('#num-istp-personalities').text(personalitiesDict['istp'].length);
+            $('#num-isfp-personalities').text(personalitiesDict['isfp'].length);
+            $('#num-estp-personalities').text(personalitiesDict['estp'].length);
+            $('#num-esfp-personalities').text(personalitiesDict['esfp'].length);
+
+            var numAnalysts = personalitiesDict['intj'].length + personalitiesDict['intp'].length + personalitiesDict['entp'].length + personalitiesDict['entj'].length;
+
+            var numDiplomats = personalitiesDict['infj'].length + personalitiesDict['infp'].length + personalitiesDict['enfj'].length + personalitiesDict['enfp'].length;
+
+            var numSentinels = personalitiesDict['istj'].length + personalitiesDict['isfj'].length + personalitiesDict['estj'].length + personalitiesDict['esfj'].length;
+
+            var numExplorers = personalitiesDict['istp'].length + personalitiesDict['isfp'].length + personalitiesDict['estp'].length + personalitiesDict['esfp'].length;
+
+            $('.num-roles').text(numAnalysts + numDiplomats + numSentinels + numExplorers);
+            $('.num-analysts').text(numAnalysts);
+            $('.num-diplomats').text(numDiplomats);
+            $('.num-sentinels').text(numSentinels);
+            $('.num-explorers').text(numExplorers);
+        }
+    </script>
+
+    <script type="text/javascript">
+        var students = [];
+        var currentCBLClass;
+        var currentUser;
+
+        var personalitiesDict = {
+            'intj':[], 'intp':[], 'entp':[], 'entj':[]
+            ,'infj':[], 'infp':[], 'enfj':[], 'enfp':[]
+            ,'istj':[], 'isfj':[], 'estj':[], 'esfj':[]
+            ,'istp':[], 'isfp':[], 'estp':[], 'esfp':[]
+        }
+
+        $(function() {
+            $btnSetup = $('#btn-setup').detach();
+
+            var user = Parse.User.current();
+            if (user && user.get('email') == 'cca2@cin.ufpe.br') {
+                $btnSetup.prependTo('.file-manager');
+                $('#btn-setup').click(function() {
+                    setup();
+                })
+            }
+
+            if (user) {
+                currentUser = user;
+
+                if (!currentUser.get('currentCBLClass')) {
+                    currentUser.logOut();
+                    window.location = 'cbl_login_two_columns.html';
+                }
+
+                var CBLClass = Parse.Object.extend('CBLClass');
+                var cblClassQuery = new Parse.Query(CBLClass);
+                cblClassQuery.include('students');
+                cblClassQuery.include('cblSprints');
+                cblClassQuery.get(currentUser.get('currentCBLClass').id).then(function(cblClass) {
+                    currentCBLClass = cblClass;
+                    students = currentCBLClass.get('students').sort(function(a, b){
+
+                        if (!a) {
+                            return 1;
+                        }
+
+                        a = a.get('name');
+                        b = b.get('name');
+                        if (a > b) {
+                            return 1;
+                        }else if (a < b) {
+                            return -1;
+                        }else {
+                            return 0;
+                        }
+                    });
+
+                    displayPersonalities16(students);
+                    displayStudentsList(students);
+
+                    $('.cbl-class-name').text(cblClass.get('name'));
+                })
+
+                $('.user-name').text(user.get('name'));
+                // var query = new Parse.Query(Parse.User);
+                // query.ascending('firstName');
+                // query.limit(100);
+                // query.include('currentCBLClass');
+                // query.include('currentCBLSprint');
+                // query.find().then(function(users) {
+                    // _.each(users, function(user) {
+                    //     if (user.get('isStudent')) {
+                    //         students.push(user);
+                    //     }else {
+                    //         teachers.push(user);
+                    //     }
+                    // })
+            }else {
+                window.location = "cbl_login_two_columns.html";
+            }
+        })
+
+
+        $('#link-logout').click(function() {
+            Parse.User.logOut();
+        })
+
+        $('#menu-logout').click(function() {
+            Parse.User.logOut();
+        })
+        
+    </script>
+
+    <!-- iCheck -->
+    <script src="js/plugins/iCheck/icheck.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $('.i-checks').iCheck({
+                checkboxClass: 'icheckbox_square-green',
+                radioClass: 'iradio_square-green',
+            });
+        });
+    </script>
+</body>
+
+</html>

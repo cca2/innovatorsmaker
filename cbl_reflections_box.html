@@ -1,0 +1,1732 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>INNOVATORSMAKER | Reflections</title>
+
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="font-awesome/css/font-awesome.css" rel="stylesheet">
+    <link href="css/plugins/iCheck/custom.css" rel="stylesheet">
+    <link href="css/animate.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+
+    <style type="text/css">
+        #page-wrapper {
+            margin: 0;
+        }
+
+        .wrapper-content {
+            padding: 5px;
+        }
+
+        .widget {
+            margin: 0;
+        }
+
+        .mailbox-header {
+            padding-top: 10px;
+        }
+
+        .widget.navy-bg {
+            border: solid 1px;
+            color: #1ab394;
+            background: #fff;
+        }
+
+        .mailbox-content {
+            padding: 0;
+        }
+
+        .reflections-items-body {
+            padding: 0;
+        }
+
+        .social-avatar {
+            padding: 0;
+            padding-bottom: 0;
+        }
+
+        .student-reflection-item {
+            min-height: 100px;
+        }
+
+        .student-reflection-item p {
+            margin-top: 10px;
+            margin-bottom: 0;
+        }
+
+        .btn-student-profile-show {
+            width: 68px;
+        }
+
+        .navbar-top-links li a {
+            min-height: 30px;
+        }
+
+        .nav {
+            margin-top: 5px;
+            margin-bottom: 10px;
+        }
+
+        .nav > li > a {
+            padding: 10px 0;
+            color: #676a6c;            
+        }
+
+        .nav > li.active {
+            border-left: none;
+        }
+
+        .nav > li.active > a {
+            color: #676a6c;            
+        }
+
+        .nav-second-level li a {
+            padding: 7px 10px 7px 10px;
+        }
+
+        .nav > li.active {
+            background: #e7eaec;
+            color: #19aa8d;
+        }
+
+        .btn-show-reflections {
+            width: 60px;
+        }
+
+        .btn-propose {
+            width: 100%;
+        }
+
+        .separator-reflection-timeline-item > .row > .content {
+            min-height: 30px;
+        }
+
+        .timeline-item .date {
+            width: 70px;
+        }
+
+        .reflection-media-type-form {
+            padding: 10px;
+            height: 40px;
+        }
+
+        .reflection-media-type-form label {
+            margin: 0;
+        }
+
+        .new-reflection-modal-body {
+            padding: 0;
+        }
+
+        .new-reflection-textarea {
+            width: 100%;
+            padding: 10px;
+            border: none;
+        }
+
+        .personality-img {
+            width: 60px;
+        }
+
+        .student-pending-reflections-row > td {
+            position: relative;
+        }
+
+        .student-email {
+            position: absolute;
+            top: 22px;
+            left: 8px;
+        }
+
+        .num-student-pending-reflections {
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        img.member-photo.img-circle {
+            height: 60px;
+            width: 60px;
+        }
+
+        .team-name-p {
+            color: #fff;
+            position: relative;
+            padding: 10px;
+            background: rgba(0,0,0,0.42);
+            margin: 0;            
+        }
+
+        .team-members {
+            margin: 0;
+        }
+
+        .team-members img.img-circle {
+            margin-top: 15px;
+            width: 80px;
+            height: 80px;
+        }                
+
+        .reflection-timeline-item .content {
+            text-align: justify;
+            line-height: 1.8em;
+        }
+        
+
+    </style>
+</head>
+
+<body>
+
+    <div id="wrapper">
+        <div id="page-wrapper" class="gray-bg">
+            <div class="row border-bottom">
+                <nav class="navbar navbar-static-top white-bg" role="navigation" style="margin-bottom: 0">
+                    <ul class="nav navbar-top-links navbar-right">
+                        <li>
+                            <span class="m-r-sm text-muted welcome-message"><span class="cbl-class-name"></span></span>
+                        </li>
+                        <li>
+                            <a data-toggle="dropdown" class="dropdown-toggle" href="#" aria-expanded="false">
+                             <span class="text-muted text-xs block"><span class="user-name"></span> <b class="caret"></b></span> </span> 
+                            </a>
+                            <ul class="dropdown-menu animated fadeInRight m-t-xs">
+                                <!-- <li><a href="profile.html">Profile</a></li> -->
+                                <!-- <li><a href="contacts.html">Contacts</a></li> -->
+                                <!-- <li><a href="mailbox.html">Mailbox</a></li> -->
+                                <li><a id="menu-manage-class" href="cbl_manage_class.html">Students profiles</a></li>
+                                <li><a id="menu-students-emails" href="#">Students emails</a></li>
+                                <li class="divider"></li>
+                                <li><a id="menu-teams" href="cbl_teams.html">Challenges</a></li>
+                                <li class="divider"></li>
+                                <li><a id="menu-teams" href="cbl_classes.html">Classes</a></li>
+                                <!-- <li><a id="menu-teams" href="cbl_teams.html">Sprints</a></li> -->
+                                <li class="divider"></li>
+                                <li><a id="menu-logout" href="cbl_login_two_columns.html">Logout</a></li>
+                            </ul>                            
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+
+            <div class="wrapper wrapper-content">
+                <div class="row">
+                    <div class="col-lg-2">
+                        <div class="ibox float-e-margins">
+                            <div class="ibox-content mailbox-content">
+                                <div class="file-manager">
+                                    <!-- <a id="btn-setup" type="button" class="btn btn-danger" href="#">setup</a> -->
+<!--                                     <div class="widget style1 navy-bg">
+                                        <div class="row">
+                                            <div class="col-xs-12 text-center">
+                                                <h3 class="cbl-sprint-name font-bold">Sprint#0</h3>
+                                            </div>
+                                        </div>
+                                    </div>                                     -->
+                                    <div class="space-25"></div>
+<!--                                     <ul class="nav metismenu" id="side-menu">
+                                        <li class>
+                                            <a href="#"><i class="fa fa-th-large"></i> <span class="nav-label">Classes</span> <span class="fa arrow"></span></a>
+                                            <ul class="nav-classes-second-level nav nav-second-level collapse">
+                                                <li class="nav-cbl-class-name"><a href="#" cbl-class-id="">Bepid 2016</a></li>
+                                            </ul>
+                                        </li>
+                                        <li class>
+                                            <a href="#"><i class="fa fa-th-large"></i> <span class="nav-label">Sprints</span> <span class="fa arrow"></span></a>
+                                            <ul class="nav-sprints-second-level nav nav-second-level collapse">
+                                                <li class="nav-cbl-sprint-name"><a href="#" cbl-sprint-id="">Sprint#0</a></li>
+                                            </ul>
+                                        </li>
+                                    </ul>                                     -->
+                                    <h5>REFLECTIONS</h5>
+                                    <ul class="folder-list m-b-md" style="padding: 0">
+                                        <li><a href="#" class="menu-show-students-reflections"> <i class="fa fa-inbox "></i>  Students<span class="label label-primary pull-right"><span class="total-done-students-reflections">0</span>/<span class="total-students-reflections">0</span></span> </a></li>
+                                        <li><a href="#" class="menu-show-teachers-reflections"> <i class="fa fa-envelope-o"></i> Teachers<span class="label label-primary pull-right"><span class="total-teachers-reflections">0</span></a></li>
+                                        <li><a href="#" class="menu-show-reflections-statements"> <i class="fa fa-certificate"></i> Proposed<span class="label label-primary pull-right"><span class="total-statement-reflections">0</span></a></li>
+                                        <li><a href="#" class="menu-show-pending-reflections-list"> <i class="fa fa-certificate"></i> Pending<span class="label label-danger pull-right"><span class="total-pending-reflections">0</span></a></li>
+                                    </ul>
+                                    <a id="btn-new-reflection-statement" type="button" class="btn btn-primary btn-propose" data-toggle="modal" data-target="#new-reflection-statement-modal" class="btn btn-block btn-primary compose-mail" href="#">new</a>
+
+                                    <!-- <a id="btn-new-student-content" type="button" class="btn btn-primary btn-propose" data-toggle="modal" data-target="#new-student-content-modal" class="btn btn-block btn-primary compose-mail" href="#">propose activity</a> -->
+                                    <div class="clearfix"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-10 reflections-panel">
+                        <div class="reflections-statements-list reflections-list animated fadeInRight">
+                            <div class="mail-box-header">
+                                <h2>
+                                    Reflection Statements for Students (<span class="num-student-reflections-statements">0</span>)
+                                </h2>
+                                <div class="mail-tools tooltip-demo m-t-md">
+                                    <div class="btn-group pull-right">
+                                        <button class="btn btn-white btn-sm"><i class="fa fa-arrow-left"></i></button>
+                                        <button class="btn btn-white btn-sm"><i class="fa fa-arrow-right"></i></button>
+
+                                    </div>
+                                    <button class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="left" title="Refresh inbox"><i class="fa fa-refresh"></i> Refresh</button>
+                                </div>
+                            </div>
+                            <div class="reflections-box mail-box">
+
+                            <table class="table table-hover table-mail">
+                            <tbody>
+                            <tr class="reflection-row unread">
+                                <!-- <td class="mail-contact"><a href="mail_detail.html"><span class="reflection-author"></span></a></td> -->
+                                <td class="mail-subject"><a class="link-show-reflections-per-statement" href="#"><span class="reflection-statement-text"></span></a></td>
+                                <!-- <td class=""><span class="label label-primary pull-right">student reflection</span></td> -->
+                            </tr>
+                            </tbody>
+                            </table>
+                            </div>
+                        </div>
+                        <div class="pending-reflections-list reflections-list animated fadeInRight hide">
+                            <div class="mail-box-header">
+                                <h2>
+                                    Students Pending Reflections
+                                    <span class="ratio-students-reflections label label-danger pull-right"><span class="total-pending-reflections">0</span>/<span class="total-students-reflections">0</span></span>
+                                </h2>
+                            </div>
+                            <div class="mail-box client-list">
+                                <table class="table">
+                                    <tbody class="students-pending-reflections-table-body">
+                                        <tr class="student-pending-reflections-row">
+                                            <td class="client-avatar"><img alt="image" src="img/a2.jpg"></td>
+                                            <td><a data-toggle="tab" href="#contact-1" class="student-name client-link">Anthony Jackson</a>
+                                            <small class="student-email"></small></td>
+                                            <td><span class="affiliation-info">Bepid 2016</span></td>
+                                            <td><img class="personality16-img" src="img/esfj.png" style="height: 30px;"></td>
+                                            <td class="role">NONE</td>
+                                            <td class="personality">NONE</td>
+                                            <td class="strategy">NONE</td>
+                                            <td class="num-student-pending-reflections client-status"><span class="label label-danger pull-right">0</span></td>
+                                        </tr>
+                                    </tbody>                        
+                                </table>
+                            </div>                            
+                        </div>
+
+                        <div class="teachers-reflections-per-statement-list reflections-list animated fadeInRight">
+                            <div class="mail-box-header" style="position:relative; color: rgba(26, 179, 148, 0.95); background: white; padding: 10px 20px 50px 60px;">
+                                <div style="position: absolute;top: 15px;right: 20px;padding: 15px;border: solid 1px;border-radius: 57px;background: rgba(26, 179, 148, 0.95);color: white;font-size: medium;">
+                                    <span class="ratio-students-reflections pull-right"><span class="num-students-reflections">24</span>/<span class="total-statement-students-reflections">40</span></span>
+                                </div>
+                                <div class="mail-tools tooltip-demo m-t-md">
+
+
+                                    <h2 class="reflection-statement">
+                                        Teachers' Reflections
+                                    </h2>
+                                </div>
+                            </div>                        
+                            <div class="mail-box">
+                                <div class="teachers-reflections-items-body reflections-items-body mail-body">
+
+                                    <li class="teacher-reflection-item reflection-item list-group-item" style="position: relative; overflow: hidden; padding: 30px;">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <p style="text-align: justify; font-size: larger; background: white; padding: 30px; border-radius: 5px; width: 700px; line-height: 1.8em; font-size: 1.5em;"><span class="reflection-text">Lorem ipsum...</span></p>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="social-avatar pull-right" style="position: absolute; top: 0; right: 0;">
+                                                <a href="" style="float: right;">
+                                                    <img class="student-photo" alt="image" src="img/a1.jpg" style="width: 100px; height: 100px; padding:5px; background: white; border-radius: 100px; position: relative; right: 0px; top: 0px;">
+                                                </a>
+                                                <div class="media-body" style="float:right; margin-right: 10px; position: relative; top:40px; right: 0px;">
+                                                    <a class="link-student-reflection-author reflection-author" href="#">
+                                                        Andrew Williams
+                                                    </a>
+                                                    <small class="student-affiliation text-muted" style="float: right;"></small>
+                                                </div>
+                                            </div>                                            
+                                        </div>
+                                    </li>
+                                </div>
+                            </div>
+                        </div>                    
+
+                        <div class="reflections-per-statement-list reflections-list animated fadeInRight">
+                            <div class="mail-box-header" style="position:relative; color: rgba(26, 179, 148, 0.95); background: white; padding: 10px 20px 50px 60px;">
+                                <div style="position: absolute;top: 15px;right: 20px;padding: 15px;border: solid 1px;border-radius: 57px;background: rgba(26, 179, 148, 0.95);color: white;font-size: medium;">
+                                    <span class="ratio-students-reflections pull-right"><span class="num-students-reflections">24</span>/<span class="total-statement-students-reflections">40</span></span>
+                                </div>
+                                <div class="mail-tools tooltip-demo m-t-md">
+
+
+                                    <h2 class="reflection-statement" style="margin-right: 100px;">
+                                        Aldus PageMaker including versions of Lorem Ipsum.
+                                    </h2>
+                                    <div class="btn-group" style="position: absolute;left: 60px;bottom: 10px;">
+                                        <button class="btn-show-all-reflections btn-show-reflections btn btn-white btn-xs">All</button>
+                                        <button class="btn-show-done-reflections btn-show-reflections btn btn-primary btn-xs">Done</button>
+                                        <button class="btn-show-teachers-reflections btn-show-reflections btn btn-warning btn-xs">Teachers</button>
+                                        <button class="btn-show-pending-reflections btn-show-reflections btn btn-danger btn-xs">Pending</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mail-box">
+                                <div class="teachers-reflections-items-body reflections-items-body mail-body">
+                                </div>
+                                <div class="students-reflections-items-body reflections-items-body mail-body">
+                                    <li class="student-reflection-item reflection-item list-group-item" style="position: relative; overflow: hidden; padding: 30px;">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <p style="text-align: justify; font-size: larger; background: white; padding: 30px; border-radius: 5px; width: 700px; line-height: 1.8em; font-size: 1.5em;"><span class="reflection-text">Lorem ipsum...</span></p>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="social-avatar pull-right" style="position: absolute; top: 0; right: 0;">
+                                                <a href="" style="float: right;">
+                                                    <img class="student-photo" alt="image" src="img/a1.jpg" style="width: 100px; height: 100px; padding:5px; background: white; border-radius: 100px; position: relative; right: 0px; top: 0px;">
+                                                </a>
+                                                <div class="media-body" style="float:right; margin-right: 10px; position: relative; top:40px; right: 0px;">
+                                                    <a class="link-student-reflection-author reflection-author" href="#">
+                                                        Andrew Williams
+                                                    </a>
+                                                    <small class="student-affiliation text-muted" style="float: right;"></small>
+                                                </div>
+                                            </div>                                            
+                                        </div>
+                                    </li>
+                                </div>
+                                <div class="mail-body text-right tooltip-demo">
+                                    <button type="button" data-toggle="modal" data-target="#new-teacher-reflection-modal" class="btn-new-teacher-reflection btn btn-block btn-outline btn-primary">I have learned from these reflections that... </button>                                        
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                        </div>
+
+                        <div class="student-profile reflections-list row animated fadeInRight">
+                            <div class="col-md-4">
+                                <div class="ibox float-e-margins">
+                                    <div class="ibox-title">
+                                        <h5>Profile Detail</h5>
+                                    </div>
+                                    <div>
+                                        <div class="ibox-content no-padding border-left-right">
+                                            <img alt="image" class="student-profile-img img-responsive" src="img/profile_big.jpg">
+                                        </div>
+                                        <div class="ibox-content profile-content">
+                                            <h4><strong class="student-profile-name">Monica Smith</strong></h4>
+                                            <p><i class="fa fa-map-marker"></i> <span class="student-profile-affiliation"></span></p>
+                                            <!-- <h5> -->
+                                                <!-- About me -->
+                                            <!-- </h5> -->
+                                            <!-- <p> -->
+                                                <!-- Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitat. -->
+                                            <!-- </p> -->
+                                            <div class="row m-t-lg">
+                                                <div class="col-md-6">
+                                                    <span class="bar">5,3,9,6,5,9,7,3,5,2</span>
+                                                    <h5><strong class="student-profile-num-done-reflections">169</strong> Reflections</h5>
+                                                </div>
+                                                <!-- <div class="col-md-4"> -->
+                                                    <!-- <span class="line">5,3,9,6,5,9,7,3,5,2</span> -->
+                                                    <!-- <h5><strong>28</strong> Following</h5> -->
+                                                <!-- </div> -->
+                                                <div class="col-md-6">
+                                                    <span class="bar">5,3,2,-1,-3,-2,2,3,5,2</span>
+                                                    <h5><strong class="student-profile-num-pending-reflections">240</strong> Pending Reflections</h5>
+                                                </div>
+                                            </div>
+
+                                            <div class="row m-t-lg">
+                                                <div class="col-md-3">
+                                                    <img class="personality-img" src="img/estp.png">
+                                                </div>
+                                                <div class="col-md-9">
+                                                    <div class="row">profile: <span class="student-profile">Entrepreneur</span></div>
+                                                    <div class="row">role: <span class="student-role">Analyst</span></div>
+                                                    <div class="row">strategy: <span class="student-strategy">Social engager</span></div>
+                                                </div>
+                                            </div>
+                                            <!-- <div class="user-button"> -->
+                                                <!-- <div class="row"> -->
+                                                    <!-- <div class="col-md-12"> -->
+                                                        <!-- <button type="button" class="btn btn-primary btn-sm btn-block"><i class="fa fa-envelope"></i> Send Message</button> -->
+                                                    <!-- </div> -->
+                                                <!-- </div> -->
+                                            <!-- </div> -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-8">
+                                <div class="ibox float-e-margins">
+                                    <div class="ibox-title">
+                                        <h5>Activities</h5>
+                                        <div class="pull-right btn-group">
+                                            <button class="btn-student-profile-show-all-reflections btn-student-profile-show btn btn-white btn-xs">All</button>
+                                            <button class="btn-student-profile-show-done-reflections btn-student-profile-show btn btn-primary btn-xs">Done</button>
+                                            <button class="btn-student-profile-show-pending-reflections btn-student-profile-show btn btn-danger btn-xs">Pending</button>
+                                        </div>                                        
+                                    </div>
+                                    <div class="ibox-content">
+                                        <div class="student-reflections-timeline activities-timeline">
+                                            <div class="separator-reflection-timeline-item reflection-timeline-item timeline-item">
+                                                <div class="row">
+                                                    <div class="col-xs-3 date">
+                                                    </div>
+                                                    <div class="col-xs-9 content">
+                                                        <h2 class="cbl-sprint-separator-name text-center">Sprint#0</h2>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="video-reflection-timeline-item reflection-timeline-item timeline-item">
+                                                <div class="row">
+                                                    <div class="col-xs-3 date">
+                                                        <i class="fa fa-file-video-o"></i>
+                                                        <!-- 7:00 am -->
+                                                        <!-- <br/> -->
+                                                        <!-- <small class="text-navy">3 hour ago</small> -->
+                                                    </div>
+                                                    <div class="col-xs-9 content">
+                                                        <p class="m-b-xs"><strong class="reflection-statement"></strong></p>
+                                                        <a class="video-reflection-link" href="https://www.dropbox.com/s/cuhxf87apf637w5/innovatorsmaker-cbl-reflections.mov?dl=0" target="_blank"><span class="fa fa-play-circle-o fa-4x"></span></a>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="pending-new-team-timeline-item reflection-timeline-item timeline-item">
+                                                <div class="row">
+                                                    <div class="col-xs-3 date">
+                                                        <i class="fa fa-file-text"></i>
+                                                    </div>
+                                                    <div class="col-xs-9 content">
+                                                        <p class="m-b-xs"><strong class="activity-statement"></strong></p>
+                                                        <p class="reflection-text">
+                                                            <span class="label label-danger">Pending team</span>
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                <div class="pending-big-idea-item timeline-item">
+                                    <div class="row">
+                                        <div class="col-xs-3 date">
+                                            <i class="fa fa-file-text"></i>
+                                        </div>
+                                        <div class="col-xs-9 content">
+                                            <p class="m-b-xs"><strong class="activity-statement"></strong></p>
+                                            <p class="reflection-text">
+                                                <span class="label label-danger">Pending big idea</span>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div class="big-idea-item timeline-item">
+                                    <div class="row">
+                                        <div class="col-xs-3 date">
+                                            <i class="fa fa-users"></i>
+                                        </div>
+                                        <div class="col-xs-9 content" style="position:relative; max-height: 350px; overflow: hidden; padding: 0;">
+                                            <div class="img-wrapper" style="position: absolute;height: 1280px;z-index: 0;">
+                                                <img class="team-members-background-img" src="img/office-co-working_385-19323250.jpg" style="position: absolute; height: 100%;">
+                                            </div>                                       
+                                            <p class="team-name-p m-b-xs"><strong class="team-name">Big Chicken</strong><i class="challenge-name pull-right" style="margin-right: 40px;"></i></p>
+                                            <div class="panel panel-default" style="">
+                                                <div class="panel-body" style="
+                                                    border: solid 1px #fff;
+                                                    z-index: 1000;
+                                                    position: relative;
+                                                    color: #fff;
+                                                    margin: 20px;
+                                                    border-radius: 5px;
+                                                    background: rgba(0,0,0,0.42);">
+                                                    <img class="big-idea-icon pull-left" src="img/Icones-CBL/Big-Idea.png" style="height: 50px; margin-right: 20px;">
+                                                    <span> Big Idea </span>
+                                                    <h3><span class="big-idea-text font-bold">Educação &amp; Turismo</span>
+                                                    <div class="pull-right" style="position: absolute; right: 0;">
+                                                        <a href="#" class="big-idea-img-file-link" target="_blank" style="color:#fff; margin-right: 20px;"><span class="fa fa-file-image-o"></span>
+                                                        </a>
+                                                        <a href="#" class="big-idea-pdf-file-link" target="_blank" style="color:#fff; margin-right: 20px;"><span class="fa fa-file-pdf-o"></span>
+                                                        </a>
+                                                        <a href="#" class="big-idea-presentation-file-link" target="_blank" style="color:#fff; margin-right: 20px;"><span class="fa fa-file-powerpoint-o"></span></a>
+                                                    </div></h3>  
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                            <div class="pending-reflection-timeline-item reflection-timeline-item timeline-item">
+                                                <div class="row">
+                                                    <div class="col-xs-3 date">
+                                                        <i class="fa fa-file-text"></i>
+                                                    </div>
+                                                    <div class="col-xs-9 content">
+                                                        <p class="m-b-xs"><strong class="reflection-statement"></strong></p>
+                                                        <p class="reflection-text">
+                                                            <span class="label label-danger">Pending Reflection</span>
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                <div class="team-timeline-item timeline-item">
+                                    <div class="row">
+                                        <div class="col-xs-3 date">
+                                            <i class="fa fa-users"></i>
+                                        </div>
+                                        <div class="col-xs-9 content" style="position:relative; max-height: 350px; overflow: hidden; padding: 0;">
+                                            <div class="img-wrapper" style="position: absolute;height: 1280px;">
+                                                <img class="team-members-background-img" src="img/office-co-working_385-19323250.jpg" style="position: absolute; height: 100%;">
+                                            </div>                                        
+                                            <p class="team-name-p m-b-xs"><strong class="team-name">Big Chicken</strong><i class="challenge-name pull-right" style="margin-right: 40px;"></i></p>
+                                            <div>
+                                                <div class="team-members row">
+                                                    <div class="team-member col-md-3" style="height:150px; background-color: rgba(0, 0, 0, 0.22);
+">
+                                                        <div class="row text-center">
+                                                            <div class="col-md-12">
+                                                                <img alt="member" class="member-photo img-circle" src="img/a1.jpg" style="border:solid #fff;"> 
+                                                            </div>
+                                                        </div>
+                                                        <div class="row text-center">
+                                                            <div class="member-name col-md-12" style="color:#fff; font-weight: 700;">Cristiano Araújo</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                            <button class="btn btn-primary btn-block m"><i class="fa fa-arrow-down"></i> Show More</button>
+
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="footer">
+                <div class="pull-right">10GB of <strong>250GB</strong> Free.</div>
+                <div>
+                    <strong>Copyright</strong> Example Company &copy; 2014-2015
+                </div>
+            </div>
+        </div>
+
+        <div class="modal inmodal" id="new-teacher-reflection-modal" tabindex="-1" role="dialog" aria-hidden="true" student-reflection-statement-id="" teacher-reflection-statement-id="P34QuDoziO">
+            <div class="modal-dialog">
+                <div class="modal-content animated">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                        <h4 class="modal-title">Teacher Reflection</h4>
+                        <small class="font-bold">I have learned from these reflections that...</small>
+                    </div>
+                    <div class="new-reflection-modal-body modal-body">
+                        <textarea class="new-reflection-textarea" rows="10"placeholder="in this activity..."></textarea>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
+                        <button id="btn-save-new-teacher-reflection" type="button" class="btn btn-primary">send reflection</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal inmodal" id="new-reflection-statement-modal" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content animated">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                        <h4 class="modal-title">New Reflection</h4>
+                        <small class="font-bold">Propose a new reflection to your class</small>
+                    </div>
+                    <div class="new-reflection-modal-body modal-body">
+                        <textarea class="new-reflection-statement-textarea new-reflection-textarea" rows="5" placeholder="in this activity..."></textarea>
+                    </div>
+                    <div class="modal-footer">
+                        <div class="progress progress-small">
+                            <div style="width: 0%;" class="progress-bar"></div>
+                        </div>
+                        <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
+                        <button id="btn-save-new-reflection-statement" type="button" class="btn btn-primary">Save reflection</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal inmodal" id="new-reflection-statement-modal" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content animated">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                        <h4 class="modal-title">New Reflection</h4>
+                        <small class="font-bold">Propose a new reflection to your class</small>
+                    </div>
+                    <div class="new-reflection-modal-body modal-body">
+                        <textarea class="new-reflection-statement-textarea new-reflection-textarea" rows="5" placeholder="in this activity..."></textarea>
+                    </div>
+                    <div class="modal-footer">
+                        <div class="progress progress-small">
+                            <div style="width: 0%;" class="progress-bar"></div>
+                        </div>
+                        <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
+                        <button id="btn-save-new-reflection-statement" type="button" class="btn btn-primary">Save reflection</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal inmodal" id="students-emails-modal" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content animated">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                        <h4 class="modal-title">Students emails</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p class="students-emails-list"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mainly scripts -->
+    <script src="js/jquery-2.1.1.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/plugins/metisMenu/jquery.metisMenu.js"></script>
+    <script src="js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+
+    <!-- Custom and plugin javascript -->
+    <script src="js/inspinia.js"></script>
+    <script src="js/plugins/pace/pace.min.js"></script>
+
+    <!-- Peity -->
+    <script src="js/plugins/peity/jquery.peity.min.js"></script>
+
+    <!-- Peity -->
+    <script src="js/demo/peity-demo.js"></script>
+
+    <script type="text/javascript" src="js/underscore-1.8.3.js"></script>
+
+    <script type="text/javascript" src="http://www.parsecdn.com/js/parse-1.2.18.min.js"></script>
+    <script type="text/javascript">
+        Parse.initialize("YALt9tjcUpW61Hz5aIPYbehm9uCgh5NXXRVM18T6", "5wwhJ6hfqu8cG4s6jMKMQWrmImiQKDTE9trvgL6x");
+    </script>
+
+    <script type="text/javascript" src="js/innovatorsmaker-cbl.js"></script>
+
+    <script type="text/javascript">
+        var totalNumDoneStudentsReflections = 0;
+        var totalStudentsReflections = 0;
+        var totalTeachersReflections = 0;
+        var totalReflectionStatements = 0;
+
+        var $pendingNewTeamTimelineItemRef = $('.pending-new-team-timeline-item').detach();
+        var $reflectionStatementRef = $('.reflection-row').detach();
+        var $reflectionsPerStatementRef = $('.reflections-per-statement-list').detach();
+        var $sprintTimelineSeparatorRef = $('.separator-reflection-timeline-item').detach();
+        var $videoReflectionTimelineItemRef = $('.video-reflection-timeline-item').detach();
+        var $teamTimelineItemRef = $('.team-timeline-item').detach();
+        var $teamMemberRef = $teamTimelineItemRef.find('.team-member').detach();
+        var $reflectionTimelineItemRef = $('.reflection-timeline-item').detach();
+        var $pendingBigIdeaTimelineItemRef = $('.pending-big-idea-item').detach();
+        var $bigIdeaTimelineItemRef = $('.big-idea-item').detach();
+
+        $studentPendingReflectionsRowRef = $('.student-pending-reflections-row').detach();
+        $teacherReflectionItemRef = $('.teacher-reflection-item').detach();
+
+        $navCBLClassRef = $('.nav-cbl-class-name').detach();
+        $navCBLSprintRef = $('.nav-cbl-sprint-name').detach();
+
+
+        function setup() {
+            var CBLSprint = Parse.Object.extend('CBLSprint')
+            sprint = new CBLSprint()
+            sprint.set('name', 'Sprint#0')
+            sprint.set('isActive', true)
+            sprint.set('cblClass', currentCBLClass)
+            sprint.save().then(function(s) {
+                currentCBLClass.set('currentCBLSprint', s);
+                currentCBLClass.addUnique('cblSprints', s)
+                return currentCBLClass.save();
+            }).then(function() {
+                alert(0)
+            })
+        }
+
+        function displayReflectionStatementsList() {
+            $('.reflections-list').addClass('hide');
+            $('.reflections-statements-list').removeClass('hide');
+        }
+
+        function displayStudentsReflectionsLists() {
+            $('.reflections-list').addClass('hide');
+            $('.reflections-per-statement-list').removeClass('hide');
+        }
+
+        function displayPendingReflectionsList() {
+            $('.reflections-list').addClass('hide');
+            $('.pending-reflections-list').removeClass('hide');
+
+            $('.students-pending-reflections-table-body').empty();
+
+            studentsPendencies = {};
+            _.each(students, function(student) {
+                studentsPendencies[student.id] = [];
+            })
+
+            var ReflectionStatement = Parse.Object.extend('ReflectionStatement');
+            var reflectionQuery = new Parse.Query(ReflectionStatement);
+            reflectionQuery.equalTo('cblClass', currentCBLClass);
+            reflectionQuery.include('reflections');
+            reflectionQuery.find().then(function(statements) {
+                _.each(statements, function(statement) {
+                    var reflections = statement.get('reflections');
+                    _.each(reflections, function(reflection) {
+                        if (!reflection.get('isDone')){
+                            studentsPendencies[reflection.get('author').id].push(reflection);
+                        }
+                    })                    
+                })
+
+                _.each(students, function(student) {
+                    var personality16 = student.get('personality16');
+
+                    if (personality16 && personality16 != '') {
+                        var personalityPrefix = personality16.substring(0,4);
+                        // if (studentsPendencies[student.id].length > 0) {
+                            $studentPendingReflectionsRow = $studentPendingReflectionsRowRef.clone();
+                            var $personalityImg = $studentPendingReflectionsRow.find('.personality16-img');
+                            $personalityImg.attr('src', 'img/' + personalityPrefix + '.png');
+
+                            switch(personality16) {
+                                case('none') : {
+                                    break;
+                                }
+                                case('intj-a') : {
+                                    $studentPendingReflectionsRow.find('.role').text('Analyst');
+                                    $studentPendingReflectionsRow.find('.strategy').text('Confident Individualism');
+                                    $studentPendingReflectionsRow.find('.personality').text('Architect');
+                                    break;
+                                }
+                                case('intp-a') : {
+                                    $studentPendingReflectionsRow.find('.role').text('Analyst');
+                                    $studentPendingReflectionsRow.find('.strategy').text('Confident Individualism');
+                                    $studentPendingReflectionsRow.find('.personality').text('Logician');
+                                    break;
+                                }
+                                case('entj-a') : {
+                                    $studentPendingReflectionsRow.find('.role').text('Analyst');
+                                    $studentPendingReflectionsRow.find('.strategy').text('People Mastery');
+                                    $studentPendingReflectionsRow.find('.personality').text('Commander');
+                                    break;
+                                }
+                                case('entp-a') : {
+                                    $studentPendingReflectionsRow.find('.role').text('Analyst');
+                                    $studentPendingReflectionsRow.find('.strategy').text('People Mastery');
+                                    $studentPendingReflectionsRow.find('.personality').text('Debater');
+                                    break;
+                                }
+                                case('intj-t') : {
+                                    $studentPendingReflectionsRow.find('.role').text('Analyst');
+                                    $studentPendingReflectionsRow.find('.strategy').text('Constant Improvement');
+                                    $studentPendingReflectionsRow.find('.personality').text('Architect');
+                                    break;
+                                }
+                                case('intp-t') : {
+                                    $studentPendingReflectionsRow.find('.role').text('Analyst');
+                                    $studentPendingReflectionsRow.find('.strategy').text('Constant Improvement');
+                                    $studentPendingReflectionsRow.find('.personality').text('Logician');
+                                    break;
+                                }
+                                case('entj-t') : {
+                                    $studentPendingReflectionsRow.find('.role').text('Analyst');
+                                    $studentPendingReflectionsRow.find('.strategy').text('Social Engagement');
+                                    $studentPendingReflectionsRow.find('.personality').text('Commander');
+                                    break;
+                                }
+                                case('entp-t') : {
+                                    $studentPendingReflectionsRow.find('.role').text('Analyst');
+                                    $studentPendingReflectionsRow.find('.strategy').text('Social Engagement');
+                                    $studentPendingReflectionsRow.find('.personality').text('Debater');
+                                    break;
+                                }
+
+                                case('infj-a') : {
+                                    $studentPendingReflectionsRow.find('.role').text('Diplomat');
+                                    $studentPendingReflectionsRow.find('.strategy').text('Confident Individualism');
+                                    $studentPendingReflectionsRow.find('.personality').text('Advocate');
+                                    break;
+                                }
+                                case('infp-a') : {
+                                    $studentPendingReflectionsRow.find('.role').text('Diplomat');
+                                    $studentPendingReflectionsRow.find('.strategy').text('Confident Individualism');
+                                    $studentPendingReflectionsRow.find('.personality').text('Mediator');
+                                    break;
+                                }
+                                case('enfj-a') : {
+                                    $studentPendingReflectionsRow.find('.role').text('Diplomat');
+                                    $studentPendingReflectionsRow.find('.strategy').text('People Mastery');
+                                    $studentPendingReflectionsRow.find('.personality').text('Protagonist');
+                                    break;
+                                }
+                                case('enfp-a') : {
+                                    $studentPendingReflectionsRow.find('.role').text('Diplomat');
+                                    $studentPendingReflectionsRow.find('.strategy').text('People Mastery');
+                                    $studentPendingReflectionsRow.find('.personality').text('Campaigner');
+                                    break;
+                                }
+                                case('infj-t') : {
+                                    $studentPendingReflectionsRow.find('.role').text('Diplomat');
+                                    $studentPendingReflectionsRow.find('.strategy').text('Constant Improvement');
+                                    $studentPendingReflectionsRow.find('.personality').text('Advocate');
+                                    break;
+                                }
+                                case('infp-t') : {
+                                    $studentPendingReflectionsRow.find('.role').text('Diplomat');
+                                    $studentPendingReflectionsRow.find('.strategy').text('Constant Improvement');
+                                    $studentPendingReflectionsRow.find('.personality').text('Mediator');
+                                    break;
+                                }
+                                case('enfj-t') : {
+                                    $studentPendingReflectionsRow.find('.role').text('Diplomat');
+                                    $studentPendingReflectionsRow.find('.strategy').text('Social Engagement');
+                                    $studentPendingReflectionsRow.find('.personality').text('Protagonist');
+                                    break;
+                                }
+                                case('enfp-t') : {
+                                    $studentPendingReflectionsRow.find('.role').text('Diplomat');
+                                    $studentPendingReflectionsRow.find('.strategy').text('Social Engagement');
+                                    $studentPendingReflectionsRow.find('.personality').text('Campaigner');
+                                    break;
+                                }
+
+                                case('istj-a') : {
+                                    $studentPendingReflectionsRow.find('.role').text('Sentinel');
+                                    $studentPendingReflectionsRow.find('.strategy').text('Confident Individualism');
+                                    $studentPendingReflectionsRow.find('.personality').text('Logistician');
+                                    break;
+                                }
+                                case('isfj-a') : {
+                                    $studentPendingReflectionsRow.find('.role').text('Sentinel');
+                                    $studentPendingReflectionsRow.find('.strategy').text('Confident Individualism');
+                                    $studentPendingReflectionsRow.find('.personality').text('Defender');
+                                    break;
+                                }
+                                case('estj-a') : {
+                                    $studentPendingReflectionsRow.find('.role').text('Sentinel');
+                                    $studentPendingReflectionsRow.find('.strategy').text('People Mastery');
+                                    $studentPendingReflectionsRow.find('.personality').text('Executive');
+                                    break;
+                                }
+                                case('esfj-a') : {
+                                    $studentPendingReflectionsRow.find('.role').text('Sentinel');
+                                    $studentPendingReflectionsRow.find('.strategy').text('People Mastery');
+                                    $studentPendingReflectionsRow.find('.personality').text('Consul');
+                                    break;
+                                }
+                                case('istj-t') : {
+                                    $studentPendingReflectionsRow.find('.role').text('Sentinel');
+                                    $studentPendingReflectionsRow.find('.strategy').text('Constant Improvement');
+                                    $studentPendingReflectionsRow.find('.personality').text('Logistician');
+                                    break;
+                                }
+                                case('isfj-t') : {
+                                    $studentPendingReflectionsRow.find('.role').text('Sentinel');
+                                    $studentPendingReflectionsRow.find('.strategy').text('Constant Improvement');
+                                    $studentPendingReflectionsRow.find('.personality').text('Defender');
+                                    break;
+                                }
+                                case('estj-t') : {
+                                    $studentPendingReflectionsRow.find('.role').text('Sentinel');
+                                    $studentPendingReflectionsRow.find('.strategy').text('Social Engagement');
+                                    $studentPendingReflectionsRow.find('.personality').text('Executive');
+                                    break;
+                                }
+                                case('esfj-t') : {
+                                    $studentPendingReflectionsRow.find('.role').text('Sentinel');
+                                    $studentPendingReflectionsRow.find('.strategy').text('Social Engagement');
+                                    $studentPendingReflectionsRow.find('.personality').text('Consul');
+                                    break;
+                                }
+
+                                case('istp-a') : {
+                                    $studentPendingReflectionsRow.find('.role').text('Explorer');
+                                    $studentPendingReflectionsRow.find('.strategy').text('Confident Individualism');
+                                    $studentPendingReflectionsRow.find('.personality').text('Virtuoso');
+                                    break;
+                                }
+                                case('isfp-a') : {
+                                    $studentPendingReflectionsRow.find('.role').text('Explorer');
+                                    $studentPendingReflectionsRow.find('.strategy').text('Confident Individualism');
+                                    $studentPendingReflectionsRow.find('.personality').text('Adventurer');
+                                    break;
+                                }
+                                case('estp-a') : {
+                                    $studentPendingReflectionsRow.find('.role').text('Explorer');
+                                    $studentPendingReflectionsRow.find('.strategy').text('People Mastery');
+                                    $studentPendingReflectionsRow.find('.personality').text('Entrepreneur');
+                                    break;
+                                }
+                                case('esfp-a') : {
+                                    $studentPendingReflectionsRow.find('.role').text('Explorer');
+                                    $studentPendingReflectionsRow.find('.strategy').text('People Mastery');
+                                    $studentPendingReflectionsRow.find('.personality').text('Entertainer');
+                                    break;
+                                }
+                                case('istp-t') : {
+                                    $studentPendingReflectionsRow.find('.role').text('Explorer');
+                                    $studentPendingReflectionsRow.find('.strategy').text('Constant Improvement');
+                                    $studentPendingReflectionsRow.find('.personality').text('Virtuoso');
+                                    break;
+                                }
+                                case('isfp-t') : {
+                                    $studentPendingReflectionsRow.find('.role').text('Explorer');
+                                    $studentPendingReflectionsRow.find('.strategy').text('Constant Improvement');
+                                    $studentPendingReflectionsRow.find('.personality').text('Adventurer');
+                                    break;
+                                }
+                                case('estp-t') : {
+                                    $studentPendingReflectionsRow.find('.role').text('Explorer');
+                                    $studentPendingReflectionsRow.find('.strategy').text('Social Engagement');
+                                    $studentPendingReflectionsRow.find('.personality').text('Entrepreneur');
+                                    break;
+                                }
+                                case('esfp-t') : {
+                                    $studentPendingReflectionsRow.find('.role').text('Explorer');
+                                    $studentPendingReflectionsRow.find('.strategy').text('Social Engagement');
+                                    $studentPendingReflectionsRow.find('.personality').text('Entertainer');
+                                    break;
+                                }
+                            }
+
+                        // }                        
+                    }else {
+                        $studentPendingReflectionsRow = $studentPendingReflectionsRowRef.clone();
+                        var $personalityImg = $studentPendingReflectionsRow.find('.personality16-img');
+                        $personalityImg.attr('src', 'img/' + personalityPrefix + '.png');
+
+                        $studentPendingReflectionsRow.find('.role').text('NOT DEFINED');
+                        $studentPendingReflectionsRow.find('.strategy').text('NOT DEFINED');
+                        $studentPendingReflectionsRow.find('.personality').text('NOT DEFINED');
+                    }
+
+                    if (student.get('photo')) {
+                        $studentPendingReflectionsRow.find('.client-avatar').find('img').attr('src', student.get('photo').url());
+                    }
+                    $studentPendingReflectionsRow.attr('student-id', student.id);
+                    $studentPendingReflectionsRow.find('.student-name').text(student.get('name'));
+                    $studentPendingReflectionsRow.find('.affiliation-info').text(student.get('affiliation'));
+                    $studentPendingReflectionsRow.find('.student-email').text(student.get('email'));
+                    $studentPendingReflectionsRow.find('.num-student-pending-reflections').text(studentsPendencies[student.id].length);
+                    $studentPendingReflectionsRow.appendTo('.students-pending-reflections-table-body');                            
+
+                })
+
+                $('.student-name').click(function() {
+                    var studentId = $(this).parents('.student-pending-reflections-row').attr('student-id');
+                    displayStudentProfile(studentId);
+                })                
+            })
+        }
+
+        function displayTeachersReflectionsPerStatement(statement) {
+            $('.reflections-list').addClass('hide');
+
+            var Reflection = Parse.Object.extend('Reflection');
+            var query = new Parse.Query(Reflection);
+            query.exists('teacherReflectionStatement');
+            query.include('author');
+            query.find().then(function(reflections){
+                $teacherReflectionItems = $('.teachers-reflections-per-statement-list').find('.teachers-reflections-items-body');
+                $teacherReflectionItems.empty();
+                $('.num-teachers-reflections').text(reflections.length);
+                _.each(reflections, function(reflection) {
+                    $teacherReflectionItem = $teacherReflectionItemRef.clone();
+                    $teacherReflectionItem.find('.reflection-author').text(reflection.get('author').get('name'));
+                    $teacherReflectionItem.find('.reflection-text').text(reflection.get('text'));
+                    $teacherReflectionItem.appendTo($teacherReflectionItems);
+                })        
+                $('.teachers-reflections-per-statement-list').removeClass('hide');                
+            })
+        }
+
+        function displayReflectionsPerStatement(statement) {
+            var $reflectionsPerStatement = $reflectionsPerStatementRef.clone();
+            var $studentReflectionItemRef = $reflectionsPerStatement.find('.student-reflection-item').detach();
+            // var $teacherReflectionItemRef = $reflectionsPerStatement.find('.teacher-reflection-item').detach();
+            $reflectionsPerStatement.find('.reflection-statement').text(statement.get('text'));
+            $reflectionsPerStatement.appendTo($('.reflections-panel'));
+
+            $studentsReflectionsItemsBody = $reflectionsPerStatement.find('.students-reflections-items-body');
+
+            $reflectionsPerStatement.attr('student-reflection-statement-id', statement.id);
+            $reflectionsPerStatement.attr('id', 'student-reflection-statement-id-' + statement.id);
+            var reflections = statement.get('teachersReflections');
+            for (var i = 0; i < reflections.length; i++) {
+                var $reflectionItem = $teacherReflectionItemRef.clone();
+                $reflectionItem.find('.reflection-author').text(reflections[i].get('author').get('name'));
+                $reflectionItem.find('.reflection-text').text(reflections[i].get('text'));
+                $reflectionItem.attr('id', 'teacher-reflection-item-' + reflections[i].id);
+
+                $reflectionItem.appendTo($studentsReflectionsItemsBody);
+            }
+            totalTeachersReflections += reflections.length;
+            $('.total-teachers-reflections').text(totalTeachersReflections);
+
+            reflections = statement.get('reflections');
+            var numDoneReflections = 0;
+            $reflectionsPerStatement.find('.total-students-reflections').text(reflections.length);
+
+            var studentsReflectionsDict = {};
+            for (var i = 0; i < reflections.length; i++) {
+                studentsReflectionsDict[reflections[i].get('author').id] = reflections[i];
+            }
+
+
+            _.each(students, function(student) {
+                var reflection = studentsReflectionsDict[student.id];
+                var $reflectionItem = $studentReflectionItemRef.clone();
+
+                $reflectionItem.attr('student-id', student.id);
+                $reflectionItem.find('.student-affiliation').text(reflection.get('author').get('affiliation'));
+
+                var photo = reflection.get('author').get('photo');
+                if (photo) {
+                    $reflectionItem.find('.student-photo').attr('src', photo.url());
+                }
+                $reflectionAuthor = $reflectionItem.find('.reflection-author');
+                $reflectionAuthor.text(reflection.get('author').get('name'));
+
+                var reflectionText = reflection.get('text');
+                if (!reflection.get('isDone')) {
+                    $reflectionItem.addClass('reflection-pending');
+                    $reflectionAuthor.removeClass('text-info');
+                    $reflectionAuthor.addClass('text-danger');
+                    $reflectionItem.find('p').remove();
+                }else {
+                    if (!reflection.get('isVideo')) {
+                        $reflectionItem.find('.reflection-text').text(reflection.get('text'));
+                    }else {
+                        $videoReflectionLink = $('<a class="video-reflection-link pull-right" href="" target="_blank"><span class="fa fa-play-circle-o fa-3x"></span></a>').clone();
+
+                        $videoReflectionLink.attr('href', reflection.get('text'));
+                        $reflectionItem.find('p').remove();
+                        $videoReflectionLink.prependTo($reflectionItem.find('.social-avatar'));
+                    }
+                }
+
+                $reflectionItem.appendTo($studentsReflectionsItemsBody);
+                if (reflection.get('isDone')) {
+                    numDoneReflections++;
+                }
+            })
+
+            totalNumDoneStudentsReflections += numDoneReflections;
+            totalStudentsReflections += reflections.length; 
+            totalPendingReflections = totalStudentsReflections - totalNumDoneStudentsReflections;           
+            $reflectionsPerStatement.find('.num-students-reflections').text(numDoneReflections);
+            $('.total-statement-students-reflections').text(reflections.length);
+            $('.total-students-reflections').text(totalStudentsReflections);
+            $('.total-done-students-reflections').text(totalNumDoneStudentsReflections);
+            $('.total-pending-reflections').text(totalPendingReflections);  
+            $('.reflections-per-statement-list').removeClass('hide');
+        }
+
+        function displayReflectionStatements(statements) {
+            if (statements.length > 0) {
+                $('.num-student-reflections-statements').text(statements.length);
+                for (i = 0; i < statements.length; i++) {
+                    $reflectionStatement = $reflectionStatementRef.clone();
+                    $reflectionStatement.find('a').attr('student-reflection-statement-id', statements[i].id);
+                    $reflectionStatement.find('.reflection-statement-text').text(statements[i].get('text'));
+                    $reflectionStatement.find('.reflection-author').text(statements[i].get('author').get('name'));
+                    $reflectionStatement.attr('reflectionId', statements[i].id);
+                    $reflectionStatement.appendTo($('.reflections-box').find('tbody'));
+                }
+
+                $('.link-show-reflections-per-statement').click(function() {
+                    var reflectionStatementId = $(this).attr('student-reflection-statement-id');
+                    $('.reflections-per-statement-list').addClass('hide');
+                    $('.reflections-statements-list').addClass('hide');
+                    $('.reflections-per-statement-list[student-reflection-statement-id=' + reflectionStatementId + ']').removeClass('hide');
+                })
+
+                $('.total-statement-reflections').text(statements.length);
+
+                $('.btn-save-reflection').click(function() {
+                    var firstName = $(this).parents('form').find('#inputFirstName').val();
+                    var lastName = $(this).parents('form').find('#inputLastName').val();
+                    var email = $(this).parents('form').find('#inputEmail').val();
+                    var password = "123";
+                    var text = $(this).parents('form').find('#inputReflectionText').val();
+                    var reflectionStatementId = $(this).parents('.social-feed-box').attr('reflectionId');
+                    saveReflection(email, firstName, lastName, text, password, reflectionStatementId).then(function() {
+                        updateReflectionStatement(reflectionStatementId);
+                    });
+
+                    $(this).parents('form').find('#inputEmail').focus();
+                })
+
+                $('.social-feed-box #inputEmail').change(function() {
+                    $socialFeedBox = $(this).parents('.social-feed-box');
+                    var reflectionStatementId = $(this).parents('.social-feed-box').attr('reflectionId');
+
+                    var email = $(this).val().trim();
+
+                    var userQuery = new Parse.Query(Parse.User);
+                    userQuery.equalTo('username', email);
+                    userQuery.find().then(function(users) {
+                        if (users.length > 0) {
+                            var user = users[0];
+                            $socialFeedBox.find('#inputFirstName').val(user.get('firstName'));
+                            $socialFeedBox.find('#inputLastName').val(user.get('lastName'));
+                        }
+                        $socialFeedBox.find('.user-exists').removeClass('hide');
+                    })
+                })
+            }
+        }
+
+        function saveReflection(email, firstName, lastName, text, password, reflectionId) {
+            var user = new Parse.User();
+
+            var userQuery = new Parse.Query(Parse.User);
+            userQuery.equalTo('username', email);
+
+
+            user.set("username", email);
+            user.set("password", password);
+            user.set("email", email);
+            user.set("firstName", firstName);
+            user.set("lastName", lastName);
+
+            return userQuery.find().then(function(users) {
+                if (users.length > 0) {
+                    var usr = users[0];
+                    var ReflectionStatement = Parse.Object.extend('ReflectionStatement');
+                    var query = new Parse.Query(ReflectionStatement);
+                    var reflectionStatement
+                    query.get(reflectionId).then(function(statement) {
+                        reflectionStatement = statement;
+
+                        var Reflection = Parse.Object.extend("Reflection");
+                        var reflectionQuery = new Parse.Query(Reflection);
+                        reflectionQuery.equalTo('reflectionStatement', statement);
+                        reflectionQuery.equalTo('author', usr);
+                        return reflectionQuery.find().then(function(reflections) {
+                            if (reflections.length > 0) {
+                                // var reflection = new Reflection();
+                                var reflection = reflections[0];
+                                // reflection.set('author', usr);
+                                reflection.set('text', text);
+                                // reflection.set('reflectionStatement', reflectionStatement);
+                                if (text != '') {
+                                    reflection.set('isDone', true);
+                                    reflection.set('isAccepted', true);
+                                }else {
+                                    reflection.set('isDone', false);
+                                    reflection.set('isAccepted', false);                            
+                                }
+
+                                return reflection.save();
+                            }
+                        }) 
+                    }).then(function(reflect) { 
+                        $('#inputFirstName').val('');
+                        $('#inputLastName').val('');
+                        $('#inputEmail').val('');
+                        $('#inputReflectionText').val('');
+                        $('.user-exists').addClass('hide');
+                        return updateReflectionStatement(reflectionStatement.id);                        
+                    })
+                }else {
+                    user.signUp(null, {
+                      success: function(user) {
+                        var usr = Parse.User.current();                
+                        if (usr) {
+                            $('#inputFirstName').val('');
+                            $('#inputLastName').val('');
+                            $('#inputEmail').val('');
+                            $('#inputReflectionText').val('');
+                            $('.user-exists').addClass('hide');
+                            Parse.User.logOut();
+
+                            var ReflectionStatement = Parse.Object.extend('ReflectionStatement');
+                            var query = new Parse.Query(ReflectionStatement);
+                            var reflectionStatement
+                            query.get(reflectionId).then(function(statement) {
+                                reflectionStatement = statement;
+
+                                var Reflection = Parse.Object.extend("Reflection");
+                                var reflection = new Reflection();
+
+                                reflection.set('author', usr);
+                                reflection.set('text', text);
+                                if (text != '') {
+                                    reflection.set('isDone', true);
+                                    reflection.set('isAccepted', true);
+                                }else {
+                                    reflection.set('isDone', false);
+                                    reflection.set('isAccepted', false);                            
+                                }
+
+                                return reflection.save();
+                            }).then(function(reflect) { 
+                                reflectionStatement.add('reflections', reflect);
+                                return reflectionStatement.save();
+                            }).then(function(statement) {
+                                return updateReflectionStatement(statement.id);
+                            })
+                        }
+                      },
+                      error: function(user, error) {
+                        alert("Error: " + error.code + " " + error.message);
+                      }
+                    });                    
+                }
+            });            
+        }
+
+        function displayStudentProfile(studentId) {
+            $('.reflections-list').addClass('hide');
+            $('.student-profile').removeClass('hide');
+
+            for (var i = 0; i < students.length; i++) {
+                if (students[i].id == studentId) {
+                    $('.student-profile-name').text(students[i].get('name'));
+                    var personality16Img = getPersonality16Img(students[i].get('personality16'));
+                    $('.personality-img').attr('src', personality16Img);
+                    var personality16 = getPersonality16Info(students[i].get('personality16'));
+                    $('.student-role').text(personality16['role']);
+                    $('.student-profile').text(personality16['profile']);
+                    $('.student-strategy').text(personality16['strategy']);
+                    $('.student-profile-affiliation').text(students[i].get('affiliation'));
+                    loadTimeline(students[i], currentCBLClass).then(function(timeline) {
+                        displayTimeline(timeline);
+                    });
+                    if (students[i].get('photo')) {
+                        var studentProfilePhoto = students[i].get('photo').url();
+                        $('.student-profile-img').attr('src', studentProfilePhoto);
+                    }
+                    break;
+                }
+            }            
+        }
+
+        function isStudentTeamMember(team) {
+            return true;
+        }
+    </script>
+
+    <script type="text/javascript">
+        var students = [];
+        var teachers = [];
+
+        var reflectionsDict = {};
+        var activitiesDict = {};
+
+        var selectedActivity;
+
+        var cblClassesDict = {};
+        var cblSprintsDict = {};
+        var currentTeacherReflection;
+        var currentCBLClass;
+        var currentCBLSprint;
+        var currentUser;
+
+        var newActivityStatementText;
+
+        $('.reflections-list').addClass('hide');
+
+        $(function() {
+            $btnSetup = $('#btn-setup').detach();
+
+            var user = Parse.User.current();
+            if (user && user.get('email') == 'cca2@cin.ufpe.br') {
+                $btnSetup.prependTo('.file-manager');
+                $('#btn-setup').click(function() {
+                    setup();
+                })
+            }
+
+            if (user) {
+                currentUser = user;
+
+                if (!currentUser.get('currentCBLClass')) {
+                    user.logOut();
+                    window.location = 'cbl_login_two_columns.html';
+                }
+
+                var userQuery = new Parse.Query(Parse.User);
+                userQuery.include('cblClasses');
+                userQuery.get(currentUser.id).then(function(user) {
+                    currentCBLClass = user.get('currentCBLClass');
+                    currentCBLSprint = user.get('currentCBLSprint');
+                    cblClasses = user.get('cblClasses');
+                    _.each(cblClasses, function(cblClass) {
+                        cblClassesDict[cblClass.id] = cblClass;
+                        $cblClass = $navCBLClassRef.clone();
+                        $cblClass.find('a').text(cblClass.get('name'));
+                        $cblClass.find('a').attr('cbl-class-id', cblClass.id);
+                        $cblClass.appendTo($('.nav-classes-second-level'));                        
+                    })
+
+                    $('.nav-cbl-class-name > a').click(function(){
+                        var id = $(this).attr('cbl-class-id');
+                        currentUser.set('currentCBLClass', cblClassesDict[id]);
+                        currentUser.set('currentCBLSprint', cblClassesDict[id].get('cblSprints')[0]);
+                        currentUser.save().then(function() {
+                            window.location = 'cbl_reflections_box.html';
+                        })
+                    })
+                })
+
+                var CBLClass = Parse.Object.extend('CBLClass');
+                var cblClassQuery = new Parse.Query(CBLClass);
+                cblClassQuery.include('students');
+                cblClassQuery.include('cblSprints.teams.members');
+                cblClassQuery.get(currentUser.get('currentCBLClass').id).then(function(cblClass) {
+                    currentCBLClass = cblClass;
+
+                    students = currentCBLClass.get('students').sort(function(a, b){
+
+                        if (!a) {
+                            return 1;
+                        }
+
+                        a = a.get('name');
+                        b = b.get('name');
+                        if (a > b) {
+                            return 1;
+                        }else if (a < b) {
+                            return -1;
+                        }else {
+                            return 0;
+                        }
+                    });
+
+                    var sprints = currentCBLClass.get('cblSprints');
+                    _.each(sprints, function(cblSprint) {
+                        cblSprintsDict[cblSprint.id] = cblSprint;
+                        $cblSprint = $navCBLSprintRef.clone();
+                        $cblSprint.find('a').text(cblSprint.get('name'));
+                        $cblSprint.find('a').attr('cbl-sprint-id', cblSprint.id);
+                        $cblSprint.appendTo($('.nav-sprints-second-level'));                        
+                    })
+
+                    $('.nav-cbl-sprint-name > a').click(function(){
+                        var id = $(this).attr('cbl-sprint-id');
+                        currentUser.set('currentCBLSprint', cblSprintsDict[id]);
+                        currentUser.save().then(function() {
+                            window.location = 'cbl_reflections_box.html';
+                        })
+                    })
+
+                    teachers = currentCBLClass.get('teachers');
+                    $('.cbl-class-name').text(cblClass.get('name'));
+
+                    $('#menu-activity-team').click(function() {
+                        var $modal = $('#propose-new-team-modal');
+                        $modal.find('.new-team-proposal-textarea').val('');
+                        $('#propose-new-team-modal').modal('show');
+                        $modal.find('.new-team-proposal-textarea').focus();
+                    })
+
+                    $('#menu-students-emails').click(function() {
+                        var studentsList = currentCBLClass.get('students');
+                        var emailListString = '';
+                        if (studentsList.length > 0) {
+                            emailListString += studentsList[0].get('email');
+                            for (var i = 1; i < studentsList.length; i++) {
+                                emailListString += '; ' + studentsList[i].get('email');
+                            }
+                        }
+                        $('#students-emails-modal').find('.students-emails-list').text(emailListString);
+                        $('#students-emails-modal').modal('show');
+                    })
+
+                })
+
+                var CBLSprint = Parse.Object.extend('CBLSprint');
+                var cblSprintQuery = new Parse.Query(CBLSprint);
+                cblSprintQuery.get(currentUser.get('currentCBLSprint').id).then(function(cblSprint) {
+                    currentCBLSprint = cblSprint;
+                    $('.cbl-sprint-name').text(cblSprint.get('name'));
+
+                    var ReflectionStatement = Parse.Object.extend("ReflectionStatement");
+                    var query = new Parse.Query(ReflectionStatement);
+                    query.include('author');
+                    query.equalTo('cblClass', currentCBLClass);
+                    query.equalTo('isStudent', true);
+                    query.descending('createdAt');
+                    query.include('reflections.author');
+                    query.include('teachersReflections.author');
+                    query.find().then(function(statements) {
+                        displayReflectionStatements(statements);
+
+                        for (var i = 0; i < statements.length; i++) {
+                            displayReflectionsPerStatement(statements[i]);
+                        }
+
+                        $('.link-student-reflection-author').click(function() {
+                            var studentId = $(this).parents('.student-reflection-item').attr('student-id');
+                            displayStudentProfile(studentId);
+                        })
+
+                        $('.btn-student-profile-show-pending-reflections').click(function() {
+                            $('.reflection-timeline-item').addClass('hide');
+                            $('.pending-reflection-timeline-item').removeClass('hide');
+                        })
+
+                        $('.btn-student-profile-show-done-reflections').click(function() {
+                            $('.reflection-timeline-item').removeClass('hide');
+                            $('.pending-reflection-timeline-item').addClass('hide');
+                        })
+
+                        $('.btn-student-profile-show-all-reflections').click(function() {
+                            $('.reflection-timeline-item').removeClass('hide');
+                        })
+
+                        $('.btn-show-all-reflections').click(function() {
+                            $reflectionsPerStatement = $(this).parents('.reflections-per-statement-list');
+                            $reflectionsItems = $reflectionsPerStatement.find('.reflection-item');
+                            $reflectionsItems.removeClass('hide');
+                        })
+
+                        $('.menu-show-students-reflections').click(function() {
+                            displayStudentsReflectionsLists();
+                        })
+
+                        $('.menu-show-reflections-statements').click(function() {
+                            displayReflectionStatementsList();
+                        })
+
+                        $('.menu-show-pending-reflections-list').click(function() {
+                            displayPendingReflectionsList();
+                        })
+
+                        $('.menu-show-teachers-reflections').click(function() {
+                            displayTeachersReflectionsPerStatement();
+                        })                        
+
+                        $('.btn-show-done-reflections').click(function() {
+                            $reflectionsPerStatement = $(this).parents('.reflections-per-statement-list');
+                            $reflectionsItems = $reflectionsPerStatement.find('.reflection-item');
+                            $teachersReflectionsItems = $reflectionsPerStatement.find('.teacher-reflection-item');
+                            $pendingReflectionsItems = $reflectionsPerStatement.find('.reflection-item.reflection-pending');
+                            $reflectionsItems.removeClass('hide');
+                            $teachersReflectionsItems.addClass('hide');
+                            $pendingReflectionsItems.addClass('hide');
+                        })            
+
+                        $('.btn-show-teachers-reflections').click(function() {
+                            $reflectionsPerStatement = $(this).parents('.reflections-per-statement-list');
+                            $reflectionsItems = $reflectionsPerStatement.find('.reflection-item');
+                            $teachersReflectionsItems = $reflectionsPerStatement.find('.teacher-reflection-item');
+                            $reflectionsItems.addClass('hide');
+                            $teachersReflectionsItems.removeClass('hide');
+                        })            
+
+                        $('.btn-show-pending-reflections').click(function() {
+                            $reflectionsPerStatement = $(this).parents('.reflections-per-statement-list');
+                            $reflectionsItems = $reflectionsPerStatement.find('.reflection-item');
+                            $pendingReflectionsItems = $reflectionsPerStatement.find('.reflection-item.reflection-pending');
+                            $reflectionsItems.addClass('hide');
+                            $pendingReflectionsItems.removeClass('hide');
+                        })
+
+                        $('.btn-new-teacher-reflection').click(function() {
+                            var studentReflectionStatementId = $(this).parents('.reflections-per-statement-list').attr('student-reflection-statement-id');
+                            var teacherReflectionStatementId = "P34QuDoziO";
+
+                            $('#new-teacher-reflection-modal').attr('student-reflection-statement-id', studentReflectionStatementId);
+
+                            var teacherReflectionStatement;
+                            var studentReflectionStatement;
+
+                            var promises = [];
+                            var ReflectionStatement = Parse.Object.extend('ReflectionStatement');
+                            var statementQuery = new Parse.Query(ReflectionStatement);
+
+                            promises.push(statementQuery.get(studentReflectionStatementId).then(function(statement) {
+                                studentReflectionStatement = statement;
+                            }));            
+                            promises.push(statementQuery.get(teacherReflectionStatementId).then(function(statement) {
+                                teacherReflectionStatement = statement;
+                            }));            
+
+                            return Parse.Promise.when(promises).then(function() {
+                                var currentUser = Parse.User.current();
+
+                                var Reflection = Parse.Object.extend('Reflection');
+                                var reflectionQuery = new Parse.Query(Reflection);
+                                reflectionQuery.equalTo('author', currentUser);
+                                reflectionQuery.equalTo('reflectionStatement', studentReflectionStatement);
+                                reflectionQuery.equalTo('teacherReflectionStatement', teacherReflectionStatement);
+                                reflectionQuery.find().then(function(reflections) {
+                                    if (reflections.length == 1) {
+                                        currentTeacherReflection = reflections[0];
+                                        $('.new-reflection-textarea').val(currentTeacherReflection.get('text'));
+                                    }else {
+                                        currentTeacherReflection = new Reflection();
+                                    }
+                                })
+                            })
+                        })
+
+                        // updateReflectionsMenu(statements);
+                    })
+                // })
+
+                })
+
+                $('.user-name').text(user.get('name'));
+                // var query = new Parse.Query(Parse.User);
+                // query.ascending('firstName');
+                // query.limit(100);
+                // query.include('currentCBLClass');
+                // query.include('currentCBLSprint');
+                // query.find().then(function(users) {
+                    // _.each(users, function(user) {
+                    //     if (user.get('isStudent')) {
+                    //         students.push(user);
+                    //     }else {
+                    //         teachers.push(user);
+                    //     }
+                    // })
+            }else {
+                window.location = "cbl_login_two_columns.html";
+            }
+        })
+
+
+        $('#newReflectionModal').on("shown.bs.modal", function() {
+            $('.new-reflection-textarea').focus();
+        })
+
+        $('#new-teacher-reflection-modal').on("shown.bs.modal", function() {
+            $('.new-reflection-textarea').focus();
+        })
+
+        $('#btn-save-new-teacher-reflection').click(function() {
+            $modal = $(this).parents('#new-teacher-reflection-modal');
+
+            var studentReflectionStatementId = $modal.attr('student-reflection-statement-id');
+            var teacherReflectionStatementId = 'P34QuDoziO';
+
+            var ReflectionStatement = Parse.Object.extend('ReflectionStatement');
+            var studentReflectionStatement;
+            var teacherReflectionStatement;
+
+            var reflectionStatementQuery = new Parse.Query(ReflectionStatement);
+            var promises = [];
+
+            promises.push(reflectionStatementQuery.get(studentReflectionStatementId).then(function(statement) {
+                studentReflectionStatement = statement;
+            }));
+            promises.push(reflectionStatementQuery.get(teacherReflectionStatementId).then(function(statement) {
+                teacherReflectionStatement = statement;
+            }));
+
+            Parse.Promise.when(promises).then(function() {
+                var $textarea = $('#new-teacher-reflection-modal').find('.new-reflection-textarea');
+                var text = $textarea.val().trim();
+
+                var reflection = currentTeacherReflection;
+
+                reflection.set('author', Parse.User.current());
+                reflection.set('isDone', true);
+                reflection.set('reflectionStatement', studentReflectionStatement);
+                reflection.set('teacherReflectionStatement', teacherReflectionStatement);
+                reflection.set('text',text);
+                reflection.save().then(function(ref) {
+                    studentReflectionStatement.addUnique('teachersReflections', ref);
+                    $textarea.val('');
+                    $modal.modal('hide');
+                    return ref.save().then(function() {
+                        // var scroll = $('.reflections-per-statement-list[student-reflection-statement-id=' + studentReflectionStatementId + ']').scrollTop();
+                        document.getElementById('student-reflection-statement-id-' + studentReflectionStatementId).scrollIntoView()
+                        $('#teacher-reflection-item-' + currentTeacherReflection.id).find('.reflection-text').text(text);
+                    });
+                });
+            })
+        })
+
+        $('#btn-save-new-reflection-statement').click(function() {
+            var text = $('.new-reflection-statement-textarea').val().trim();
+            var reflections = [];
+            var ReflectionStatement = Parse.Object.extend('ReflectionStatement');
+            var reflectionStatement = new ReflectionStatement();
+            reflectionStatement.set('author', Parse.User.current());
+            reflectionStatement.set('text', text);
+            reflectionStatement.set('reflections', []);
+            reflectionStatement.set('teachersReflections', []);
+            reflectionStatement.set('cblSprint', currentCBLSprint);
+            reflectionStatement.set('cblClass', currentCBLClass);
+            reflectionStatement.set('isStudent', true);
+            reflectionStatement.set('canBeVideo', true);
+            reflectionStatement.set('canBeText', true);
+            reflectionStatement.save().then(function(statement) {
+                var promise = Parse.Promise.as();
+                var totalReflections = students.length;
+                var numSavedEmptyReflections = 0;
+                _.each(students, function(student) {
+                    var Reflection = Parse.Object.extend('Reflection');
+                    var reflection = new Reflection();
+                    reflection.set('author', student);
+                    reflection.set('isDone', false);
+                    reflection.set('reflectionStatement', statement);
+                    reflection.set('isVideo', false);
+                    reflection.set('cblClass', currentCBLClass);
+                    reflection.set('cblSprint', currentCBLSprint);
+                    promise = promise.then(function() {                        
+                        return reflection.save().then(function(refl) {
+                            numSavedEmptyReflections++;
+                            $('.progress-bar').css('width', (numSavedEmptyReflections/totalReflections)*100 + '%');
+                            reflections.push(refl);
+                        });
+                    })
+                })
+                return promise;
+            }).then(function() {
+                reflectionStatement.set('reflections', reflections);
+                reflectionStatement.save().then(function() {
+                    $('#newReflectionModal').modal('hide');
+                    location.reload();
+                });
+            })
+
+        })
+
+        $('#link-logout').click(function() {
+            Parse.User.logOut();
+        })
+
+        $('#menu-logout').click(function() {
+            Parse.User.logOut();
+        })
+        
+    </script>
+
+    <!-- iCheck -->
+    <script src="js/plugins/iCheck/icheck.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $('.i-checks').iCheck({
+                checkboxClass: 'icheckbox_square-green',
+                radioClass: 'iradio_square-green',
+            });
+        });
+    </script>
+</body>
+
+</html>

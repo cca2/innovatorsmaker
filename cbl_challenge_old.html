@@ -1,0 +1,1333 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>INNOVATORSMAKER | Heuristics</title>
+
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="font-awesome/css/font-awesome.css" rel="stylesheet">
+    <link href="css/plugins/iCheck/custom.css" rel="stylesheet">
+    <link href="css/animate.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+    <link href="css/plugins/blueimp/css/blueimp-gallery.min.css" rel="stylesheet">
+
+
+    <style type="text/css">
+        #page-wrapper {
+            margin: 0;
+        }
+
+        .wrapper-content {
+            padding: 5px;
+        }
+
+        .widget {
+            margin: 0;
+        }
+
+        .mailbox-header {
+            padding-top: 10px;
+        }
+
+        .widget.navy-bg {
+            border: solid 1px;
+            color: #1ab394;
+            background: #fff;
+        }
+
+        .mailbox-content {
+            padding: 0;
+        }
+
+        .social-avatar {
+            padding: 0;
+            padding-bottom: 0;
+        }
+
+        .student-idea-item p {
+            margin-top: 10px;
+            margin-bottom: 0;
+        }
+
+        .btn-student-profile-show {
+            width: 68px;
+        }
+
+        .navbar-top-links li a {
+            min-height: 30px;
+        }
+
+        .nav {
+            margin-top: 5px;
+            margin-bottom: 10px;
+        }
+
+        .nav > li > a {
+            padding: 10px 0;
+            color: #676a6c;            
+        }
+
+        .nav > li.active {
+            border-left: none;
+        }
+
+        .nav > li.active > a {
+            color: #676a6c;            
+        }
+
+        .nav-second-level li a {
+            padding: 7px 10px 7px 10px;
+        }
+
+        .nav > li.active {
+            background: #e7eaec;
+            color: #19aa8d;
+        }
+
+        .btn-show-reflections {
+            width: 60px;
+        }
+
+        .btn-propose {
+            width: 100%;
+        }
+
+        .separator-reflection-timeline-item > .row > .content {
+            min-height: 30px;
+        }
+
+        .timeline-item .date {
+            width: 70px;
+        }
+
+        .reflection-media-type-form {
+            padding: 10px;
+            height: 40px;
+        }
+
+        .reflection-media-type-form label {
+            margin: 0;
+        }
+
+        .new-reflection-modal-body {
+            padding: 0;
+        }
+
+        .new-reflection-textarea {
+            width: 100%;
+            padding: 10px;
+            border: none;
+        }
+
+        .personality-img {
+            width: 60px;
+        }
+
+        .student-pending-reflections-row > td {
+            position: relative;
+        }
+
+        .student-email {
+            position: absolute;
+            top: 22px;
+            left: 8px;
+        }
+
+        .num-student-pending-reflections {
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        img.member-photo.img-circle {
+            height: 60px;
+            width: 60px;
+        }
+
+        .team-name-p {
+            color: #fff;
+            position: relative;
+            padding: 10px;
+            background: rgba(0,0,0,0.42);
+            margin: 0;            
+        }
+
+        .team-members {
+            margin: 0;
+        }
+
+        .team-members img.img-circle {
+            margin-top: 15px;
+            width: 80px;
+            height: 80px;
+        }                        
+    </style>
+
+    <style type="text/css">
+        .student-idea-card {
+            margin:10px 0;
+            padding: 0 40px;
+            position: relative;
+            height: 100px;
+            line-height: 100px;
+        }
+
+        .student-idea-card .idea-text {
+            margin: 0;
+            font-weight: lighter;
+            display: inline-block;
+            vertical-align: middle;
+            line-height: normal;
+            font-size: 18px;
+        }
+
+        .student-idea-card .mask {
+            display: none;
+        }
+
+        .student-idea-card:hover .mask {
+            display: block;
+        }
+
+        .student-idea-card:nth-of-type(odd) {
+            border-color: #C6CCDA;
+            border-right: solid 1px;
+            text-align: left;
+        }
+
+        .student-idea-card:nth-of-type(even) {
+            text-align: right;
+        }
+
+        .student-idea-card:nth-of-type(odd) .idea-text {
+            margin-left: 70px;
+        }
+
+        .student-idea-card:nth-of-type(even) .idea-text {
+            margin-right: 70px;
+        }
+
+        .student-idea-card:nth-of-type(odd) .card-index {
+             top:10px; 
+             right: 10px;
+        }
+
+        .student-idea-card:nth-of-type(even) .card-index {
+            top:10px; 
+            left: 10px;
+         }
+
+        .student-idea-card:nth-of-type(even) > .lightBoxGallery {
+            right: 0px;
+        }
+
+        .student-idea-card:nth-of-type(odd) > .lightBoxGallery {
+            left: 0px;
+        }
+
+        .lightBoxGallery {
+            position: absolute;
+            top: 0;
+        }
+
+        .lightBoxGallery img {
+            margin: 0px;
+            width: 100px;
+            height: 100px;
+        }
+
+        .lightBoxGallery .card-image-view {
+            position: relative;
+            overflow: hidden;
+
+        }
+
+        .add-new-guiding-question-card {
+            margin-top: 20px;
+        }
+
+        .add-new-idea-card {
+            padding: 10px 0;
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <div id="wrapper">
+        <div id="page-wrapper" class="gray-bg">
+            <div class="row border-bottom">
+                <nav class="navbar navbar-static-top white-bg" role="navigation" style="margin-bottom: 0">
+                    <ul class="nav navbar-top-links navbar-right">
+                        <li>
+                            <span class="m-r-sm text-muted welcome-message"><span class="cbl-class-name"></span></span>
+                        </li>
+                        <li>
+                            <a data-toggle="dropdown" class="dropdown-toggle" href="#" aria-expanded="false">
+                             <span class="text-muted text-xs block"><span class="user-name"></span> <b class="caret"></b></span> </span> 
+                            </a>
+                            <ul class="dropdown-menu animated fadeInRight m-t-xs">
+                                <!-- <li><a href="profile.html">Profile</a></li> -->
+                                <!-- <li><a href="contacts.html">Contacts</a></li> -->
+                                <!-- <li><a href="mailbox.html">Mailbox</a></li> -->
+                                <li><a id="menu-teams" href="cbl_teams.html">Challenges</a></li>
+                                <li><a id="menu-manage-class" href="cbl_manage_class.html">16 Personalities</a></li>
+                                <!-- <li class="divider"></li> -->
+                                <li><a id="menu-logout" href="cbl_login_two_columns.html">Logout</a></li>
+                            </ul>                            
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+
+            <div class="wrapper wrapper-content">
+                <div class="row">
+                    <div class="col-lg-2">
+                        <div class="cbl-phases-panel">
+                            <style type="text/css">
+                                .cbl-phase {
+                                    margin: 5px;
+                                }
+                            </style>
+                            <div class="row">
+                                <div class="cbl-phase" style="position: relative;">
+                                    <img class="big-idea-icon" src="img/Icones-CBL/Big-Idea.png" style="height: 30px; position: relative;">
+                                    <span style="position: relative;">Preparation</span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="cbl-phase" style="position: relative;">
+                                    <img class="big-idea-icon" src="img/Icones-CBL/Big-Idea.png" style="height: 30px; position: relative;">
+                                    <span style="position: relative;">Big Idea</span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="cbl-phase" style="position: relative;">
+                                    <img class="" src="img/Icones-CBL/Essencial-Question-null.png" style="height: 30px; position: relative;">
+                                    <span style="position: relative;">Essential Question</span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="cbl-phase" style="position: relative;">
+                                    <img class="" src="img/Icones-CBL/Challenge-null.png" style="height: 30px; position: relative;">
+                                    <span style="position: relative;">Challenge</span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="cbl-phase" style="position: relative;">
+                                    <img class="" src="img/Icones-CBL/Solution-null.png" style="height: 30px; position: relative;">
+                                    <span style="position: relative;">Solution</span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="cbl-phase" style="position: relative;">
+                                    <img class="" src="img/Icones-CBL/Implementation-null.png" style="height: 30px; position: relative;">
+                                    <span style="position: relative;">Implementation</span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="cbl-phase" style="position: relative;">
+                                    <img class="" src="img/Icones-CBL/Evaluation-null.png" style="height: 30px; position: relative;">
+                                    <span style="position: relative;">Evaluation</span>
+                                </div>
+                            </div>                                                
+                        </div>
+                    </div>
+                    <div class="col-lg-10 reflections-panel">
+                        <div class="widget style1 navy-bg" style="margin-bottom: 5px;">
+                            <div class="row">
+                                <div class="col-xs-8 text-left">
+                                    <span> Challenge </span>
+                                    <h3 class="font-bold">Desafio Empreendimentos</h3>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="student-ideas-list heuristics-list animated fadeInRight">
+                            <div class="mail-box-header">
+                                <div class="mail-tools tooltip-demo m-t-md">
+
+
+                                    <h2 class="reflection-statement" style="margin-right: 100px;">
+                                        <span class="canvas-element">Preparation</span> - Goals do Achieve
+                                    </h2>
+                                </div>
+                            </div>
+                            <div class="mail-box">
+                                <div class="guiding-questions-body mail-body" style="padding:0px 40px; position: relative;">
+                                    <div class="add-new-guiding-question-card col-md-12">
+                                        <input id="new-idea-input" class="form-control modal-form-control"></input>
+                                        <small style="font-size:100%; color: rgba(26, 179, 148, 0.95);">What is the expected result?</small>
+                                    </div>
+
+                                    <div class="guiding-questions row">
+                                        <div class="constraint-col col-md-6">
+                                            <div class="constraint-card">
+                                                <h3 class="constraint-type">Goal</h3>
+                                                <h2 class="constraint-card-text">Blog sobre o problema</h2>
+                                                <ul class="list-inline file-links">
+                                                    <li><a class="fa fa-link file-link"></a></li>
+                                                    <li><a class="fa fa-file-pdf-o file-link"></a></li>
+                                                </ul>
+                                            </div>
+                                        </div>                                        
+                                        <div class="constraint-col col-md-6">
+                                            <div class="constraint-card">
+                                                <h3 class="constraint-type">Goal</h3>
+                                                <h2 class="constraint-card-text">Modelo de negócio formato Lean Canvas Validado</h2>
+                                            </div>
+                                        </div>                                        
+                                        <div class="constraint-col col-md-6">
+                                            <div class="constraint-card">
+                                                <h3 class="constraint-type">Goal</h3>
+                                                <h2 class="constraint-card-text">Modelo de negócio formato BMC Validado</h2>
+                                            </div>
+                                        </div>                                        
+                                        <div class="constraint-col col-md-6">
+                                            <div class="constraint-card">
+                                                <h3 class="constraint-type">Goal</h3>
+                                                <h2 class="constraint-card-text">Protótipo de alto nível do produto/serviço validado</h2>
+                                            </div>
+                                        </div>                                        
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="student-ideas-list heuristics-list animated fadeInRight">
+                            <div class="mail-box-header">
+                                <div class="mail-tools tooltip-demo m-t-md">
+
+
+                                    <h2 class="reflection-statement" style="margin-right: 100px;">
+                                        <span class="canvas-element">Preparation</span> - Constraints
+                                    </h2>
+                                </div>
+                            </div>
+                            <div class="mail-box">
+                                <div class="guiding-questions-body mail-body" style="padding:0px 40px; position: relative;">
+                                    <div class="guiding-questions row">
+                                        <div class="constraint-col col-md-6">
+                                            <div class="constraint-card">
+                                                <h3 class="constraint-type">Deadline</h3>
+                                                <h2 class="constraint-card-text">17/5/2016</h2>
+                                            </div>
+                                        </div>
+                                        <div class="constraint-col col-md-6">
+                                            <div class="constraint-card">
+                                                <h3 class="constraint-type">Team constraints</h3>
+                                                <h2 class="constraint-card-text">2-4 membros</h2>
+                                            </div>
+                                        </div>
+                                        <div class="constraint-col col-md-12">
+                                            <div class="constraint-card">
+                                                <h3 class="constraint-type">Escope Constraints</h3>
+                                                <h2 class="constraint-card-text">Não há restrições de escopo</h2>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="student-ideas-list heuristics-list animated fadeInRight">
+                            <div class="mail-box-header">
+                                <div class="mail-tools tooltip-demo m-t-md">
+
+
+                                    <h2 class="reflection-statement" style="margin-right: 100px;">
+                                        <span class="canvas-element">Preparation</span> - Learning Resources
+                                    </h2>
+                                </div>
+                            </div>
+                            <div class="mail-box">
+                                <div class="guiding-questions-body mail-body" style="padding:0px 40px; position: relative;">
+                                    <div class="add-new-guiding-question-card col-md-12">
+                                        <input id="new-idea-input" class="form-control modal-form-control"></input>
+                                        <small style="font-size:100%; color: rgba(26, 179, 148, 0.95);">What is your guiding question?</small>
+                                    </div>
+
+                                    <div class="guiding-questions row">
+                                        <div class="constraint-col col-md-6">
+                                            <div class="constraint-card">
+                                                <h3 class="constraint-type">Learning Resource</h3>
+                                                <h2 class="constraint-card-text">Lean Canvas</h2>
+                                            </div>
+                                        </div>                                        
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="widget style1 navy-bg" style="margin-bottom: 5px;">
+                            <div class="row">
+                                <div class="col-xs-4">
+                                    <i class="fa fa-cloud fa-5x"></i>
+                                </div>
+                                <div class="col-xs-8 text-right">
+                                    <span> Big Idea </span>
+                                    <h2 class="font-bold">An area of interest that motivates the team</h2>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="student-ideas-list heuristics-list animated fadeInRight">
+                            <div class="mail-box-header">
+                                <div class="mail-tools tooltip-demo m-t-md">
+
+
+                                    <h2 class="reflection-statement" style="margin-right: 100px;">
+                                        Ideation
+                                    </h2>
+                                </div>
+                            </div>
+
+                            <div class="mail-box">
+                                <div class="students-ideas-items-body reflections-items-body mail-body" style="padding:0px 40px; position: relative;">
+                                    <div class="students-ideas-cards row">
+                                        <div id="blueimp-gallery" class="blueimp-gallery">
+                                            <div class="slides"></div>
+                                            <h3 class="title"></h3>
+                                            <a class="prev">‹</a>
+                                            <a class="next">›</a>
+                                            <a class="close">×</a>
+                                            <a class="play-pause"></a>
+                                            <ol class="indicator"></ol>
+                                        </div>
+
+                                        <div class="student-idea-card col-md-6">
+                                            <h2 class="idea-text">Gatos e Climatologia </h2>
+                                            <h2 class="card-index" style="color:rgba(26, 179, 148, 0.95); position: absolute; margin:0;">A</h2>
+                                            <div class="lightBoxGallery">
+                                                <a class="card-image-view" href="img/gallery/1.jpg" title="Image from Unsplash" data-gallery="" style="position:relative; width: 50px; height: 50px; overflow: hidden;">
+                                                    <img src="img/gallery/1s.jpg">
+                                                </a>
+
+                                                <a class="add-card-image" href="#" title="Image from Unsplash"><img src="https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcROwaS7WMU6kpRTer-EQimu0D6gKWSF8Xh4-CLodUBT6x7FwgS4"></a>
+                                            </div>
+                                        </div>
+                                        <div class="add-new-idea-card col-md-12">
+                                            <input id="new-idea-input" class="form-control modal-form-control"></input>
+                                            <small style="font-size:100%; color: rgba(26, 179, 148, 0.95);">What is your idea?</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="student-ideas-list heuristics-list animated fadeInRight">
+                            <div class="mail-box-header" style="position:relative; color: rgba(26, 179, 148, 0.95); background: white; padding: 10px 20px 50px 60px;">
+                                <div style="position: absolute;top: 15px;right: 20px;padding: 15px;border: solid 1px;border-radius: 57px;background: rgba(26, 179, 148, 0.95);color: white;font-size: medium;">
+                                    <span class="pull-right"><span class="num-ideas">24</span></span>
+                                </div>
+                                <div class="mail-tools tooltip-demo m-t-md">
+
+
+                                    <h2 class="reflection-statement" style="margin-right: 100px;">
+                                        Classification
+                                    </h2>
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <h4><span style="font-weight: 700;">Desirable: </span> represents a large market;</h4>
+                                            <table>
+                                                <tr><td>21</td><td> - </td><td>irrelvant market</td></tr>
+                                                <tr><td>34</td><td> - </td><td>relevant market</td></tr>
+                                                <tr><td>55</td><td> - </td><td>big market</td></tr>
+                                            </table>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <h4><span style="font-weight: 700;">Feasable: </span> The team has expertise on the market</h4>
+                                            <table>
+                                                <tr><td>21</td><td> - </td><td>no knowledge about the market</td></tr>
+                                                <tr><td>34</td><td> - </td><td>some knowledge</td></tr>
+                                                <tr><td>55</td><td> - </td><td>expert on the market</td></tr>
+                                            </table>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <h4><span style="font-weight: 700;">Viable: </span> The team has access to the market</h4>
+                                            <table>
+                                                <tr><td>21</td><td> - </td><td>no access</td></tr>
+                                                <tr><td>34</td><td> - </td><td>can have access</td></tr>
+                                                <tr><td>55</td><td> - </td><td>full access</td></tr>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mail-box">
+                                <div class="students-ideas-items-body reflections-items-body mail-body" style="padding:20px;">
+                                    <div class="students-ideas-items row">
+                                        <style type="text/css">
+                                            .student-idea-card-classification {
+                                                margin:10px 0;
+                                                padding: 0px; 
+                                                border: solid 1px; 
+                                                border-radius: 5px;
+                                            }
+
+                                            .student-idea-card-classification table {
+                                                width: 100%;
+                                            }
+
+                                            .student-idea-card-classification th, td {
+                                                height: 20px;
+                                                text-align: center;
+                                            }
+
+                                            .student-idea-text-for-classification {
+                                                margin: 0;
+                                                font-weight: lighter;
+                                                display: inline-block;
+                                                vertical-align: middle;
+                                                line-height: normal;
+                                                font-size: 18px;
+                                                padding: 20px;
+                                                height: 150px;
+                                            }
+                                        </style>
+                                        <div class="col-md-4">
+                                            <div class="student-idea-card-classification">
+                                                <h3 class="student-idea-text-for-classification" >Empresas que vendem produtos para crianças 0 - 2 anos</h3>
+                                                <div style="border-top: solid 1px; margin:0;">
+                                                    <table >
+                                                        <tr><th>Desirable</th><th>Feasible</th><th>viable</th></tr>
+                                                        <tr><td>21</td><td>34</td><td>55</td></tr>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="student-ideas-list heuristics-list animated fadeInRight">
+                            <div class="mail-box-header" style="position:relative; color: rgba(26, 179, 148, 0.95); background: white; padding: 10px 20px 50px 60px;">
+                                <div style="position: absolute;top: 15px;right: 20px;padding: 15px;border: solid 1px;border-radius: 57px;background: rgba(26, 179, 148, 0.95);color: white;font-size: medium;">
+                                    <span class="pull-right"><span class="num-ideas">24</span></span>
+                                </div>
+                                <div class="mail-tools tooltip-demo m-t-md">
+
+
+                                    <h2 class="reflection-statement" style="margin-right: 100px;">
+                                        Seleção
+                                    </h2>
+                                </div>
+                            </div>
+                            <div class="mail-box">
+                                <div class="students-ideas-items-body reflections-items-body mail-body" style="padding:20px;">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div style="padding:20px; text-align:center; height: 80px;">
+                                                <span class="fa fa-plus-square fa-3x"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="student-idea-card-decision" style="margin:10px 0;padding: 20px; border: solid 1px; border-radius: 5px; height: 80px;">
+                                                <p style="text-align: center; font-size: larger; background: white; line-height: 1.8em; font-size: 1.5em;"><span class="reflection-text">Gatos e Climatologia</span></p>
+                                                <div style="border-top: solid 1px; margin:0 -20px;">
+                                                    <div class="row">
+                                                        <div class="col-md-4">
+                                                            <div class="row">
+                                                                <span>desirable</span>
+                                                            </div>
+                                                            <div class="row">
+                                                                <h3>11</h3>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="student-idea-card-decision" style="margin:10px 0;padding: 20px; border: solid 1px; border-radius: 5px; height: 80px;">
+                                                    <p style="text-align: center; font-size: larger; background: white; line-height: 1.8em; font-size: 1.5em;"><span class="reflection-text">Saúde e Biblioteca</span></p>
+
+                                                <div style="border-top: solid 1px; margin:0 -20px;"></div>                                            </div>
+
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="student-idea-card-decision" style="margin:10px 0;padding: 20px; border: solid 1px; border-radius: 5px; height: 80px;">
+                                                    <p style="text-align: center; font-size: larger; background: white; line-height: 1.8em; font-size: 1.5em;"><span class="reflection-text">Viagens e Astrologia</span></p>
+                                                    <div style="border-top: solid 1px; margin:0 -20px;"></div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <style type="text/css">
+                            .mail-box-header {
+                                position:relative; color: rgba(26, 179, 148, 0.95); background: white; padding: 0px 20px 5px 40px;                                
+                            }
+
+                            .constraint-col {
+                                padding: 10px;
+                            }
+
+                            .constraint-card {
+                                border-radius: 5px;
+                                border: solid 1px;
+                                padding: 0px;
+                                margin: 10px;
+                                text-align: center;
+                                position: relative;
+                                height: 100px;
+                                line-height: 100px;
+                            }
+
+                            .constraint-card .constraint-type {
+                                position: absolute;
+                                top: 10px;
+                                left: 10px;
+                                margin: 0;
+                            }
+
+                            .constraint-card .constraint-card-text {
+                                text-align: center;
+                                font-size: 18px;
+                                margin: 0;
+                                display: inline-block;
+                                vertical-align: middle;
+                            }
+
+                            .file-links {
+                                position: absolute;
+                                right: 0;
+                                bottom: 0;
+                                font-size: medium;
+                                width: 100%;
+                                margin: 0;
+                                padding: 5px;
+                                text-align: right;
+                                line-height: normal;
+                            }
+
+                            .file-links a {
+                                color: rgba(26, 179, 148, 0.95);
+                            }
+
+                            .guiding-question-col {
+                                padding: 10px;
+                            }
+
+                            .guiding-question-panel {
+                                border-radius: 5px;
+                                border: solid 1px;
+                                padding: 20px;
+                                margin: 10px;
+                            }
+
+                            .teacher-guiding-question-panel {
+                                border-color: red;
+                            }
+
+                            .guiding-question-text {
+                                font-size: 18px;
+                            }
+
+                        </style>
+                        <div class="widget style1 navy-bg" style="margin-bottom: 5px;">
+                            <div class="row">
+                                <div class="col-xs-4">
+                                    <i class="fa fa-cloud fa-5x"></i>
+                                </div>
+                                <div class="col-xs-8 text-right">
+                                    <span> Essential Question </span>
+                                    <h2 class="font-bold">Por que as famílias não conseguem pagar as suas dívidas?</h2>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="student-ideas-list heuristics-list animated fadeInRight">
+                            <div class="mail-box-header">
+                                <div class="mail-tools tooltip-demo m-t-md">
+
+
+                                    <h2 class="reflection-statement" style="margin-right: 100px;">
+                                        Running Lean...
+                                    </h2>
+                                </div>
+                            </div>
+                            <div class="mail-box">
+                                <div class="guiding-questions-body mail-body" style="padding:0px 40px; position: relative;">
+                                <img src="img/lean_canvas.png" style="width: 100%;">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="student-ideas-list heuristics-list animated fadeInRight">
+                            <div class="mail-box-header">
+                                <div class="mail-tools tooltip-demo m-t-md">
+
+
+                                    <h2 class="reflection-statement" style="margin-right: 100px;">
+                                        <span class="canvas-element">Customer Segments</span> - Guiding Questions
+                                    </h2>
+                                </div>
+                            </div>
+                            <div class="mail-box">
+                                <div class="guiding-questions-body mail-body" style="padding:0px 40px; position: relative;">
+                                    <div class="add-new-guiding-question-card col-md-12">
+                                        <input id="new-idea-input" class="form-control modal-form-control"></input>
+                                        <small style="font-size:100%; color: rgba(26, 179, 148, 0.95);">What is your guiding question?</small>
+                                    </div>
+
+                                    <div class="guiding-questions row">
+                                        <div class="guiding-question-col col-md-6">
+                                            <div class="guiding-question-panel teacher-guiding-question-panel">
+                                                <h2 class="guiding-question-text">Who is the paying client?</h2>
+                                            </div>
+                                        </div>
+                                        <div class="guiding-question-col col-md-6">
+                                            <div class="guiding-question-panel teacher-guiding-question-panel">
+                                                <h2 class="guiding-question-text">Who are the users?</h2>
+                                            </div>
+                                        </div>
+                                        <div class="guiding-question-col col-md-6">
+                                            <div class="guiding-question-panel teacher-guiding-question-panel">
+                                                <h2 class="guiding-question-text">Who are the early adopters?</h2>
+                                            </div>
+                                        </div>
+                                        <div class="guiding-question-col col-md-6">
+                                            <div class="guiding-question-panel teacher-guiding-question-panel">
+                                                <h2 class="guiding-question-text">What is the market size?</h2>
+                                            </div>
+                                        </div>
+                                        <div class="guiding-question-col col-md-6">
+                                            <div class="guiding-question-panel teacher-guiding-question-panel">
+                                                <h2 class="guiding-question-text">What are the 3 main problems?</h2>
+                                            </div>
+                                        </div>                                        
+                                        <div class="guiding-question-col col-md-6">
+                                            <div class="guiding-question-panel teacher-guiding-question-panel">
+                                                <h2 class="guiding-question-text">What are the alternatives?</h2>
+                                            </div>
+                                        </div>                                        
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+<!--                         <div class="student-ideas-list heuristics-list animated fadeInRight">
+                            <div class="mail-box-header">
+                                <div class="mail-tools tooltip-demo m-t-md">
+
+
+                                    <h2 class="reflection-statement" style="margin-right: 100px;">
+                                        Ideation
+                                    </h2>
+                                </div>
+                            </div>
+                            <div class="mail-box">
+                                <div class="students-ideas-items-body reflections-items-body mail-body" style="padding:0px 40px; position: relative;">
+                                    <div class="students-ideas-cards row">
+                                        <div id="blueimp-gallery" class="blueimp-gallery">
+                                            <div class="slides"></div>
+                                            <h3 class="title"></h3>
+                                            <a class="prev">‹</a>
+                                            <a class="next">›</a>
+                                            <a class="close">×</a>
+                                            <a class="play-pause"></a>
+                                            <ol class="indicator"></ol>
+                                        </div>
+
+                                        <div class="student-idea-card col-md-6">
+                                            <h2 class="idea-text">Gatos e Climatologia </h2>
+                                            <h2 class="card-index" style="color:rgba(26, 179, 148, 0.95); position: absolute; margin:0;">A</h2>
+                                            <div class="lightBoxGallery">
+                                                <a class="card-image-view" href="img/gallery/1.jpg" title="Image from Unsplash" data-gallery="" style="position:relative; width: 50px; height: 50px; overflow: hidden;">
+                                                    <img src="img/gallery/1s.jpg">
+                                                </a>
+
+                                                <a class="add-card-image" href="#" title="Image from Unsplash"><img src="https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcROwaS7WMU6kpRTer-EQimu0D6gKWSF8Xh4-CLodUBT6x7FwgS4"></a>
+                                            </div>
+                                        </div>
+                                        <div class="add-new-idea-card col-md-12">
+                                            <input id="new-idea-input" class="form-control modal-form-control"></input>
+                                            <small style="font-size:100%; color: rgba(26, 179, 148, 0.95);">What is your idea?</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="student-ideas-list heuristics-list animated fadeInRight">
+                            <div class="mail-box-header" style="position:relative; color: rgba(26, 179, 148, 0.95); background: white; padding: 10px 20px 50px 60px;">
+                                <div style="position: absolute;top: 15px;right: 20px;padding: 15px;border: solid 1px;border-radius: 57px;background: rgba(26, 179, 148, 0.95);color: white;font-size: medium;">
+                                    <span class="pull-right"><span class="num-ideas">24</span></span>
+                                </div>
+                                <div class="mail-tools tooltip-demo m-t-md">
+
+
+                                    <h2 class="reflection-statement" style="margin-right: 100px;">
+                                        Classification
+                                    </h2>
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <h4><span style="font-weight: 700;">Desirable: </span> represents a large market;</h4>
+                                            <table>
+                                                <tr><td>21</td><td> - </td><td>irrelvant market</td></tr>
+                                                <tr><td>34</td><td> - </td><td>relevant market</td></tr>
+                                                <tr><td>55</td><td> - </td><td>big market</td></tr>
+                                            </table>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <h4><span style="font-weight: 700;">Feasable: </span> The team has expertise on the market</h4>
+                                            <table>
+                                                <tr><td>21</td><td> - </td><td>no knowledge about the market</td></tr>
+                                                <tr><td>34</td><td> - </td><td>some knowledge</td></tr>
+                                                <tr><td>55</td><td> - </td><td>expert on the market</td></tr>
+                                            </table>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <h4><span style="font-weight: 700;">Viable: </span> The team has access to the market</h4>
+                                            <table>
+                                                <tr><td>21</td><td> - </td><td>no access</td></tr>
+                                                <tr><td>34</td><td> - </td><td>can have access</td></tr>
+                                                <tr><td>55</td><td> - </td><td>full access</td></tr>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mail-box">
+                                <div class="students-ideas-items-body reflections-items-body mail-body" style="padding:20px;">
+                                    <div class="students-ideas-items row">
+                                        <style type="text/css">
+                                            .student-idea-card-classification {
+                                                margin:10px 0;
+                                                padding: 0px; 
+                                                border: solid 1px; 
+                                                border-radius: 5px;
+                                            }
+
+                                            .student-idea-card-classification table {
+                                                width: 100%;
+                                            }
+
+                                            .student-idea-card-classification th, td {
+                                                height: 20px;
+                                                text-align: center;
+                                            }
+
+                                            .student-idea-text-for-classification {
+                                                margin: 0;
+                                                font-weight: lighter;
+                                                display: inline-block;
+                                                vertical-align: middle;
+                                                line-height: normal;
+                                                font-size: 18px;
+                                                padding: 20px;
+                                                height: 150px;
+                                            }
+                                        </style>
+                                        <div class="col-md-4">
+                                            <div class="student-idea-card-classification">
+                                                <h3 class="student-idea-text-for-classification" >Empresas que vendem produtos para crianças 0 - 2 anos</h3>
+                                                <div style="border-top: solid 1px; margin:0;">
+                                                    <table >
+                                                        <tr><th>Desirable</th><th>Feasible</th><th>viable</th></tr>
+                                                        <tr><td>21</td><td>34</td><td>55</td></tr>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="student-ideas-list heuristics-list animated fadeInRight">
+                            <div class="mail-box-header" style="position:relative; color: rgba(26, 179, 148, 0.95); background: white; padding: 10px 20px 50px 60px;">
+                                <div style="position: absolute;top: 15px;right: 20px;padding: 15px;border: solid 1px;border-radius: 57px;background: rgba(26, 179, 148, 0.95);color: white;font-size: medium;">
+                                    <span class="pull-right"><span class="num-ideas">24</span></span>
+                                </div>
+                                <div class="mail-tools tooltip-demo m-t-md">
+
+
+                                    <h2 class="reflection-statement" style="margin-right: 100px;">
+                                        Seleção
+                                    </h2>
+                                </div>
+                            </div>
+                            <div class="mail-box">
+                                <div class="students-ideas-items-body reflections-items-body mail-body" style="padding:20px;">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div style="padding:20px; text-align:center; height: 80px;">
+                                                <span class="fa fa-plus-square fa-3x"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="student-idea-card-decision" style="margin:10px 0;padding: 20px; border: solid 1px; border-radius: 5px; height: 80px;">
+                                                <p style="text-align: center; font-size: larger; background: white; line-height: 1.8em; font-size: 1.5em;"><span class="reflection-text">Gatos e Climatologia</span></p>
+                                                <div style="border-top: solid 1px; margin:0 -20px;">
+                                                    <div class="row">
+                                                        <div class="col-md-4">
+                                                            <div class="row">
+                                                                <span>desirable</span>
+                                                            </div>
+                                                            <div class="row">
+                                                                <h3>11</h3>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="student-idea-card-decision" style="margin:10px 0;padding: 20px; border: solid 1px; border-radius: 5px; height: 80px;">
+                                                    <p style="text-align: center; font-size: larger; background: white; line-height: 1.8em; font-size: 1.5em;"><span class="reflection-text">Saúde e Biblioteca</span></p>
+
+                                                <div style="border-top: solid 1px; margin:0 -20px;"></div>                                            </div>
+
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="student-idea-card-decision" style="margin:10px 0;padding: 20px; border: solid 1px; border-radius: 5px; height: 80px;">
+                                                    <p style="text-align: center; font-size: larger; background: white; line-height: 1.8em; font-size: 1.5em;"><span class="reflection-text">Viagens e Astrologia</span></p>
+                                                    <div style="border-top: solid 1px; margin:0 -20px;"></div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div> -->
+
+                    </div>
+                </div>
+            </div>
+            <div class="footer">
+                <div class="pull-right">10GB of <strong>250GB</strong> Free.</div>
+                <div>
+                    <strong>Copyright</strong> Example Company &copy; 2014-2015
+                </div>
+            </div>
+        </div>
+
+        <div class="modal inmodal" id="new-heuristics-item-modal" tabindex="-1" role="dialog" aria-hidden="true" student-reflection-statement-id="" teacher-reflection-statement-id="P34QuDoziO">
+            <div class="modal-dialog">
+                <div class="modal-content animated">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                        <h4 class="modal-title"></h4>
+                    </div>
+                    <div class="new-heuristics-item-modal-body modal-body">
+                        <textarea class="new-heuristics-item-textarea form-control modal-form-control" rows="1"placeholder="The big idea..."></textarea>
+
+                        <textarea class="form-control modal-form-control" rows="2"placeholder="The big idea..." style="margin-top: 10px;"></textarea>                        
+                    </div>
+                    <div class="modal-footer">
+                        <button id="btn-save-new-teacher-reflection" type="button" class="btn btn-primary" style="width: 150px;">next</button>
+                    </div>
+                    <div class="modal-footer">
+                        <button id="btn-register-new-big-idea-proposal" type="button" class="btn btn-primary" style="width: 150px;">register big idea</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal inmodal" id="new-reflection-statement-modal" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content animated">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                        <h4 class="modal-title">New Reflection</h4>
+                        <small class="font-bold">Propose a new reflection to your class</small>
+                    </div>
+                    <div class="new-reflection-modal-body modal-body">
+                        <textarea class="new-reflection-statement-textarea new-reflection-textarea" rows="5" placeholder="in this activity..."></textarea>
+                    </div>
+                    <div class="modal-footer">
+                        <div class="progress progress-small">
+                            <div style="width: 0%;" class="progress-bar"></div>
+                        </div>
+                        <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
+                        <button id="btn-save-new-reflection-statement" type="button" class="btn btn-primary">Save reflection</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mainly scripts -->
+    <script src="js/jquery-2.1.1.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/plugins/metisMenu/jquery.metisMenu.js"></script>
+    <script src="js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+
+    <!-- Custom and plugin javascript -->
+    <script src="js/inspinia.js"></script>
+    <script src="js/plugins/pace/pace.min.js"></script>
+
+    <!-- Peity -->
+    <script src="js/plugins/peity/jquery.peity.min.js"></script>
+
+    <!-- Peity -->
+    <script src="js/demo/peity-demo.js"></script>
+
+    <!-- blueimp gallery -->
+    <script src="js/plugins/blueimp/jquery.blueimp-gallery.min.js"></script>
+
+    <script type="text/javascript" src="js/underscore-1.8.3.js"></script>
+
+    <script type="text/javascript" src="http://www.parsecdn.com/js/parse-1.2.18.min.js"></script>
+    <script type="text/javascript">
+        Parse.initialize("YALt9tjcUpW61Hz5aIPYbehm9uCgh5NXXRVM18T6", "5wwhJ6hfqu8cG4s6jMKMQWrmImiQKDTE9trvgL6x");
+    </script>
+
+    <script type="text/javascript" src="js/innovatorsmaker-cbl.js"></script>
+
+    <script type="text/javascript">
+        var heuristicsIdeas = [];
+        var $studentIdeaCardRef = $('.student-idea-card').detach();
+        var $studentCardImageRef = $studentIdeaCardRef.find('.card-image-view').detach();
+
+        $navCBLClassRef = $('.nav-cbl-class-name').detach();
+        $navCBLSprintRef = $('.nav-cbl-sprint-name').detach();
+
+
+        function setup() {
+            var studentsQuery = new Parse.Query(Parse.User);
+            studentsQuery.equalTo('currentCBLClass', currentCBLClass);
+            studentsQuery.find().then(function(students) {
+                var classStudents = students;
+                var reflectionsDict = {}
+                var newReflections = [];
+
+                var Reflection = Parse.Object.extend('Reflection');
+                reflectionQuery = new Parse.Query(Reflection);
+                reflectionQuery.equalTo('cblClass', currentCBLClass);
+                reflectionQuery.find().then(function(reflections) {
+                    var ReflectionStatement = Parse.Object.extend('ReflectionStatement')
+                    var statement = new ReflectionStatement;
+                    statement.id = 'qy91sBad0x';                    
+
+                    _.each(reflections, function(reflection) {
+                        reflectionsDict[reflection.get('author').id] = reflection;
+                    })
+                    _.each(classStudents, function(student) {
+                        if (!reflectionsDict[student.id]) {
+                            var newReflection = new Reflection();
+                            newReflection.set('author', student)
+                            newReflection.set('isDone', false)
+                            newReflection.set('reflectionStatement', statement)
+                            newReflection.set('isVideo', false)
+                            newReflection.set('cblClass', currentCBLClass)
+                            newReflection.set('cblSprint', currentCBLSprint)
+                            newReflection.save().then(function(ref) {
+                                console.log('reflexão de ' + student.get('name'))
+                            });
+                        }
+                    })
+                })
+            })
+        }
+
+        function loadHeuristics() {
+            var HeuristicsIdea = Parse.Object.extend('HeuristicsIdea');
+            var heuristicsIdeaQuery = new Parse.Query(HeuristicsIdea);
+            return heuristicsIdeaQuery.find().then(function(heuristics) {
+                heuristicsIdeas = heuristics;
+            })
+        }
+
+        function displayHeuristicsIdeas() {
+            _.each(heuristicsIdeas, function(heuristic) {
+                displayHeuristicIdea(heuristic)
+            })
+        }
+
+        function displayHeuristicIdea(heuristic) {
+            var $studentIdeaCard = $studentIdeaCardRef.clone();
+            $studentIdeaCard.find('.idea-text').text(heuristic.get('text'));
+            $studentIdeaCard.appendTo('.students-ideas-cards');
+            $studentIdeaCard.find('.add-card-image').remove();
+            var $cardImage = $studentCardImageRef.clone();
+            $cardImage.attr('title', heuristic.get('text'));
+            $cardImage.prependTo($studentIdeaCard.find('.lightBoxGallery'));
+
+            $('.add-card-image[idea-id=' + heuristic.id + ']').click(function() {
+                var $cardImage = $studentCardImageRef.clone();
+                $cardImage.attr('title', heuristic.get('text'));
+                var $studentCard = $(this).parents('.student-idea-card');
+                $cardImage.prependTo($studentCard.find('.lightBoxGallery'));
+            })
+        }
+
+    </script>
+
+    <script type="text/javascript">
+        var cblClassesDict = {};
+        var cblSprintsDict = {};
+        var currentTeacherReflection;
+        var currentCBLClass;
+        var currentCBLSprint;
+        var currentUser;
+
+
+        $(function() {
+            $btnSetup = $('#btn-setup').detach();
+
+            var user = Parse.User.current();
+            if (user && user.get('email') == 'cca2@cin.ufpe.br') {
+                $btnSetup.prependTo('.file-manager');
+                $('#btn-setup').click(function() {
+                    setup();
+                })
+            }
+
+            if (user) {
+                currentUser = user;
+
+                if (!currentUser.get('currentCBLClass')) {
+                    user.logOut();
+                    window.location = 'cbl_login_two_columns.html';
+                }
+
+                var userQuery = new Parse.Query(Parse.User);
+                userQuery.include('cblClasses');
+                userQuery.get(currentUser.id).then(function(user) {
+                    currentCBLClass = user.get('currentCBLClass');
+                    currentCBLSprint = user.get('currentCBLSprint');
+                    cblClasses = user.get('cblClasses');
+                    _.each(cblClasses, function(cblClass) {
+                        cblClassesDict[cblClass.id] = cblClass;
+                        $cblClass = $navCBLClassRef.clone();
+                        $cblClass.find('a').text(cblClass.get('name'));
+                        $cblClass.find('a').attr('cbl-class-id', cblClass.id);
+                        $cblClass.appendTo($('.nav-classes-second-level'));                        
+                    })
+
+                })
+
+                var CBLClass = Parse.Object.extend('CBLClass');
+                var cblClassQuery = new Parse.Query(CBLClass);
+                cblClassQuery.include('students');
+                cblClassQuery.include('cblSprints.teams.members');
+                cblClassQuery.get(currentUser.get('currentCBLClass').id).then(function(cblClass) {
+                    currentCBLClass = cblClass;
+
+                    students = currentCBLClass.get('students').sort(function(a, b){
+
+                        if (!a) {
+                            return 1;
+                        }
+
+                        a = a.get('name');
+                        b = b.get('name');
+                        if (a > b) {
+                            return 1;
+                        }else if (a < b) {
+                            return -1;
+                        }else {
+                            return 0;
+                        }
+                    });
+
+                    var sprints = currentCBLClass.get('cblSprints');
+                    _.each(sprints, function(cblSprint) {
+                        cblSprintsDict[cblSprint.id] = cblSprint;
+                        $cblSprint = $navCBLSprintRef.clone();
+                        $cblSprint.find('a').text(cblSprint.get('name'));
+                        $cblSprint.find('a').attr('cbl-sprint-id', cblSprint.id);
+                        $cblSprint.appendTo($('.nav-sprints-second-level'));                        
+                    })
+
+                    loadHeuristics().then(function() {
+                        displayHeuristicsIdeas();
+                    })
+
+                    $('.cbl-class-name').text(cblClass.get('name'));
+                })
+
+                var CBLSprint = Parse.Object.extend('CBLSprint');
+                var cblSprintQuery = new Parse.Query(CBLSprint);
+                cblSprintQuery.get(currentUser.get('currentCBLSprint').id).then(function(cblSprint) {
+                    currentCBLSprint = cblSprint;
+                    $('.cbl-sprint-name').text(cblSprint.get('name'));
+
+                    var ReflectionStatement = Parse.Object.extend("ReflectionStatement");
+                    var query = new Parse.Query(ReflectionStatement);
+                    query.include('author');
+                    query.equalTo('cblSprint', currentCBLSprint);
+                    query.equalTo('isStudent', true);
+                    query.descending('createdAt');
+                    query.find().then(function(statements) {
+                        // displayReflectionStatements(statements);
+
+                        for (var i = 0; i < statements.length; i++) {
+                            // displayReflectionsPerStatement(statements[i]);
+                        }
+
+                        // updateReflectionsMenu(statements);
+                    })
+                // })
+
+                })
+
+                $('.user-name').text(user.get('name'));
+                // var query = new Parse.Query(Parse.User);
+                // query.ascending('firstName');
+                // query.limit(100);
+                // query.include('currentCBLClass');
+                // query.include('currentCBLSprint');
+                // query.find().then(function(users) {
+                    // _.each(users, function(user) {
+                    //     if (user.get('isStudent')) {
+                    //         students.push(user);
+                    //     }else {
+                    //         teachers.push(user);
+                    //     }
+                    // })
+            }else {
+                window.location = "cbl_login_two_columns.html";
+            }
+        })
+
+        $('#link-logout').click(function() {
+            Parse.User.logOut();
+        })
+
+        $('#menu-logout').click(function() {
+            Parse.User.logOut();
+        })
+
+        $('#new-idea-input').change(function() {            
+            var ideaText = $(this).val().trim();
+            if (ideaText != '') {
+                HeuristicsIdea = Parse.Object.extend('HeuristicsIdea');
+                idea = new HeuristicsIdea();
+                idea.set('text', ideaText);
+                idea.set('author', Parse.User.current());
+                idea.save().then(function(i) {
+                    displayHeuristicIdea(i);
+                })
+
+                $('#new-idea-input').val('');
+                $('#new-idea-input').focus();
+            }
+        })
+
+    </script>
+
+    <!-- iCheck -->
+    <script src="js/plugins/iCheck/icheck.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $('.i-checks').iCheck({
+                checkboxClass: 'icheckbox_square-green',
+                radioClass: 'iradio_square-green',
+            });
+        });
+    </script>
+</body>
+
+</html>

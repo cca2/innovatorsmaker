@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>INNOVATORSMAKER | Heuristics</title>
+
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="font-awesome/css/font-awesome.css" rel="stylesheet">
+    <link href="css/plugins/iCheck/custom.css" rel="stylesheet">
+    <link href="css/animate.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+    <link href="css/plugins/blueimp/css/blueimp-gallery.min.css" rel="stylesheet">
+
+
+    <style type="text/css">
+        html, body {
+          width:  100%;
+          height: 100%;
+          margin: 0px;
+        }
+
+        .social-avatar {
+            padding: 0;
+            padding-bottom: 0;
+            position: absolute; top: 10px; right: 10px;
+        }
+
+        .social-avatar .student-photo {
+            width: 70px; height: 70px; padding:5px; background: white; border-radius: 50px; position: relative; right: 0px; top: 0px;
+        }
+
+        .social-avatar .media-body {
+            float: right;
+            margin-right: 0px;
+            position: relative;
+            top: 15px;
+            right: 0px;            
+        }
+
+        .challenge-title-panel {
+            position: relative;
+        }
+
+        .challenge-title {
+            text-align: center;
+            margin: 0;
+        }
+
+        .btn-navigate-challenge {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            width: 200px;
+        }
+
+        .constraint-col {
+            padding: 10px;
+        }
+
+        .constraint-card {
+            border-radius: 5px;
+            border: solid 1px;
+            padding: 0px;
+            margin: 10px;
+            text-align: center;
+            position: relative;
+            height: 100px;
+            line-height: 100px;
+        }
+
+        .constraint-card .constraint-type {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            margin: 0;
+        }
+
+        .constraint-card .constraint-card-text {
+            text-align: center;
+            font-size: 18px;
+            margin: 0;
+            display: inline-block;
+            vertical-align: middle;
+        }
+
+        .file-links {
+            position: absolute;
+            right: 0;
+            bottom: 0;
+            font-size: medium;
+            width: 100%;
+            margin: 0;
+            padding: 5px;
+            text-align: right;
+            line-height: normal;
+        }
+
+        .file-links a {
+            color: rgba(26, 179, 148, 0.95);
+        }
+
+        
+    </style>
+
+</head>
+
+<body class="white-bg">
+    <div class="social-avatar pull-right">
+        <a href="" style="float: right;">
+            <img class="student-photo" alt="image" src="img/a1.jpg">
+        </a>
+        <div class="media-body">
+            <a class="student-name" href="#">
+                Andrew Williams
+            </a>
+            <small class="student-affiliation text-muted" style="float: right;">Design</small>
+        </div>
+    </div>
+
+    <div class="challenge-title-panel challenge-panel hide">
+        <h1 class="challenge-title">Challenge: <span class="challenge-name"></span></h1>
+        <a type="button" href="#" class="btn-goals btn-navigate-challenge btn btn-block btn-outline btn-primary">goals</a>
+    </div>
+
+    <div class="challenge-goals challenge-panel animated fadeInRight hide">
+        <div class="mail-box-header">
+            <div class="mail-tools tooltip-demo m-t-md">
+
+
+                <h2 class="reflection-statement" style="margin-right: 100px;">
+                    <span class="canvas-element">Preparation</span> - Goals do Achieve
+                </h2>
+            </div>
+        </div>
+        <div class="mail-box">
+            <div class="guiding-questions-body mail-body" style="padding:0px 40px; position: relative;">
+                <div class="guiding-questions row">
+                    <div class="constraint-col col-md-6">
+                        <div class="constraint-card">
+                            <h3 class="constraint-type">Goal</h3>
+                            <h2 class="constraint-card-text">Blog sobre o problema</h2>
+                            <ul class="list-inline file-links">
+                                <li><a class="fa fa-link file-link"></a></li>
+                                <li><a class="fa fa-file-pdf-o file-link"></a></li>
+                            </ul>
+                        </div>
+                    </div>                                        
+                    <div class="constraint-col col-md-6">
+                        <div class="constraint-card">
+                            <h3 class="constraint-type">Goal</h3>
+                            <h2 class="constraint-card-text">Modelo de negócio formato Lean Canvas Validado</h2>
+                        </div>
+                    </div>                                        
+                    <div class="constraint-col col-md-6">
+                        <div class="constraint-card">
+                            <h3 class="constraint-type">Goal</h3>
+                            <h2 class="constraint-card-text">Modelo de negócio formato BMC Validado</h2>
+                        </div>
+                    </div>                                        
+                    <div class="constraint-col col-md-6">
+                        <div class="constraint-card">
+                            <h3 class="constraint-type">Goal</h3>
+                            <h2 class="constraint-card-text">Protótipo de alto nível do produto/serviço validado</h2>
+                        </div>
+                    </div>                                        
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script src="js/jquery-2.1.1.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+
+    <script type="text/javascript" src="http://www.parsecdn.com/js/parse-1.2.18.min.js"></script>
+    <script type="text/javascript">
+        Parse.initialize("YALt9tjcUpW61Hz5aIPYbehm9uCgh5NXXRVM18T6", "5wwhJ6hfqu8cG4s6jMKMQWrmImiQKDTE9trvgL6x");
+    </script>
+
+    <script type="text/javascript">
+        var me;
+        $(function() {
+            me = Parse.User.current();
+            if (me) {
+                $('.student-name').text(me.get('name'));
+                $('.student-affiliation').text(me.get('affiliation'));
+            }
+
+            var challengeId = localStorage.getItem('challenge-id');
+
+            var Challenge = Parse.Object.extend('Challenge');
+            var challengeQuery = new Parse.Query(Challenge);
+            challengeQuery.get(challengeId).then(function(challenge) {
+                $('.challenge-name').text(challenge.get('name'));
+                var bodyHeight = $('body').height();
+                $('.challenge-title').height(bodyHeight);
+                $('.challenge-title').css('line-height', bodyHeight + 'px');
+                $('.challenge-title-panel').removeClass('hide');
+
+                $('.btn-goals').click(function() {
+                    $('.challenge-panel').addClass('hide');
+                    $('.challenge-goals').removeClass('hide');
+                })
+            })
+        })
+    </script>
+</body>
+
+</html>
