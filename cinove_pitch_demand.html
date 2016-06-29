@@ -16,6 +16,7 @@
 
     <link href="css/animate.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
+    <link href="css/plugins/iCheck/custom.css" rel="stylesheet">
 
     <style type="text/css">
         .btn-edit-KPI {
@@ -317,6 +318,9 @@
                                     <div class="form-group"><label>Meta diária</label> <input id="input-new-daily-goal" type="text" placeholder="0" class="form-control"></div>
                                     <div class="form-group"><label>Meta semanal</label> <input id="input-new-weekly-goal" type="text" placeholder="0" class="form-control"></div>
                                     <div class="form-group"><label>Meta mensal</label> <input id="input-new-monthly-goal" type="text" placeholder="0" class="form-control"></div>
+                                <div class="form-group">
+                                        <div class="i-checks"><label class=""> <div class="icheckbox_square-green" style="position: relative;"><input type="checkbox" style="position: absolute; opacity: 0;"><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; border: 0px; opacity: 0; background: rgb(255, 255, 255);"></ins></div><i></i> métrica é medida em percentual</label></div>
+                                </div> 
                                 </form>
                             </div>
                         </div>
@@ -377,6 +381,7 @@
     <!-- ChartJS-->
     <script src="js/plugins/chartJs/Chart.min.js"></script>
 
+    <script src="js/plugins/iCheck/icheck.min.js"></script>
 
     <!-- MomentJS -->
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.13.0/moment.min.js"></script>
@@ -384,6 +389,8 @@
     <script>
         var metricName
         var metricDescription
+        var isMetricPercent = false
+
         var dailyGoal = 0
         var weeklyGoal = 0
         var monthlyGoal = 0
@@ -431,6 +438,21 @@
         };
 
         $(document).ready(function() {
+            $('.i-checks').iCheck({
+                    checkboxClass: 'icheckbox_square-green',
+                    radioClass: 'iradio_square-green',
+            });
+
+            $('input').on('ifChecked', function(ev) {
+                setMetricToPercentage(metricName)
+            })
+
+            $('input').on('ifUnchecked', function(ev) {
+                unsetMetricToPercentage(metricName)
+            })            
+        });
+
+        $(document).ready(function() {
             // setup();
 
             firebase.auth().onAuthStateChanged(function(user) {
@@ -466,14 +488,16 @@
                 $('#input-new-daily-goal').attr('disabled', 'true')
                 $('#input-new-weekly-goal').attr('disabled', 'true')
                 $('#input-new-monthly-goal').attr('disabled', 'true')
+                $('.i-checks').iCheck('disable')
                 var newDailyGoal = $('#input-new-daily-goal').val().trim()
                 var newWeeklyGoal = $('#input-new-weekly-goal').val().trim()
                 var newMonthlyGoal = $('#input-new-monthly-goal').val().trim()
 
-                updateMetricGoals(metricName, newDailyGoal, newWeeklyGoal, newMonthlyGoal).then(function() {
+                updateMetricGoals(metricName, newDailyGoal, newWeeklyGoal, newMonthlyGoal, isMetricPercent).then(function() {
                     $('#input-new-daily-goal').removeAttr('disabled')
                     $('#input-new-weekly-goal').removeAttr('disabled')
                     $('#input-new-monthly-goal').removeAttr('disabled')
+                    $('.i-checks').iCheck('enable')
                     $('#edit-KPI-modal').modal('hide')
                 })
             })
@@ -488,11 +512,20 @@
             $('.user-name').text(userName)
         }
 
-        function updateMetricGoals(kpiName, dailyGoal, weeklyGoal, monthlyGoal) {
+        function setMetricToPercentage() {
+            isMetricPercent = true
+        }
+
+        function unsetMetricToPercentage() {
+            isMetricPercent = false
+        }
+
+        function updateMetricGoals(kpiName, dailyGoal, weeklyGoal, monthlyGoal, isPercent) {
             var updates = {}
             updates['/KPIs/Coworking/Acquisition/' + kpiName + '/currentGoalsAndValues/goals/dailyGoal'] = Number(dailyGoal)
             updates['/KPIs/Coworking/Acquisition/' + kpiName + '/currentGoalsAndValues/goals/weeklyGoal'] = Number(weeklyGoal)
             updates['/KPIs/Coworking/Acquisition/' + kpiName + '/currentGoalsAndValues/goals/monthlyGoal'] = Number(monthlyGoal)
+            updates['/Offers/Coworking/KPIs/Acquisition/' + kpiName + '/isPercent/'] = isPercent
 
             return firebase.database().ref().update(updates)
         }   
@@ -524,7 +557,7 @@
                 goal = val['goal']
                 value = val['value']
     
-                lineData['labels'].push(startMonthDay.format('MM') + ' - ' + endMonthDay.format('MM'))
+                lineData['labels'].push(startMonthDay.format('MMM'))
                 lineData['datasets'][0]['data'].push(goal)
                 lineData['datasets'][1]['data'].push(value)
                 var ctx = document.getElementById("lineChart").getContext("2d");
@@ -671,30 +704,62 @@
 
                 firebase.database().ref('/KPIs/Coworking/Acquisition/' + metricName + '/currentGoalsAndValues/').on('value', function(snapshot) {
 
-                    var currentGoalsAndValues = snapshot.val()
-                    currentGoals = currentGoalsAndValues['goals']
-                    currentValues = currentGoalsAndValues['values']
+                    if (!snapshot.val()) {
+                        var updates = {}
+                        updates['KPIs/Coworking/Acquisition/' + metricName + '/currentGoalsAndValues/goals'] = {dailyGoal: 0, isPercent:false, weeklyGoal:0, monthlyGoal:0}
+                        updates['KPIs/Coworking/Acquisition/' + metricName + '/currentGoalsAndValues/values'] = {dailyValue: 0, isPercent:false, weeklyValue:0, monthlyValue:0, previousMonthlyValue:0, previousWeeklyValue:0, previousDailyValue:0}
 
-                    $('#KPI-current-daily-value').text(currentValues['dailyValue'])
-                    $('#KPI-current-weekly-value').text(currentValues['weeklyValue'])
-                    $('#KPI-current-monthly-value').text(currentValues['monthlyValue'])
+                        firebase.database().ref().update(updates).then(function() {
+                            var currentGoalsAndValues = snapshot.val()
+                            currentGoals = currentGoalsAndValues['goals']
+                            currentValues = currentGoalsAndValues['values']
 
-                    $('#KPI-previous-daily-value').text(currentValues['previousDailyValue'])
-                    $('#KPI-previous-weekly-value').text(currentValues['previousWeeklyValue'])
-                    $('#KPI-previous-monthly-value').text(currentValues['previousMonthlyValue'])
+                            $('#KPI-current-daily-value').text(currentValues['dailyValue'])
+                            $('#KPI-current-weekly-value').text(currentValues['weeklyValue'])
+                            $('#KPI-current-monthly-value').text(currentValues['monthlyValue'])
 
-                    $('#KPI-current-daily-goal').text(currentGoals['dailyGoal'])
-                    $('#KPI-current-weekly-goal').text(currentGoals['weeklyGoal'])
-                    $('#KPI-current-monthly-goal').text(currentGoals['monthlyGoal'])
+                            $('#KPI-previous-daily-value').text(currentValues['previousDailyValue'])
+                            $('#KPI-previous-weekly-value').text(currentValues['previousWeeklyValue'])
+                            $('#KPI-previous-monthly-value').text(currentValues['previousMonthlyValue'])
 
-                    periodRef.on('value', function(snapshot) {
-                        if (snapshot.val()) {
-                            calcMetric(kpiName, currentGoals['dailyGoal'], currentGoals['weeklyGoal'], currentGoals['monthlyGoal'], startWeek, endWeek).then(function() {
-                                showMetricTimelineDaily(metricName);
-                            });
-                        }
-                    })
+                            $('#KPI-current-daily-goal').text(currentGoals['dailyGoal'])
+                            $('#KPI-current-weekly-goal').text(currentGoals['weeklyGoal'])
+                            $('#KPI-current-monthly-goal').text(currentGoals['monthlyGoal'])
 
+                            periodRef.on('value', function(snapshot) {
+                                if (snapshot.val()) {
+                                    calcMetric(kpiName, currentGoals['dailyGoal'], currentGoals['weeklyGoal'], currentGoals['monthlyGoal'], startWeek, endWeek).then(function() {
+                                        showMetricTimelineDaily(metricName);
+                                    });
+                                }
+                            })
+
+                        })
+                    }else {
+                        var currentGoalsAndValues = snapshot.val()
+                        currentGoals = currentGoalsAndValues['goals']
+                        currentValues = currentGoalsAndValues['values']
+
+                        $('#KPI-current-daily-value').text(currentValues['dailyValue'])
+                        $('#KPI-current-weekly-value').text(currentValues['weeklyValue'])
+                        $('#KPI-current-monthly-value').text(currentValues['monthlyValue'])
+
+                        $('#KPI-previous-daily-value').text(currentValues['previousDailyValue'])
+                        $('#KPI-previous-weekly-value').text(currentValues['previousWeeklyValue'])
+                        $('#KPI-previous-monthly-value').text(currentValues['previousMonthlyValue'])
+
+                        $('#KPI-current-daily-goal').text(currentGoals['dailyGoal'])
+                        $('#KPI-current-weekly-goal').text(currentGoals['weeklyGoal'])
+                        $('#KPI-current-monthly-goal').text(currentGoals['monthlyGoal'])
+
+                        periodRef.on('value', function(snapshot) {
+                            if (snapshot.val()) {
+                                calcMetric(kpiName, currentGoals['dailyGoal'], currentGoals['weeklyGoal'], currentGoals['monthlyGoal'], startWeek, endWeek).then(function() {
+                                    showMetricTimelineDaily(metricName);
+                                });
+                            }
+                        })                        
+                    }
                 })
             })
         })
@@ -737,12 +802,12 @@
                 updates['/KPIs/Coworking/Acquisition/' + metric + '/months/' + day] = {start: day, goal: monthlyGoal, value: 0}
             }
 
-            updates['/KPIs/Coworking/Acquisition/DOT/currentGoalsAndValues/values/dailyValue'] = 0
-            updates['/KPIs/Coworking/Acquisition/DOT/currentGoalsAndValues/values/weeklyValue'] = 0
-            updates['/KPIs/Coworking/Acquisition/DOT/currentGoalsAndValues/values/monthlyValue'] = 0
-            updates['/KPIs/Coworking/Acquisition/DOT/currentGoalsAndValues/values/previousDailyValue'] = 0
-            updates['/KPIs/Coworking/Acquisition/DOT/currentGoalsAndValues/values/previousWeeklyValue'] = 0
-            updates['/KPIs/Coworking/Acquisition/DOT/currentGoalsAndValues/values/previousMonthlyValue'] = 0
+            updates['/KPIs/Coworking/Acquisition/' + metric + '/currentGoalsAndValues/values/dailyValue'] = 0
+            updates['/KPIs/Coworking/Acquisition/' + metric + '/currentGoalsAndValues/values/weeklyValue'] = 0
+            updates['/KPIs/Coworking/Acquisition/' + metric + '/currentGoalsAndValues/values/monthlyValue'] = 0
+            updates['/KPIs/Coworking/Acquisition/' + metric + '/currentGoalsAndValues/values/previousDailyValue'] = 0
+            updates['/KPIs/Coworking/Acquisition/' + metric + '/currentGoalsAndValues/values/previousWeeklyValue'] = 0
+            updates['/KPIs/Coworking/Acquisition/' + metric + '/currentGoalsAndValues/values/previousMonthlyValue'] = 0
 
             var today = moment().startOf('day')
             var yesterday = moment().startOf('day').add(-1, 'days')
