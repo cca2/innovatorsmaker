@@ -795,15 +795,15 @@
             })
         })
 
-        function updateCurrentValues(metric, dailyValue, weeklyValue, monthlyValue, previousDailyValue, previousWeeklyValue, previousMonthlyValue) {
+        function updateSelectedMetric() {
             var updates = {}
 
-            updates['/KPIs/Coworking/Acquisition/' + metric + '/currentGoalsAndValues/values/dailyValue'] = dailyValue
-            updates['/KPIs/Coworking/Acquisition/' + metric + '/currentGoalsAndValues/values/weeklyValue'] = weeklyValue
-            updates['/KPIs/Coworking/Acquisition/' + metric + '/currentGoalsAndValues/values/monthlyValue'] = monthlyValue
-            updates['/KPIs/Coworking/Acquisition/' + metric + '/currentGoalsAndValues/values/previousDailyValue'] = previousDailyValue
-            updates['/KPIs/Coworking/Acquisition/' + metric + '/currentGoalsAndValues/values/previousWeeklyValue'] = previousWeeklyValue
-            updates['/KPIs/Coworking/Acquisition/' + metric + '/currentGoalsAndValues/values/previousMonthlyValue'] = previousMonthlyValue
+            updates['/KPIs/Coworking/Acquisition/' + selectedMetric['name'] + '/currentGoalsAndValues/values/dailyValue'] = selectedMetric['dailyValue']
+            updates['/KPIs/Coworking/Acquisition/' + selectedMetric['name'] + '/currentGoalsAndValues/values/weeklyValue'] = selectedMetric['weeklyValue']
+            updates['/KPIs/Coworking/Acquisition/' + selectedMetric['name'] + '/currentGoalsAndValues/values/monthlyValue'] = selectedMetric['monthlyValue']
+            updates['/KPIs/Coworking/Acquisition/' + selectedMetric['name'] + '/currentGoalsAndValues/values/previousDailyValue'] = selectedMetric['previousDailyValue']
+            updates['/KPIs/Coworking/Acquisition/' + selectedMetric['name'] + '/currentGoalsAndValues/values/previousWeeklyValue'] = selectedMetric['previousWeeklyValue']
+            updates['/KPIs/Coworking/Acquisition/' + selectedMetric['name'] + '/currentGoalsAndValues/values/previousMonthlyValue'] = selectedMetric['previousMonthlyValue']
 
             return firebase.database().ref().update(updates)
         }
@@ -833,12 +833,13 @@
                 updates['/KPIs/Coworking/Acquisition/' + metric + '/months/' + day] = {start: day, goal: monthlyGoal, value: 0}
             }
 
-            updates['/KPIs/Coworking/Acquisition/' + metric + '/currentGoalsAndValues/values/dailyValue'] = 0
-            updates['/KPIs/Coworking/Acquisition/' + metric + '/currentGoalsAndValues/values/weeklyValue'] = 0
-            updates['/KPIs/Coworking/Acquisition/' + metric + '/currentGoalsAndValues/values/monthlyValue'] = 0
-            updates['/KPIs/Coworking/Acquisition/' + metric + '/currentGoalsAndValues/values/previousDailyValue'] = 0
-            updates['/KPIs/Coworking/Acquisition/' + metric + '/currentGoalsAndValues/values/previousWeeklyValue'] = 0
-            updates['/KPIs/Coworking/Acquisition/' + metric + '/currentGoalsAndValues/values/previousMonthlyValue'] = 0
+            selectedMetric['dailyValue'] = 0
+            selectedMetric['weeklyValue'] = 0
+            selectedMetric['monthlyValue'] = 0
+
+            selectedMetric['previousDailyValue'] = 0
+            selectedMetric['previousWeeklyValue'] = 0
+            selectedMetric['previousMonthlyValue'] = 0
 
             var today = moment().startOf('day')
             var yesterday = moment().startOf('day').add(-1, 'days')
@@ -881,33 +882,35 @@
 
                                 if (moment(day).startOf('day').valueOf() == today.valueOf()) {
                                     currentDailyValue = numSeatsDemandedForDay
-                                    updates['/KPIs/Coworking/Acquisition/DOT/currentGoalsAndValues/values/dailyValue'] = currentDailyValue
+                                    selectedMetric['dailyValue'] = currentDailyValue
                                 }
                                 if (moment(day).startOf('day').valueOf() == yesterday.valueOf()) {
                                     previousDailyValue = numSeatsDemandedForDay
-                                    updates['/KPIs/Coworking/Acquisition/DOT/currentGoalsAndValues/values/previousDailyValue'] = previousDailyValue
+                                    selectedMetric['previousDailyValue'] = previousDailyValue
                                 }
                                 if (moment(day).startOf('week').valueOf() == weekStart.valueOf()) {
-                                    updates['/KPIs/Coworking/Acquisition/DOT/currentGoalsAndValues/values/weeklyValue'] += numSeatsDemandedForDay
+                                    selectedMetric['weeklyValue'] += numSeatsDemandedForDay
                                 }
                                 if (moment(day).startOf('week').valueOf() == previousWeekStart.valueOf()) {
-                                    updates['/KPIs/Coworking/Acquisition/DOT/currentGoalsAndValues/values/previousWeeklyValue'] += numSeatsDemandedForDay
+                                    selectedMetric['previousWeeklyValue'] += numSeatsDemandedForDay
                                 }
 
                                 if (moment(day).startOf('month').valueOf() == monthStart.valueOf()) {
-                                    updates['/KPIs/Coworking/Acquisition/DOT/currentGoalsAndValues/values/monthlyValue'] += numSeatsDemandedForDay
+                                    selectedMetric['monthlyValue'] += numSeatsDemandedForDay
                                 }
                                 
                                 if (moment(day).startOf('month').valueOf() == previousMonthStart.valueOf()) {
-                                    updates['/KPIs/Coworking/Acquisition/DOT/currentGoalsAndValues/values/previousMonthlyValue'] += numSeatsDemandedForDay
+                                    selectedMetric['previousMonthlyValue'] += numSeatsDemandedForDay
                                 }
                                 
                                 break
                             }
                         }
                     }
-                    firebase.database().ref().update(updates).then(function() {
-                        resolve()
+                    updateSelectedMetric().then(function() {
+                        firebase.database().ref().update(updates).then(function() {
+                            resolve()
+                        })
                     })
                 })
             })
