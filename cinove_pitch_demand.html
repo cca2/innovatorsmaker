@@ -616,6 +616,18 @@
             myNewChart = new Chart(ctx).Line(lineData, lineOptions);
         }
 
+        function initializeGoals() {
+            var updates = {}
+            selectedMetric['dailyGoal'] = 0
+            selectedMetric['weeklyGoal'] = 0
+            selectedMetric['monthlyGoal'] = 0
+            selectedMetric['isPercent'] = true
+
+            updates['/KPIs/Coworking/Acquisition/' + selectedMetric['name'] + 'currentGoalsAndValues/goals/'] = {dailyGoal: 0, weeklyGoal:0, monthlyGoal:0}
+            updates['/KPIs/Coworking/Acquisition/' + selectedMetric['name'] + 'currentGoalsAndValues/values/'] = {dailyValue: 0, previousDailyValue: 0, weeklyValue: 0, previousWeeklyValue: 0, monthlyValue: 0, previousMonthlyValue: 0}
+            return firebase.database().ref().update(updates)
+        }
+
         function showMetricTimelineDaily() {
             lineData['labels'] = []
             lineData['datasets'][0]['data'] = []
@@ -702,41 +714,15 @@
                 $('#KPI-metric-name').text(selectedMetric['name'])
                 $('#KPI-metric-description').text(selectedMetric['description'])                
 
+
                 firebase.database().ref('/KPIs/Coworking/Acquisition/' + selectedMetric['name'] + '/currentGoalsAndValues/').on('value', function(snapshot) {
 
                     if (!snapshot.val()) {
-                        var updates = {}
-                        selectedMetric['dailyGoal'] = 0
-                        selectedMetric['weeklyGoal'] = 0
-                        selectedMetric['monthlyGoal'] = 0
-
-                        selectedMetric['dailyValue'] = 0
-                        selectedMetric['weeklyValue'] = 0
-                        selectedMetric['monthlyValue'] = 0
-
-                        firebase.database().ref().update(updates).then(function() {
-                            var currentGoalsAndValues = snapshot.val()
-                            currentGoals = currentGoalsAndValues['goals']
-                            currentValues = currentGoalsAndValues['values']
-
-                            selectedMetric['dailyValue'] = currentValues['dailyValue']
-                            selectedMetric['weeklyValue'] = currentValues['weeklyValue']
-                            selectedMetric['monthlyValue'] = currentValues['monthlyValue']
-
-                            selectedMetric['dailyGoal'] = currentValues['dailyGoal']
-                            selectedMetric['weeklyGoal'] = currentValues['weeklyGoal']
-                            selectedMetric['monthlyGoal'] = currentValues['monthlyGoal']
-
-                            showSelectedMetric()
-
-                            periodRef.on('value', function(snapshot) {
-                                if (snapshot.val()) {
-                                    calcMetric(kpiName, currentGoals['dailyGoal'], currentGoals['weeklyGoal'], currentGoals['monthlyGoal'], startWeek, endWeek).then(function() {
-                                        showMetricTimelineDaily();
-                                    });
-                                }
-                            })
-
+                        initializeGoals().then(function() {
+                        showSelectedMetric()
+                            calcMetric(kpiName, currentGoals['dailyGoal'], currentGoals['weeklyGoal'], currentGoals['monthlyGoal'], startWeek, endWeek).then(function() {
+                                showMetricTimelineDaily();
+                            });
                         })
                     }else {
                         var currentGoalsAndValues = snapshot.val()
@@ -753,13 +739,9 @@
 
                         showSelectedMetric()
 
-                        periodRef.on('value', function(snapshot) {
-                            if (snapshot.val()) {
-                                calcMetric(kpiName, currentGoals['dailyGoal'], currentGoals['weeklyGoal'], currentGoals['monthlyGoal'], startWeek, endWeek).then(function() {
-                                    showMetricTimelineDaily();
-                                });
-                            }
-                        })                        
+                        calcMetric(kpiName, currentGoals['dailyGoal'], currentGoals['weeklyGoal'], currentGoals['monthlyGoal'], startWeek, endWeek).then(function() {
+                            showMetricTimelineDaily();
+                        });
                     }
                 })
             })
