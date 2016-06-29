@@ -432,6 +432,16 @@
 
         $(document).ready(function() {
             // setup();
+
+            firebase.auth().onAuthStateChanged(function(user) {
+              if (user) {
+                // User is signed in.
+                showUserName(user.email)
+              } else {
+                // No user is signed in.
+              }
+            });            
+
             $('#btn-test').click(function() {
                 test()
             })
@@ -467,7 +477,13 @@
         });
     </script>
 
-    <script type="text/javascript"> 
+    <script type="text/javascript">
+        var myNewChart
+
+        function showUserName(userName) {
+            $('.user-name').text(userName)
+        }
+
         function updateMetricGoals(kpiName, dailyGoal, weeklyGoal, monthlyGoal) {
             var updates = {}
             updates['/KPIs/Coworking/Acquisition/' + kpiName + '/currentGoalsAndValues/goals/dailyGoal'] = dailyGoal
@@ -490,22 +506,6 @@
             $('#' + kpiName + '-metric-description').text(newVal);
         }
 
-        function showMetricTimeline(kpiName, weeks) {  
-            availability = weeks['availability']
-            startDate = new Date(weeks['start'])
-            year = startDate.getYear()
-            month = startDate.getMonth()
-            day = startDate.getDate()
-
-            for (var i = 0; i < 14; i++) {
-                currentLabelDate = new Date(year,month, day++)
-                currentLabel = '' + currentLabelDate.getDate() + '/' + currentLabelDate.getMonth()
-                lineData['labels'].push(currentLabel)
-            }
-            var ctx = document.getElementById("lineChart").getContext("2d");
-            var myNewChart = new Chart(ctx).Line(lineData, lineOptions);
-        }
-
         function showMetricTimelineWeekly(kpiName) {
             lineData['labels'] = []
             lineData['datasets'][0]['data'] = []
@@ -524,7 +524,11 @@
                 lineData['datasets'][0]['data'].push(goal)
                 lineData['datasets'][1]['data'].push(value)
                 var ctx = document.getElementById("lineChart").getContext("2d");
-                var myNewChart = new Chart(ctx).Line(lineData, lineOptions);
+    
+                if (myNewChart) {
+                    myNewChart.destroy()
+                }
+                myNewChart = new Chart(ctx).Line(lineData, lineOptions);
             })
         }
 
@@ -547,7 +551,10 @@
                 lineData['datasets'][0]['data'].push(goal)
                 lineData['datasets'][1]['data'].push(value)
                 var ctx = document.getElementById("lineChart").getContext("2d");
-                var myNewChart = new Chart(ctx).Line(lineData, lineOptions);
+                if (myNewChart) {
+                    myNewChart.destroy()
+                }
+                myNewChart = new Chart(ctx).Line(lineData, lineOptions);
             })
 
             demandRef.on('child_changed', function(snapshot) {
@@ -570,7 +577,10 @@
                 lineData['datasets'][0]['data'][position] = goal
                 lineData['datasets'][1]['data'][position] = value
                 var ctx = document.getElementById("lineChart").getContext("2d");
-                var myNewChart = new Chart(ctx).Line(lineData, lineOptions);
+                if (myNewChart) {
+                    myNewChart.destroy()
+                }
+                myNewChart = new Chart(ctx).Line(lineData, lineOptions);
             })
         }
     </script>
@@ -659,8 +669,22 @@
             })
         })
 
+        function updateCurrentValues(metric, dailyValue, weeklyValue, monthlyValue, previousDailyValue, previousWeeklyValue, previousMonthlyValue) {
+            var updates = {}
+
+            updates['/KPIs/Coworking/Acquisition/' + metric + '/currentGoalsAndValues/values/dailyValue'] = dailyValue
+            updates['/KPIs/Coworking/Acquisition/' + metric + '/currentGoalsAndValues/values/weeklyValue'] = weeklyValue
+            updates['/KPIs/Coworking/Acquisition/' + metric + '/currentGoalsAndValues/values/monthlyValue'] = monthlyValue
+            updates['/KPIs/Coworking/Acquisition/' + metric + '/currentGoalsAndValues/values/previousDailyValue'] = previousDailyValue
+            updates['/KPIs/Coworking/Acquisition/' + metric + '/currentGoalsAndValues/values/previousWeeklyValue'] = previousWeeklyValue
+            updates['/KPIs/Coworking/Acquisition/' + metric + '/currentGoalsAndValues/values/previousMonthlyValue'] = previousMonthlyValue
+
+            return firebase.database().ref().update(updates)
+        }
+
         function calcMetric(metric, dailyGoal, weeklyGoal, startDate, finalDate) {
             //Aqui fazer os calculos das métricas de aquisição do Coworking
+
             var updates = {}
             var durationAsDays = Math.round(moment.duration(finalDate - startDate).asDays())
 
@@ -675,163 +699,74 @@
                 updates['/KPIs/Coworking/Acquisition/' + metric + '/weeks/' + day] = {start: day, goal: weeklyGoal, value: 0}
             }
 
-            return firebase.database().ref().update(updates).then(function() {
-                ref = firebase.database().ref('/Coworking/Acquisition/Days/').endAt(finalDate.valueOf())
-                var dailyDemands = {}
+            updates['/KPIs/Coworking/Acquisition/DOT/currentGoalsAndValues/values/dailyValue'] = 0
+            updates['/KPIs/Coworking/Acquisition/DOT/currentGoalsAndValues/values/weeklyValue'] = 0
+            updates['/KPIs/Coworking/Acquisition/DOT/currentGoalsAndValues/values/monthlyValue'] = 0
+            updates['/KPIs/Coworking/Acquisition/DOT/currentGoalsAndValues/values/previousDailyValue'] = 0
+            updates['/KPIs/Coworking/Acquisition/DOT/currentGoalsAndValues/values/previousWeeklyValue'] = 0
+            updates['/KPIs/Coworking/Acquisition/DOT/currentGoalsAndValues/values/previousMonthlyValue'] = 0
+
+            var today = moment().startOf('day')
+            var yesterday = moment().startOf('day').add(-1, 'days')
+            var weekStart = moment().startOf('week')
+            var previousWeekStart = moment(weekStart).add(-1, 'weeks')
+
+            var previousDailyValue = 0
+            var currentDailyValue = 0
+
+            ref = firebase.database().ref('/Coworking/Acquisition/Days/').endAt(finalDate.valueOf())
+
+
+            var dailyDemands = {}
+            var promise = new Promise(function(resolve, reject) {
                 ref.on('value', function(snapshot) {
                     var days = snapshot.val()
 
                     for (d in days) {
-                        day = days[d]['day']
+                        var numSeatsDemandedForDay = 0
+                        var day = days[d]['day']
                         var startWeekDay = moment(day).startOf('week').valueOf()
                         var availability = days[d]['availability']
-                        var teamDemands = days[d]['teamDemands']
-                        for (teamDemand in teamDemands) {
-                            var teamSchedules = teamDemands[teamDemand]['schedules']
-                            for (teamSchedule in teamSchedules) {
-                                schedule = teamSchedules[teamSchedule]
-                                switch (metric) {
-                                    //AQUI DEFINIR COMO SÃO CALCULADAS AS MÉTRICAS
-                                    case ('DOT'): {
-                                        //
-                                        updates['/KPIs/Coworking/Acquisition/DOT/days/' + day]['value'] += schedule
-                                        updates['/KPIs/Coworking/Acquisition/DOT/weeks/' + startWeekDay]['value'] += schedule
-                                        break
-                                    }
+                        var schedules = days[d]['schedules']
+                        for (schedule in schedules) {
+                            var teamsDemandsForSchedule = schedules[schedule]
+                            for (teamDemandForSchedule in teamsDemandsForSchedule) {
+                                numSeatsDemandedForDay += teamsDemandsForSchedule[teamDemandForSchedule]['seats']
+                            }                             
+                        }
+                        switch (metric) {
+                            //AQUI DEFINIR COMO SÃO CALCULADAS AS MÉTRICAS
+                            case ('DOT'): {
+                                //
+                                updates['/KPIs/Coworking/Acquisition/DOT/days/' + day]['value'] = numSeatsDemandedForDay
+                                updates['/KPIs/Coworking/Acquisition/DOT/weeks/' + startWeekDay]['value'] += numSeatsDemandedForDay
+
+                                if (moment(day).startOf('day').valueOf() == today.valueOf()) {
+                                    currentDailyValue = numSeatsDemandedForDay
+                                    updates['/KPIs/Coworking/Acquisition/DOT/currentGoalsAndValues/values/dailyValue'] = currentDailyValue
                                 }
+                                if (moment(day).startOf('day').valueOf() == yesterday.valueOf()) {
+                                    previousDailyValue = numSeatsDemandedForDay
+                                    updates['/KPIs/Coworking/Acquisition/DOT/currentGoalsAndValues/values/previousDailyValue'] = previousDailyValue
+                                }
+                                if (moment(day).startOf('week').valueOf() == weekStart.valueOf()) {
+                                    updates['/KPIs/Coworking/Acquisition/DOT/currentGoalsAndValues/values/weeklyValue'] += numSeatsDemandedForDay
+                                }
+                                if (moment(day).startOf('week').valueOf() == previousWeekStart.valueOf()) {
+                                    updates['/KPIs/Coworking/Acquisition/DOT/currentGoalsAndValues/values/previousWeeklyValue'] += numSeatsDemandedForDay
+                                    console.log(moment(day).toString() + ' ' + numSeatsDemandedForDay)                                            
+                                }
+                                break
                             }
                         }
                     }
-                    return firebase.database().ref().update(updates)
-                })                            
+                    firebase.database().ref().update(updates).then(function() {
+                        resolve()
+                    })
+                })
             })
 
-                // switch(metric) {
-                //     case ('DOT'): {
-                //         var durationAsDays = Math.round(moment.duration(finalDate - startDate).asDays())
-
-                //         var updates = {}                            
-                //         for (i = 0; i < durationAsDays; i++) {
-                //             var day = moment(startDate).add(i, 'days').valueOf()
-                //             updates['/KPIs/Coworking/Acquisition/DOT/days/' + day] = {day: day, goal:96, value:0}
-                //         }                    
-                //         break;
-                //     }
-                //     case ('TDOTC'): {
-                //         var durationAsDays = Math.round(moment.duration(finalDate - startDate).asDays())
-
-                //         var updates = {}                            
-                //         for (i = 0; i < durationAsDays; i++) {
-                //             var day = moment(startDate).add(i, 'days').valueOf()
-                //             updates['/KPIs/Coworking/Acquisition/TDOTC/days/' + day] = {day: day, goal:40, value:0}
-                //         }
-
-                //         var durationAsWeeks = Math.round(moment.duration(finalDate - startDate).asWeeks())
-                //         var weeklyDemands = {}
-                //         for (i = 0; i < durationAsWeeks; i++) {
-                //             var day = moment(startDate).add(i, 'weeks').valueOf()
-                //             updates['/KPIs/Coworking/Acquisition/TDOTC/weeks/' + day] = {start: day, goal:40, value:0}
-                //             weeklyDemands[day] = {start: day, end: moment(day).add(6, 'days').valueOf(), demand: 0, availability: 0}
-                //         }
-
-
-                //         firebase.database().ref().update(updates).then(function() {
-                //             ref = firebase.database().ref('/Coworking/Acquisition/Days/').endAt(finalDate.valueOf())
-                //             var dailyDemands = {}
-                //             ref.on('value', function(snapshot) {
-                //                 var updates = {}
-                //                 var days = snapshot.val()
-
-                //                 for (d in days) {
-                //                     // var day = snapshot.key
-                //                     day = days[d]['day']
-                //                     var startWeekDay = moment(day).startOf('week').valueOf()
-                //                     var availability = days[d]['availability']
-                //                     if (!dailyDemands[day]) {
-                //                         dailyDemands[day] = {availability: availability, value:0, demand:0}
-                //                     }
-
-                //                     var teamDemands = days[d]['teamDemands']
-                //                     for (teamDemand in teamDemands) {
-                //                         var teamSchedules = teamDemands[teamDemand]['schedules']
-                //                         for (teamSchedule in teamSchedules) {
-                //                             schedule = teamSchedules[teamSchedule]
-                //                             dailyDemands[day]['demand'] += schedule
-
-                //                             for (weeklyDemand in weeklyDemands) {
-                //                                 weekDemand = weeklyDemands[weeklyDemand]
-                //                                 if ((day >= weekDemand['start']) && day <= (weekDemand['end'])) {
-                //                                     weeklyDemands[startWeekDay]['demand'] += schedule
-                //                                     weeklyDemands[startWeekDay]['availability'] += availability
-                //                                     weeklyDemands[startWeekDay]['value'] = Math.round((weeklyDemands[startWeekDay]['demand']/weeklyDemands[startWeekDay]['availability']) * 100)
-                //                                 }
-                //                             }
-                //                         }
-                //                     }
-                //                     if (dailyDemands[day]['availability'] != 0) {   
-                //                         dailyDemands[day]['value'] = Math.round((dailyDemands[day]['demand']/dailyDemands[day]['availability'])*100)
-                //                     }
-
-                //                     updates['/KPIs/Coworking/Acquisition/TDOTC/days/' + day + '/value/'] = dailyDemands[day]['value']
-                //                     updates['/KPIs/Coworking/Acquisition/TDOTC/weeks/' + startWeekDay + '/value/'] = weeklyDemands[startWeekDay]['value']
-                //                 }
-                //                 firebase.database().ref().update(updates)
-                //             })                            
-                //         })
-                //         //Calc daily values
-                //         //Calc weekly values
-                //         // var startWeek = moment().startOf('month').startOf('week').valueOf()
-                //         // var endWeek = moment().endOf('month').endOf('week').valueOf()
-
-                //         // var nextStartWeek = moment(startWeek).add(7, 'days').valueOf()
-                //         // var weekDemands = 0
-                //         // var daysDemands = {}
-                //         // var weekHoursDemand = 0 
-                //         // var weekHoursAvailability = 0
-                //         // for (day in dailyDemands) {
-                //         //     daysDemands[day] = 0
-
-                //         //     dayDemands = dailyDemands[day]
-                //         //     if (dayDemands['day'] >= nextStartWeek) {
-                //         //         var update = {}
-                //         //         if (weekHoursAvailability > 0) {
-                //         //             update['KPIs/Coworking/Acquisition/TDOTC/weeks/' + startWeek + '/value/'] = Math.round((weekHoursDemand/weekHoursAvailability) * 100)
-                //         //         }else {
-                //         //             update['KPIs/Coworking/Acquisition/TDOTC/weeks/' + startWeek + '/value/'] = 0
-                //         //         }
-                //         //         update['KPIs/Coworking/Acquisition/TDOTC/weeks/' + startWeek + '/start/'] = startWeek
-                //         //         update['KPIs/Coworking/Acquisition/TDOTC/weeks/' + startWeek + '/goal/'] = 40
-                //         //         update['KPIs/Coworking/Acquisition/TDOTC/weeks/' + startWeek + '/isUpdate/'] = true
-
-                //         //         firebase.database().ref().update(update)
-                //         //         startWeek = moment(dayDemands['day']).startOf('week').valueOf()
-                //         //         nextStartWeek = moment(startWeek).add(7, 'days').valueOf()
-                //         //         weekHoursDemand = 0
-                //         //         weekHoursAvailability = 0
-                //         //     }
-                //         //     availability = dayDemands['availability']
-                //         //     weekHoursAvailability += availability
-                //         //     teamDemands = dayDemands['teamDemands']
-                //         //     for (tID in teamDemands) {
-                //         //         // schedules = teamDemands[tID]
-                //         //         dayHoursDemand = 0
-                //         //         for (schedule in teamDemands[tID]['schedules']) {
-                //         //             dayHoursDemand += teamDemands[tID]['schedules'][schedule]
-                //         //             weekHoursDemand += dayHoursDemand
-                //         //         }
-                //         //         daysDemands[day] = dayHoursDemand
-                //         //         dayDemand = Math.round((dayHoursDemand/availability) * 100)
-                //         //         update = {}
-                //         //         update['/KPIs/Coworking/Acquisition/TDOTC/days/' + dayDemands['day'] + '/value/'] = dayDemand
-                //         //         update['/KPIs/Coworking/Acquisition/TDOTC/days/' + dayDemands['day'] + '/day/'] = dayDemands['day']
-                //         //         update['/KPIs/Coworking/Acquisition/TDOTC/days/' + dayDemands['day'] + '/goal/'] = 40
-                //         //         firebase.database().ref().update(update)
-                //         //     }
-                //         // }
-                //         // break;
-                //     }
-                // }
-            // }
+            return promise                            
         }
     </script>
 
@@ -847,7 +782,7 @@
 
             startWeek = moment(beginDate).startOf('week')
             endWeek = moment(finalDate).endOf('week')
-            durationDays = moment.duration(endWeek - startWeek).asDays()
+            durationDays = moment.duration(endWeek - startWeek).asDays() - 1
 
             entrepreneursRef = firebase.database().ref('/entrepreneurs')
             entrepreneursRef.on('value', function(snapshot) {
@@ -877,7 +812,7 @@
                         updates = {}
                         updates['/Coworking/Acquisition/Days/' + newDay + '/availability'] = 96
                         updates['/Coworking/Acquisition/Days/' + newDay + '/day/'] = newDay
-                        updates['/Coworking/Acquisition/Days/' + newDay + '/teamDemands/' + teamsList[teamIndex] + '/schedules/' + hourScheduled] = 4
+                        updates['/Coworking/Acquisition/Days/' + newDay + '/schedules/'  + hourScheduled + '/' + teamsList[teamIndex] + '/seats/'] = 4
 
                         firebase.database().ref().update(updates)
                 })
