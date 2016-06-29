@@ -387,9 +387,17 @@
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.13.0/moment.min.js"></script>
 
     <script>
-        var metricName
-        var metricDescription
-        var isMetricPercent = false
+        var selectedMetric = {
+            name: '',
+            description: '',
+            isPercent: false,
+            dailyGoal: 0,
+            weeklyGoal: 0,
+            monthlyGoal: 0,
+            dailyValue:0,
+            weeklyValue:0,
+            monthlyValue:0
+        }
 
         var dailyGoal = 0
         var weeklyGoal = 0
@@ -444,11 +452,11 @@
             });
 
             $('input').on('ifChecked', function(ev) {
-                setMetricToPercentage(metricName)
+                setMetricToPercentage(selectedMetric['name'])
             })
 
             $('input').on('ifUnchecked', function(ev) {
-                unsetMetricToPercentage(metricName)
+                unsetMetricToPercentage(selectedMetric['name'])
             })            
         });
 
@@ -469,15 +477,15 @@
             })
 
             $('#btn-show-KPI-timeline-daily').click(function() {
-                showMetricTimelineDaily(metricName);
+                showMetricTimelineDaily(selectedMetric['name']);
             })
 
             $('#btn-show-KPI-timeline-weekly').click(function() {
-                showMetricTimelineWeekly(metricName);
+                showMetricTimelineWeekly(selectedMetric['name']);
             })
 
             $('#btn-show-KPI-timeline-monthly').click(function() {
-                showMetricTimelineMonthly(metricName);
+                showMetricTimelineMonthly(selectedMetric['name']);
             })
 
             $('.btn-edit-KPI').click(function() {
@@ -493,7 +501,7 @@
                 var newWeeklyGoal = $('#input-new-weekly-goal').val().trim()
                 var newMonthlyGoal = $('#input-new-monthly-goal').val().trim()
 
-                updateMetricGoals(metricName, newDailyGoal, newWeeklyGoal, newMonthlyGoal, isMetricPercent).then(function() {
+                updateMetricGoals(selectedMetric['name'], newDailyGoal, newWeeklyGoal, newMonthlyGoal, selectedMetric['isPercent']).then(function() {
                     $('#input-new-daily-goal').removeAttr('disabled')
                     $('#input-new-weekly-goal').removeAttr('disabled')
                     $('#input-new-monthly-goal').removeAttr('disabled')
@@ -513,11 +521,11 @@
         }
 
         function setMetricToPercentage() {
-            isMetricPercent = true
+            selectedMetric['isPercent'] = true
         }
 
         function unsetMetricToPercentage() {
-            isMetricPercent = false
+            selectedMetric['isPercent'] = false
         }
 
         function updateMetricGoals(kpiName, dailyGoal, weeklyGoal, monthlyGoal, isPercent) {
@@ -530,14 +538,28 @@
             return firebase.database().ref().update(updates)
         }   
 
-        function showMetric(kpiName, dailyGoal, weeklyGoal, monthlyGoal) {
-            $('#input-new-daily-goal').val(dailyGoal)
-            $('#KPI-current-daily-value').val(dailyGoal)
-            $('#input-new-weekly-goal').val(weeklyGoal)
-            $('#KPI-current-weekly-value').val(weeklyGoal)
-            $('#input-new-monthly-goal').val(monthlyGoal)
-            $('#KPI-current-monthly-value').val(monthlyGoal)
-        }
+        function showSelectedMetric() {
+            var percentSymbol = ''
+            if (selectedMetric['isPercent']) {
+                percentSymbol = ' %'
+            }
+
+            $('#KPI-current-daily-value').text(selectedMetric['dailyValue'] + percentSymbol)
+            $('#KPI-current-weekly-value').text(selectedMetric['weeklyValue'] + percentSymbol)
+            $('#KPI-current-monthly-value').text(selectedMetric['monthlyValue'] + percentSymbol)
+
+            $('#KPI-previous-daily-value').text(selectedMetric['previousDailyValue'] + percentSymbol)
+            $('#KPI-previous-weekly-value').text(selectedMetric['previousWeeklyValue'] + percentSymbol)
+            $('#KPI-previous-monthly-value').text(selectedMetric['previousMonthlyValue'] + percentSymbol)
+
+            $('#KPI-current-daily-goal').text(selectedMetric['dailyGoal'] + percentSymbol)
+            $('#KPI-current-weekly-goal').text(selectedMetric['weeklyGoal'] + percentSymbol)
+            $('#KPI-current-monthly-goal').text(selectedMetric['monthlyGoal'] + percentSymbol)
+
+            $('#input-new-daily-goal').val(selectedMetric['dailyGoal'])
+            $('#input-new-weekly-goal').val(selectedMetric['weeklyGoal'])
+            $('#input-new-monthly-goal').val(selectedMetric['monthlyGoal'])
+        }        
 
         function showMetricDescription(kpiName, newVal) {
             $('#' + kpiName + '-metric-description').text(newVal);
@@ -664,9 +686,18 @@
 
         kpisRef = firebase.database().ref('/Offers/Coworking/KPIs/Acquisition/');        
 
+        kpisRef.on('child_changed', function(snapshot) {
+            var kpiName = snapshot.key
+            if (kpiName == selectedMetric['name']) {
+                selectedMetric['isPercent'] = snapshot.val()['isPercent']
+                showSelectedMetric()
+            }
+        })
+
         kpisRef.on('child_added', function(snapshot) {
             coworkingAcquisitionMetrics[snapshot.key] = snapshot.val()
             var kpiName = snapshot.key
+
             kpiDescription = snapshot.val()['Description']
             $kpiNameOption = $kpiNameOptionRef.clone()
             $kpiNameOption.find('.kpi-label').text(kpiName)
@@ -675,7 +706,11 @@
 
             firebase.database().ref('/KPIs/Coworking/Acquisition/' + kpiName + '/currentGoalsAndValues/goals/').on('value', function(snapshot) {
                 goals = snapshot.val();
-                showMetric(kpiName, goals['dailyGoal'], goals['weeklyGoal'], goals['monthlyGoal']);
+                selectedMetric['dailyGoal'] = goals['dailyGoal']
+                selectedMetric['weeklyGoal'] = goals['weeklyGoal']
+                selectedMetric['monthlyGoal'] = goals['monthlyGoal']
+
+                showSelectedMetric()
             })
 
             firebase.database().ref('/Offers/Coworking/KPIs/Acquisition/' + kpiName + '/Description').on('value', function(snapshot) {
@@ -695,41 +730,39 @@
             periodRef = firebase.database().ref('/Coworking/Acquisition/Days/').orderByChild('day').limitToFirst(durationDays)
 
             $('.' + kpiName + '-kpi-link').click(function() {
-                metricName = kpiName
-                metricDescription = coworkingAcquisitionMetrics[kpiName]['Description']
-                metricDailyGoal = coworkingAcquisitionMetrics[kpiName]['dailyGoal']
+                selectedMetric['name'] = kpiName
+                selectedMetric['description'] = coworkingAcquisitionMetrics[kpiName]['Description']
+                selectedMetric['isPercent'] = coworkingAcquisitionMetrics[kpiName]['isPercent']
 
-                $('#KPI-metric-name').text(metricName)
-                $('#KPI-metric-description').text(metricDescription)                
+                $('#KPI-metric-name').text(selectedMetric['name'])
+                $('#KPI-metric-description').text(selectedMetric['description'])                
 
-                firebase.database().ref('/KPIs/Coworking/Acquisition/' + metricName + '/currentGoalsAndValues/').on('value', function(snapshot) {
+                firebase.database().ref('/KPIs/Coworking/Acquisition/' + selectedMetric['name'] + '/currentGoalsAndValues/').on('value', function(snapshot) {
 
                     if (!snapshot.val()) {
                         var updates = {}
-                        updates['KPIs/Coworking/Acquisition/' + metricName + '/currentGoalsAndValues/goals'] = {dailyGoal: 0, isPercent:false, weeklyGoal:0, monthlyGoal:0}
-                        updates['KPIs/Coworking/Acquisition/' + metricName + '/currentGoalsAndValues/values'] = {dailyValue: 0, isPercent:false, weeklyValue:0, monthlyValue:0, previousMonthlyValue:0, previousWeeklyValue:0, previousDailyValue:0}
+                        updates['KPIs/Coworking/Acquisition/' + selectedMetric['name'] + '/currentGoalsAndValues/goals'] = {dailyGoal: 0, isPercent:false, weeklyGoal:0, monthlyGoal:0}
+                        updates['KPIs/Coworking/Acquisition/' + selectedMetric['name'] + '/currentGoalsAndValues/values'] = {dailyValue: 0, isPercent:false, weeklyValue:0, monthlyValue:0, previousMonthlyValue:0, previousWeeklyValue:0, previousDailyValue:0}
 
                         firebase.database().ref().update(updates).then(function() {
                             var currentGoalsAndValues = snapshot.val()
                             currentGoals = currentGoalsAndValues['goals']
                             currentValues = currentGoalsAndValues['values']
 
-                            $('#KPI-current-daily-value').text(currentValues['dailyValue'])
-                            $('#KPI-current-weekly-value').text(currentValues['weeklyValue'])
-                            $('#KPI-current-monthly-value').text(currentValues['monthlyValue'])
+                            selectedMetric['dailyValue'] = currentValues['dailyValue']
+                            selectedMetric['weeklyValue'] = currentValues['weeklyValue']
+                            selectedMetric['monthlyValue'] = currentValues['monthlyValue']
 
-                            $('#KPI-previous-daily-value').text(currentValues['previousDailyValue'])
-                            $('#KPI-previous-weekly-value').text(currentValues['previousWeeklyValue'])
-                            $('#KPI-previous-monthly-value').text(currentValues['previousMonthlyValue'])
+                            selectedMetric['dailyGoal'] = currentValues['dailyGoal']
+                            selectedMetric['weeklyGoal'] = currentValues['weeklyGoal']
+                            selectedMetric['monthlyGoal'] = currentValues['monthlyGoal']
 
-                            $('#KPI-current-daily-goal').text(currentGoals['dailyGoal'])
-                            $('#KPI-current-weekly-goal').text(currentGoals['weeklyGoal'])
-                            $('#KPI-current-monthly-goal').text(currentGoals['monthlyGoal'])
+                            showSelectedMetric()
 
                             periodRef.on('value', function(snapshot) {
                                 if (snapshot.val()) {
                                     calcMetric(kpiName, currentGoals['dailyGoal'], currentGoals['weeklyGoal'], currentGoals['monthlyGoal'], startWeek, endWeek).then(function() {
-                                        showMetricTimelineDaily(metricName);
+                                        showMetricTimelineDaily(selectedMetric['name']);
                                     });
                                 }
                             })
@@ -740,22 +773,20 @@
                         currentGoals = currentGoalsAndValues['goals']
                         currentValues = currentGoalsAndValues['values']
 
-                        $('#KPI-current-daily-value').text(currentValues['dailyValue'])
-                        $('#KPI-current-weekly-value').text(currentValues['weeklyValue'])
-                        $('#KPI-current-monthly-value').text(currentValues['monthlyValue'])
+                        selectedMetric['dailyValue'] = currentValues['dailyValue']
+                        selectedMetric['weeklyValue'] = currentValues['weeklyValue']
+                        selectedMetric['monthlyValue'] = currentValues['monthlyValue']
 
-                        $('#KPI-previous-daily-value').text(currentValues['previousDailyValue'])
-                        $('#KPI-previous-weekly-value').text(currentValues['previousWeeklyValue'])
-                        $('#KPI-previous-monthly-value').text(currentValues['previousMonthlyValue'])
+                        selectedMetric['dailyGoal'] = currentGoals['dailyGoal']
+                        selectedMetric['weeklyGoal'] = currentGoals['weeklyGoal']
+                        selectedMetric['monthlyGoal'] = currentGoals['monthlyGoal']
 
-                        $('#KPI-current-daily-goal').text(currentGoals['dailyGoal'])
-                        $('#KPI-current-weekly-goal').text(currentGoals['weeklyGoal'])
-                        $('#KPI-current-monthly-goal').text(currentGoals['monthlyGoal'])
+                        showSelectedMetric()
 
                         periodRef.on('value', function(snapshot) {
                             if (snapshot.val()) {
                                 calcMetric(kpiName, currentGoals['dailyGoal'], currentGoals['weeklyGoal'], currentGoals['monthlyGoal'], startWeek, endWeek).then(function() {
-                                    showMetricTimelineDaily(metricName);
+                                    showMetricTimelineDaily(selectedMetric['name']);
                                 });
                             }
                         })                        
@@ -1047,8 +1078,16 @@
     <script type="text/javascript">
         $('#edit-KPI-modal').on('show.bs.modal', function() {
             $modal = $(this)
-            $modal.find('.KPI-name').text(metricName)
-            $modal.find('.KPI-description').text(metricDescription)
+            $modal.find('.KPI-name').text(selectedMetric['name'])
+            $modal.find('.KPI-description').text(selectedMetric['description'])
+            $modal.find('#input-new-daily-goal').text(selectedMetric['dailyGoal'])
+            $modal.find('#input-new-weekly-goal').text(selectedMetric['weeklyGoal'])
+            $modal.find('#input-new-monthly-goal').text(selectedMetric['monthlyGoal'])
+            if (selectedMetric['isPercent']) {
+                $modal.find('.i-checks').iCheck('check')
+            }else {
+                $modal.find('.i-checks').iCheck('unchek')
+            }
         })
     </script>
 </body>
