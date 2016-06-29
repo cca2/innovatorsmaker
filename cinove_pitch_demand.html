@@ -194,7 +194,7 @@
                                     <!-- <button type="button" class="btn btn-xs btn-white active">Hoje</button> -->
                                     <button id="btn-show-KPI-timeline-daily" type="button" class="btn-show-timeline-daily btn btn-xs btn-white">Diária</button>
                                     <button id="btn-show-KPI-timeline-weekly" type="button" class="btn-show-timeline-weekly btn btn-xs btn-white">Semanal</button>
-                                    <button type="button" class="btn btn-xs btn-white">Mensal</button>
+                                    <button id="btn-show-KPI-timeline-monthly" type="button" class="btn-show-timeline-monthly btn btn-xs btn-white">Mensal</button>
                                     <!-- <button type="button" class="btn btn-xs btn-white">Anual</button> -->
                                 </div>
                             </div>                                                        
@@ -454,6 +454,10 @@
                 showMetricTimelineWeekly(metricName);
             })
 
+            $('#btn-show-KPI-timeline-monthly').click(function() {
+                showMetricTimelineMonthly(metricName);
+            })
+
             $('.btn-edit-KPI').click(function() {
                 $('#edit-KPI-modal').modal('show')
             })
@@ -486,9 +490,9 @@
 
         function updateMetricGoals(kpiName, dailyGoal, weeklyGoal, monthlyGoal) {
             var updates = {}
-            updates['/KPIs/Coworking/Acquisition/' + kpiName + '/currentGoalsAndValues/goals/dailyGoal'] = dailyGoal
-            updates['/KPIs/Coworking/Acquisition/' + kpiName + '/currentGoalsAndValues/goals/weeklyGoal'] = weeklyGoal
-            updates['/KPIs/Coworking/Acquisition/' + kpiName + '/currentGoalsAndValues/goals/monthlyGoal'] = monthlyGoal
+            updates['/KPIs/Coworking/Acquisition/' + kpiName + '/currentGoalsAndValues/goals/dailyGoal'] = Number(dailyGoal)
+            updates['/KPIs/Coworking/Acquisition/' + kpiName + '/currentGoalsAndValues/goals/weeklyGoal'] = Number(weeklyGoal)
+            updates['/KPIs/Coworking/Acquisition/' + kpiName + '/currentGoalsAndValues/goals/monthlyGoal'] = Number(monthlyGoal)
 
             return firebase.database().ref().update(updates)
         }   
@@ -504,6 +508,32 @@
 
         function showMetricDescription(kpiName, newVal) {
             $('#' + kpiName + '-metric-description').text(newVal);
+        }
+
+        function showMetricTimelineMonthly(kpiName) {
+            lineData['labels'] = []
+            lineData['datasets'][0]['data'] = []
+            lineData['datasets'][1]['data'] = []
+
+            demandRef = firebase.database().ref('KPIs/Coworking/Acquisition/' + kpiName + '/months/').orderByChild('start').limitToFirst(5)
+
+            demandRef.on('child_added', function(snapshot) {
+                val = snapshot.val();
+                startMonthDay = moment(val['start'])
+                endMonthDay = moment(startMonthDay).endOf('month')
+                goal = val['goal']
+                value = val['value']
+    
+                lineData['labels'].push(startMonthDay.format('MM') + ' - ' + endMonthDay.format('MM'))
+                lineData['datasets'][0]['data'].push(goal)
+                lineData['datasets'][1]['data'].push(value)
+                var ctx = document.getElementById("lineChart").getContext("2d");
+    
+                if (myNewChart) {
+                    myNewChart.destroy()
+                }
+                myNewChart = new Chart(ctx).Line(lineData, lineOptions);
+            })
         }
 
         function showMetricTimelineWeekly(kpiName) {
@@ -659,7 +689,7 @@
 
                     periodRef.on('value', function(snapshot) {
                         if (snapshot.val()) {
-                            calcMetric(kpiName, currentGoals['dailyGoal'], currentGoals['weeklyGoal'], startWeek, endWeek).then(function() {
+                            calcMetric(kpiName, currentGoals['dailyGoal'], currentGoals['weeklyGoal'], currentGoals['monthlyGoal'], startWeek, endWeek).then(function() {
                                 showMetricTimelineDaily(metricName);
                             });
                         }
@@ -682,7 +712,7 @@
             return firebase.database().ref().update(updates)
         }
 
-        function calcMetric(metric, dailyGoal, weeklyGoal, startDate, finalDate) {
+        function calcMetric(metric, dailyGoal, weeklyGoal, monthlyGoal, startDate, finalDate) {
             //Aqui fazer os calculos das métricas de aquisição do Coworking
 
             var updates = {}
@@ -699,6 +729,14 @@
                 updates['/KPIs/Coworking/Acquisition/' + metric + '/weeks/' + day] = {start: day, goal: weeklyGoal, value: 0}
             }
 
+            var startMonth = moment(startDate).startOf('month').valueOf()
+            var endMonth = moment(finalDate).endOf('month').valueOf()
+            var durationAsMonths = Math.round(moment.duration(endMonth - startMonth).asMonths())
+            for (i = 0; i < durationAsMonths; i++) {
+                var day = moment(startMonth).add(i, 'months').valueOf()
+                updates['/KPIs/Coworking/Acquisition/' + metric + '/months/' + day] = {start: day, goal: monthlyGoal, value: 0}
+            }
+
             updates['/KPIs/Coworking/Acquisition/DOT/currentGoalsAndValues/values/dailyValue'] = 0
             updates['/KPIs/Coworking/Acquisition/DOT/currentGoalsAndValues/values/weeklyValue'] = 0
             updates['/KPIs/Coworking/Acquisition/DOT/currentGoalsAndValues/values/monthlyValue'] = 0
@@ -710,6 +748,8 @@
             var yesterday = moment().startOf('day').add(-1, 'days')
             var weekStart = moment().startOf('week')
             var previousWeekStart = moment(weekStart).add(-1, 'weeks')
+            var monthStart = moment().startOf('month')
+            var previousMonthStart = moment(monthStart).add(-1, 'months')
 
             var previousDailyValue = 0
             var currentDailyValue = 0
@@ -726,6 +766,7 @@
                         var numSeatsDemandedForDay = 0
                         var day = days[d]['day']
                         var startWeekDay = moment(day).startOf('week').valueOf()
+                        var startMonthDay = moment(day).startOf('month').valueOf()
                         var availability = days[d]['availability']
                         var schedules = days[d]['schedules']
                         for (schedule in schedules) {
@@ -740,6 +781,7 @@
                                 //
                                 updates['/KPIs/Coworking/Acquisition/DOT/days/' + day]['value'] = numSeatsDemandedForDay
                                 updates['/KPIs/Coworking/Acquisition/DOT/weeks/' + startWeekDay]['value'] += numSeatsDemandedForDay
+                                updates['/KPIs/Coworking/Acquisition/DOT/months/' + startMonthDay]['value'] += numSeatsDemandedForDay
 
                                 if (moment(day).startOf('day').valueOf() == today.valueOf()) {
                                     currentDailyValue = numSeatsDemandedForDay
@@ -754,8 +796,16 @@
                                 }
                                 if (moment(day).startOf('week').valueOf() == previousWeekStart.valueOf()) {
                                     updates['/KPIs/Coworking/Acquisition/DOT/currentGoalsAndValues/values/previousWeeklyValue'] += numSeatsDemandedForDay
-                                    console.log(moment(day).toString() + ' ' + numSeatsDemandedForDay)                                            
                                 }
+
+                                if (moment(day).startOf('month').valueOf() == monthStart.valueOf()) {
+                                    updates['/KPIs/Coworking/Acquisition/DOT/currentGoalsAndValues/values/monthlyValue'] += numSeatsDemandedForDay
+                                }
+                                
+                                if (moment(day).startOf('month').valueOf() == previousMonthStart.valueOf()) {
+                                    updates['/KPIs/Coworking/Acquisition/DOT/currentGoalsAndValues/values/previousMonthlyValue'] += numSeatsDemandedForDay
+                                }
+                                
                                 break
                             }
                         }
