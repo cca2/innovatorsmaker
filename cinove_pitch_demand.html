@@ -17,6 +17,13 @@
     <link href="css/animate.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
 
+    <style type="text/css">
+        .btn-edit-KPI {
+            position: absolute;
+            top: 10px;
+            right: 25px;
+        }
+    </style>
 </head>
 
 <body class="fixed-navigation">
@@ -47,18 +54,6 @@
                 <li class="kpi-name-option">
                     <a href="#"><i class="fa fa-pie-chart"></i> <span class="kpi-label nav-label">Todos</span></a>
                 </li>
-<!--                 <li>
-                    <a href="metrics.html"><i class="fa fa-pie-chart"></i> <span class="nav-label">Eventos</span></a>
-                </li>
-                <li class="offer-kpi">
-                    <a href="metrics.html"><i class="fa fa-pie-chart"></i> <span class="label-text nav-label">Coworking</span></a>
-                </li>
-                <li>
-                    <a href="metrics.html"><i class="fa fa-pie-chart"></i> <span class="nav-label">Mind the Bizz</span></a>
-                </li>
-                <li>
-                    <a href="metrics.html"><i class="fa fa-pie-chart"></i> <span class="nav-label">Disciplinas</span></a>
-                </li> -->
             </ul>
         </div>
     </nav>
@@ -221,6 +216,7 @@
                         <div class="ibox">
                             <div class="ibox-content" style="height:115px;">
                                 <h5>Meta Diária</h5>
+                                <a class="btn-edit-KPI"><span class="fa fa-edit"></span></a>
                                 <h1 class="no-margins" style="text-align:center;"><span id="KPI-current-daily-goal">30</span></h1>
                             </div>
                         </div>
@@ -229,6 +225,7 @@
                         <div class="ibox">
                             <div class="ibox-content" style="height:115px;">
                                 <h5>Meta Semanal</h5>
+                                <a class="btn-edit-KPI"><span class="fa fa-edit"></span></a>
                                 <h1 class="no-margins" style="text-align:center;"><span id="KPI-current-weekly-goal">30</span></h1>
                             </div>
                         </div>
@@ -237,6 +234,7 @@
                         <div class="ibox">
                             <div class="ibox-content" style="height:115px;">
                                 <h5>Meta Mensal</h5>
+                                <a class="btn-edit-KPI"><span class="fa fa-edit"></span></a>
                                 <h1 class="no-margins" style="text-align:center;"><span id="KPI-current-monthly-goal">30</span></h1>
                             </div>
                         </div>
@@ -302,6 +300,36 @@
         </div>
 
         </div>
+
+    <div class="modal inmodal" id="edit-KPI-modal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content animated">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title">Editar Metas</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="ibox-content">
+                        <div class="row">
+                            <h3><span class="KPI-name"></span> - <span class="KPI-description"></span></h3>
+                            <div class="col-sm-12 b-r">
+                                <form role="form">
+                                    <div class="form-group"><label>Meta diária</label> <input id="input-new-daily-goal" type="text" placeholder="0" class="form-control"></div>
+                                    <div class="form-group"><label>Meta semanal</label> <input id="input-new-weekly-goal" type="text" placeholder="0" class="form-control"></div>
+                                    <div class="form-group"><label>Meta mensal</label> <input id="input-new-monthly-goal" type="text" placeholder="0" class="form-control"></div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>                
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-white" data-dismiss="modal">Fechar</button>
+                    <button id="btn-save-new-goals" type="button" class="btn btn-primary">Alterar metas</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     </div>
 
 
@@ -355,6 +383,11 @@
 
     <script>
         var metricName
+        var metricDescription
+        var dailyGoal = 0
+        var weeklyGoal = 0
+        var monthlyGoal = 0
+
         var lineData = {
             labels: [],
             datasets: [
@@ -411,19 +444,53 @@
                 showMetricTimelineWeekly(metricName);
             })
 
+            $('.btn-edit-KPI').click(function() {
+                $('#edit-KPI-modal').modal('show')
+            })
+
+            $('#btn-save-new-goals').click(function() {
+                $('#input-new-daily-goal').attr('disabled', 'true')
+                $('#input-new-weekly-goal').attr('disabled', 'true')
+                $('#input-new-monthly-goal').attr('disabled', 'true')
+                var newDailyGoal = $('#input-new-daily-goal').val().trim()
+                var newWeeklyGoal = $('#input-new-weekly-goal').val().trim()
+                var newMonthlyGoal = $('#input-new-monthly-goal').val().trim()
+
+                updateMetricGoals(metricName, newDailyGoal, newWeeklyGoal, newMonthlyGoal).then(function() {
+                    $('#input-new-daily-goal').removeAttr('disabled')
+                    $('#input-new-weekly-goal').removeAttr('disabled')
+                    $('#input-new-monthly-goal').removeAttr('disabled')
+                    $('#edit-KPI-modal').modal('hide')
+                })
+            })
+
         });
     </script>
 
-    <script type="text/javascript">                
-        function updateMetric(kpiName, newVal) {
-            $('#' + kpiName + '-goal-value').text(newVal);
+    <script type="text/javascript"> 
+        function updateMetricGoals(kpiName, dailyGoal, weeklyGoal, monthlyGoal) {
+            var updates = {}
+            updates['/KPIs/Coworking/Acquisition/' + kpiName + '/currentGoalsAndValues/goals/dailyGoal'] = dailyGoal
+            updates['/KPIs/Coworking/Acquisition/' + kpiName + '/currentGoalsAndValues/goals/weeklyGoal'] = weeklyGoal
+            updates['/KPIs/Coworking/Acquisition/' + kpiName + '/currentGoalsAndValues/goals/monthlyGoal'] = monthlyGoal
+
+            return firebase.database().ref().update(updates)
+        }   
+
+        function showMetric(kpiName, dailyGoal, weeklyGoal, monthlyGoal) {
+            $('#input-new-daily-goal').val(dailyGoal)
+            $('#KPI-current-daily-value').val(dailyGoal)
+            $('#input-new-weekly-goal').val(weeklyGoal)
+            $('#KPI-current-weekly-value').val(weeklyGoal)
+            $('#input-new-monthly-goal').val(monthlyGoal)
+            $('#KPI-current-monthly-value').val(monthlyGoal)
         }
 
-        function updateMetricDescription(kpiName, newVal) {
+        function showMetricDescription(kpiName, newVal) {
             $('#' + kpiName + '-metric-description').text(newVal);
         }
 
-        function updateMetricTimeline(kpiName, weeks) {  
+        function showMetricTimeline(kpiName, weeks) {  
             availability = weeks['availability']
             startDate = new Date(weeks['start'])
             year = startDate.getYear()
@@ -533,14 +600,14 @@
             $kpiNameOption.find('a').addClass(kpiName + '-kpi-link')
             $kpiNameOption.appendTo($('#side-menu'))
 
-            firebase.database().ref('/KPIs/Coworking/Acquisition/' + kpiName + '/goal').on('value', function(snapshot) {
-                val = snapshot.val();
-                updateMetric(kpiName, val);
+            firebase.database().ref('/KPIs/Coworking/Acquisition/' + kpiName + '/currentGoalsAndValues/goals/').on('value', function(snapshot) {
+                goals = snapshot.val();
+                showMetric(kpiName, goals['dailyGoal'], goals['weeklyGoal'], goals['monthlyGoal']);
             })
 
             firebase.database().ref('/Offers/Coworking/KPIs/Acquisition/' + kpiName + '/Description').on('value', function(snapshot) {
                 val = snapshot.val();
-                updateMetricDescription(kpiName, val);
+                showMetricDescription(kpiName, val);
             })
 
             //setup weeks beginning on Jun 01 2016
@@ -557,6 +624,7 @@
             $('.' + kpiName + '-kpi-link').click(function() {
                 metricName = kpiName
                 metricDescription = coworkingAcquisitionMetrics[kpiName]['Description']
+                metricDailyGoal = coworkingAcquisitionMetrics[kpiName]['dailyGoal']
 
                 $('#KPI-metric-name').text(metricName)
                 $('#KPI-metric-description').text(metricDescription)                
@@ -925,6 +993,13 @@
             //     firebase.database().ref(refString).set(interval);
             // }
         }
+    </script>
+    <script type="text/javascript">
+        $('#edit-KPI-modal').on('show.bs.modal', function() {
+            $modal = $(this)
+            $modal.find('.KPI-name').text(metricName)
+            $modal.find('.KPI-description').text(metricDescription)
+        })
     </script>
 </body>
 </html>
