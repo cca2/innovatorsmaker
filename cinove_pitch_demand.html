@@ -387,20 +387,6 @@
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.13.0/moment.min.js"></script>
 
     <script>
-        var selectedMetric = {
-            name: '',
-            description: '',
-            isPercent: false,
-            dailyGoal: 0,
-            weeklyGoal: 0,
-            monthlyGoal: 0,
-            dailyValue:0,
-            weeklyValue:0,
-            monthlyValue:0,
-            days: {},
-            weeks: {},
-            months: {}            
-        }
 
         var dailyGoal = 0
         var weeklyGoal = 0
@@ -654,12 +640,91 @@
             }
             myNewChart = new Chart(ctx).Line(lineData, lineOptions);
         }
+
+        function selectMetric(kpiName) {
+            //Se houver uma mudança nas KPIs 
+            if (selectedMetric) {
+                firebase.database().ref('/Offers/Coworking/KPIs/Acquisition' + selectedMetric['name']).off()
+            }
+
+            selectedMetric = {
+                name: '',
+                description: '',
+                isPercent: false,
+                dailyGoal: 0,
+                weeklyGoal: 0,
+                monthlyGoal: 0,
+                dailyValue:0,
+                weeklyValue:0,
+                monthlyValue:0,
+                days: {},
+                weeks: {},
+                months: {}            
+            }
+
+            selectedMetric['name'] = kpiName
+            selectedMetric['description'] = coworkingAcquisitionMetrics[kpiName]['Description']
+            selectedMetric['isPercent'] = coworkingAcquisitionMetrics[kpiName]['isPercent']
+
+            firebase.database().ref('/Offers/Coworking/KPIs/Acquisition/' + selectMetric['name']).on('value', function(snapshot) {
+                val = snapshot.val();
+                showMetricDescription(selectMetric['name'], val['Description']);
+            })
+
+            //setup weeks beginning on Jun 01 2016
+            beginDate = moment().startOf('month')
+            finalDate = moment().startOf('month').add(1, 'Months')
+
+            startWeek = moment(beginDate).startOf('week')
+            endWeek = moment(finalDate).endOf('week')
+            durationDays = Math.round(moment.duration(endWeek - startWeek).asDays())
+            durationWeeks = Math.round(moment.duration(endWeek - startWeek).asWeeks())
+
+            periodRef = firebase.database().ref('/Coworking/Acquisition/Days/').orderByChild('day').limitToFirst(durationDays)
+
+
+            $('#KPI-metric-name').text(selectedMetric['name'])
+            $('#KPI-metric-description').text(selectedMetric['description'])                
+
+
+            firebase.database().ref('/KPIs/Coworking/Acquisition/' + selectedMetric['name'] + '/currentGoalsAndValues/').on('value', function(snapshot) {
+
+                if (!snapshot.val()) {
+                    initializeGoals().then(function() {
+                    showSelectedMetric()
+                        calcMetric(kpiName, currentGoals['dailyGoal'], currentGoals['weeklyGoal'], currentGoals['monthlyGoal'], startWeek, endWeek).then(function() {
+                            showMetricTimelineDaily();
+                        });
+                    })
+                }else {
+                    var currentGoalsAndValues = snapshot.val()
+                    currentGoals = currentGoalsAndValues['goals']
+                    currentValues = currentGoalsAndValues['values']
+
+                    selectedMetric['dailyValue'] = currentValues['dailyValue']
+                    selectedMetric['weeklyValue'] = currentValues['weeklyValue']
+                    selectedMetric['monthlyValue'] = currentValues['monthlyValue']
+
+                    selectedMetric['dailyGoal'] = currentGoals['dailyGoal']
+                    selectedMetric['weeklyGoal'] = currentGoals['weeklyGoal']
+                    selectedMetric['monthlyGoal'] = currentGoals['monthlyGoal']
+
+                    showSelectedMetric()
+
+                    calcMetric(kpiName, currentGoals['dailyGoal'], currentGoals['weeklyGoal'], currentGoals['monthlyGoal'], startWeek, endWeek).then(function() {
+                        showMetricTimelineDaily();
+                    });
+                }
+            })
+        }
     </script>
     <script src="https://www.gstatic.com/firebasejs/live/3.0/firebase.js"></script>
     <script>
         var weeklyDemands = []
 
         var coworkingAcquisitionMetrics = {}
+
+        var selectedMetric = null
 
         // Initialize Firebase
         var config = {
@@ -688,62 +753,10 @@
             $kpiNameOption = $kpiNameOptionRef.clone()
             $kpiNameOption.find('.kpi-label').text(kpiName)
             $kpiNameOption.find('a').addClass(kpiName + '-kpi-link')
-            $kpiNameOption.appendTo($('#side-menu'))
-
-            firebase.database().ref('/Offers/Coworking/KPIs/Acquisition/' + kpiName + '/Description').on('value', function(snapshot) {
-                val = snapshot.val();
-                showMetricDescription(kpiName, val);
-            })
-
-            //setup weeks beginning on Jun 01 2016
-            beginDate = moment().startOf('month')
-            finalDate = moment().startOf('month').add(1, 'Months')
-
-            startWeek = moment(beginDate).startOf('week')
-            endWeek = moment(finalDate).endOf('week')
-            durationDays = Math.round(moment.duration(endWeek - startWeek).asDays())
-            durationWeeks = Math.round(moment.duration(endWeek - startWeek).asWeeks())
-
-            periodRef = firebase.database().ref('/Coworking/Acquisition/Days/').orderByChild('day').limitToFirst(durationDays)
+            $kpiNameOption.appendTo($('#side-menu'))            
 
             $('.' + kpiName + '-kpi-link').click(function() {
-                selectedMetric['name'] = kpiName
-                selectedMetric['description'] = coworkingAcquisitionMetrics[kpiName]['Description']
-                selectedMetric['isPercent'] = coworkingAcquisitionMetrics[kpiName]['isPercent']
-
-                $('#KPI-metric-name').text(selectedMetric['name'])
-                $('#KPI-metric-description').text(selectedMetric['description'])                
-
-
-                firebase.database().ref('/KPIs/Coworking/Acquisition/' + selectedMetric['name'] + '/currentGoalsAndValues/').on('value', function(snapshot) {
-
-                    if (!snapshot.val()) {
-                        initializeGoals().then(function() {
-                        showSelectedMetric()
-                            calcMetric(kpiName, currentGoals['dailyGoal'], currentGoals['weeklyGoal'], currentGoals['monthlyGoal'], startWeek, endWeek).then(function() {
-                                showMetricTimelineDaily();
-                            });
-                        })
-                    }else {
-                        var currentGoalsAndValues = snapshot.val()
-                        currentGoals = currentGoalsAndValues['goals']
-                        currentValues = currentGoalsAndValues['values']
-
-                        selectedMetric['dailyValue'] = currentValues['dailyValue']
-                        selectedMetric['weeklyValue'] = currentValues['weeklyValue']
-                        selectedMetric['monthlyValue'] = currentValues['monthlyValue']
-
-                        selectedMetric['dailyGoal'] = currentGoals['dailyGoal']
-                        selectedMetric['weeklyGoal'] = currentGoals['weeklyGoal']
-                        selectedMetric['monthlyGoal'] = currentGoals['monthlyGoal']
-
-                        showSelectedMetric()
-
-                        calcMetric(kpiName, currentGoals['dailyGoal'], currentGoals['weeklyGoal'], currentGoals['monthlyGoal'], startWeek, endWeek).then(function() {
-                            showMetricTimelineDaily();
-                        });
-                    }
-                })
+                selectMetric(kpiName)
             })
         })
 
