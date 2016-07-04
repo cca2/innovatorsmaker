@@ -220,82 +220,27 @@
 
 
                 <div class="row">
-                    <div class="col-lg-4">
+                    <div class="col-lg-6">
                         <div class="ibox">
                             <div class="ibox-content" style="height:115px;">
-                                <h5>Meta Diária</h5>
+                                <h5 id="KPI-goal-title">Meta Diária</h5>
                                 <a class="btn-edit-KPI"><span class="fa fa-edit"></span></a>
-                                <h1 class="no-margins" style="text-align:center;"><span id="KPI-current-daily-goal">30</span></h1>
+                                <h1 class="no-margins" style="text-align:center;"><span id="KPI-current-goal">30</span></h1>
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-4">
-                        <div class="ibox">
-                            <div class="ibox-content" style="height:115px;">
-                                <h5>Meta Semanal</h5>
-                                <a class="btn-edit-KPI"><span class="fa fa-edit"></span></a>
-                                <h1 class="no-margins" style="text-align:center;"><span id="KPI-current-weekly-goal">30</span></h1>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4">
-                        <div class="ibox">
-                            <div class="ibox-content" style="height:115px;">
-                                <h5>Meta Mensal</h5>
-                                <a class="btn-edit-KPI"><span class="fa fa-edit"></span></a>
-                                <h1 class="no-margins" style="text-align:center;"><span id="KPI-current-monthly-goal">30</span></h1>
-                            </div>
-                        </div>
-                    </div>
-<!--                     <div class="col-lg-4">
-                        <div class="ibox">
-                            <div class="ibox-content" style="height:115px;">
-                                <h5>Meta Anual</h5>
-                                <h1 class="no-margins" style="text-align:center;"><span id="KPI-goal-value">30</span></h1>
-                            </div>
-                        </div>
-                    </div>
- -->
-                    <div class="col-lg-4">
+
+                    <div class="col-lg-6">
                         <div class="ibox">
                             <div class="ibox-content">
-                                <h5>Valor diário atual</h5>
-                                <h1 class="no-margins"><span id="KPI-current-daily-value">30%</span></h1>
-                                <div class="stat-percent font-bold text-navy"><span id="KPI-previous-daily-value">40%</span> <i class="fa fa-bolt"></i></div>
+                                <h5 id="KPI-value-title" >Valor diário atual</h5>
+                                <h1 class="no-margins"><span id="KPI-current-value">30%</span></h1>
+                                <div class="stat-percent font-bold text-navy"><span id="KPI-previous-value">40%</span> <i class="fa fa-bolt"></i></div>
                                 <small>Valor anterior e tendência</small>
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-4">
-                        <div class="ibox">
-                            <div class="ibox-content">
-                                <h5>Valor semanal atual</h5>
-                                <h1 class="no-margins"><span id="KPI-current-weekly-value">30%</span></h1>
-                                <div class="stat-percent font-bold text-navy"><span id="KPI-previous-weekly-value">40%</span> <i class="fa fa-bolt"></i></div>
-                                <small>Valor anterior e tendência</small>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4">
-                        <div class="ibox">
-                            <div class="ibox-content">
-                                <h5>Valor mensal atual</h5>
-                                <h1 class="no-margins"><span id="KPI-current-monthly-value">40%</span></h1>
-                                <div class="stat-percent font-bold text-navy"><span id="KPI-previous-monthly-value">40%</span> <i class="fa fa-bolt"></i></div>
-                                <small>Valor anterior e tendência</small>
-                            </div>
-                        </div>
-                    </div>
-<!--                     <div class="col-lg-4">
-                        <div class="ibox">
-                            <div class="ibox-content">
-                                <h5>Valor anual atual</h5>
-                                <h1 class="no-margins">30%</h1>
-                                <div class="stat-percent font-bold text-navy">40% <i class="fa fa-bolt"></i></div>
-                                <small>Valor anterior e tendência</small>
-                            </div>
-                        </div>
-                    </div> -->
+
                 </div>
             </div>
         <div class="footer">
@@ -507,7 +452,11 @@
             })
 
             $('#btn-show-KPI-timeline-daily').click(function() {
-                showMetricTimelineDaily();
+                selectedMetric['timeline'] = 'day'
+                calcMetricDaily().then(function() {
+                    showSelectedMetric()
+                    showMetricTimelineDaily()
+                })
             })
 
             $('#btn-show-KPI-timeline-weekly').click(function() {
@@ -613,17 +562,28 @@
                 percentSymbol = ' %'
             }
 
-            $('#KPI-current-daily-value').text(selectedMetric['dailyValue'] + percentSymbol)
-            $('#KPI-current-weekly-value').text(selectedMetric['weeklyValue'] + percentSymbol)
-            $('#KPI-current-monthly-value').text(selectedMetric['monthlyValue'] + percentSymbol)
+            if (selectedMetric['timeline'] == 'day') {
+                $('#KPI-goal-title').text('Meta diária')
+                $('#KPI-value-title').text('Valor diário atual')
+                $('#KPI-current-value').text(selectedMetric['dailyValue'] + percentSymbol)
+                $('#KPI-previous-value').text(selectedMetric['previousDailyValue'] + percentSymbol)
+                $('#KPI-current-goal').text(selectedMetric['dailyGoal'] + percentSymbol)
+            }else if (selectedMetric['timeline'] == 'week') {
+                $('#KPI-goal-title').text('Meta semanal')
+                $('#KPI-value-title').text('Valor semanal atual')
+                $('#KPI-current-value').text(selectedMetric['weeklyValue'] + percentSymbol)
+                $('#KPI-previous-value').text(selectedMetric['previousWeeklyValue'] + percentSymbol)
+                $('#KPI-current-goal').text(selectedMetric['weeklyGoal'] + percentSymbol)
+            }
 
-            $('#KPI-previous-daily-value').text(selectedMetric['previousDailyValue'] + percentSymbol)
-            $('#KPI-previous-weekly-value').text(selectedMetric['previousWeeklyValue'] + percentSymbol)
-            $('#KPI-previous-monthly-value').text(selectedMetric['previousMonthlyValue'] + percentSymbol)
+            // $('#KPI-current-weekly-value').text(selectedMetric['weeklyValue'] + percentSymbol)
+            // $('#KPI-current-monthly-value').text(selectedMetric['monthlyValue'] + percentSymbol)
 
-            $('#KPI-current-daily-goal').text(selectedMetric['dailyGoal'] + percentSymbol)
-            $('#KPI-current-weekly-goal').text(selectedMetric['weeklyGoal'] + percentSymbol)
-            $('#KPI-current-monthly-goal').text(selectedMetric['monthlyGoal'] + percentSymbol)
+            // $('#KPI-previous-weekly-value').text(selectedMetric['previousWeeklyValue'] + percentSymbol)
+            // $('#KPI-previous-monthly-value').text(selectedMetric['previousMonthlyValue'] + percentSymbol)
+
+            // $('#KPI-current-weekly-goal').text(selectedMetric['weeklyGoal'] + percentSymbol)
+            // $('#KPI-current-monthly-goal').text(selectedMetric['monthlyGoal'] + percentSymbol)
 
             $('#input-new-daily-goal').val(selectedMetric['dailyGoal'])
             $('#input-new-weekly-goal').val(selectedMetric['weeklyGoal'])
