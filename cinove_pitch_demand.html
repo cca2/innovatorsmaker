@@ -19,6 +19,12 @@
     <link href="css/plugins/iCheck/custom.css" rel="stylesheet">
 
     <style type="text/css">
+        #btn-new-metric {
+            margin-left: 10px;
+            margin-right: 10px;
+            color: white;
+        }
+
         .btn-edit-KPI {
             position: absolute;
             top: 10px;
@@ -51,6 +57,7 @@
                         IN+
                     </div>
                 </li>
+                <li><a id="btn-new-metric" href="#" class="btn btn-primary"><i class="fa fa-print"></i> Nova Métrica</a></li>
                 <li><button id="btn-test">Test</button></li>
                 <li class="kpi-name-option">
                     <a href="#"><i class="fa fa-pie-chart"></i> <span class="kpi-label nav-label">Todos</span></a>
@@ -334,6 +341,37 @@
         </div>
     </div>
 
+    <div class="modal inmodal" id="new-KPI-modal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content animated">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title">Criar uma nova métrica</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="ibox-content">
+                        <div class="row">
+                            <h3>Crie uma nova métrica</h3>
+                            <div class="col-sm-12 b-r">
+                                <form role="form">
+                                    <div class="form-group"><label>Nome</label> <input id="input-new-metric-name" type="text" placeholder="nome da métrica" class="form-control"></div>
+                                    <div class="form-group"><label>Descrição</label> <input id="input-new-metric-description" type="text" placeholder="descrição da métrica" class="form-control"></div>
+                                <div class="form-group">
+                                        <div class="i-checks"><label class=""> <div class="icheckbox_square-green" style="position: relative;"><input type="checkbox" style="position: absolute; opacity: 0;"><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; border: 0px; opacity: 0; background: rgb(255, 255, 255);"></ins></div><i></i> métrica é medida em percentual</label></div>
+                                </div> 
+                                </form>
+                            </div>
+                        </div>
+                    </div>                
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-white" data-dismiss="modal">cancelar</button>
+                    <button id="btn-create-new-metric" type="button" class="btn btn-primary">criar métrica</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     </div>
 
 
@@ -441,11 +479,11 @@
             });
 
             $('input').on('ifChecked', function(ev) {
-                setMetricToPercentage(selectedMetric['name'])
+                setMetricToPercentage()
             })
 
             $('input').on('ifUnchecked', function(ev) {
-                unsetMetricToPercentage(selectedMetric['name'])
+                unsetMetricToPercentage()
             })            
         });
 
@@ -455,6 +493,9 @@
             firebase.auth().onAuthStateChanged(function(user) {
               if (user) {
                 // User is signed in.
+                $('#btn-new-metric').click(function() {
+                    $('#new-KPI-modal').modal('show')
+                })
                 showUserName(user.email)
               } else {
                 // No user is signed in.
@@ -470,7 +511,11 @@
             })
 
             $('#btn-show-KPI-timeline-weekly').click(function() {
-                showMetricTimelineWeekly();
+                selectedMetric['timeline'] = 'week'
+                calcMetricWeekly().then(function() {
+                    showSelectedMetric()
+                    showMetricTimelineWeekly()
+                })
             })
 
             $('#btn-show-KPI-timeline-monthly').click(function() {
@@ -479,6 +524,41 @@
 
             $('.btn-edit-KPI').click(function() {
                 $('#edit-KPI-modal').modal('show')
+            })
+
+            $('#btn-create-new-metric').click(function() {
+                var name = $('#input-new-metric-name').val().trim()
+                var description = $('#input-new-metric-description').val().trim()
+
+                var newMetric = {name: name, Description: description, isPercent: false}
+
+                var newMetricKey = firebase.database().ref('/Offers/KPIs/Coworking/').child('Acquisition').push().key;
+
+                updates = {}
+                updates['/Offers/Coworking/KPIs/Acquisition/' + newMetricKey] = newMetric
+                updates['/KPIs/Coworking/Acquisition/' + newMetricKey] = {
+                    name: name,
+                    currentGoalsAndValues: {
+                        goals: {
+                            dailyGoal: 0,
+                            weeklyGoal:0,
+                            monthlyGoal:0
+                        },
+                        values: {
+                            dailyValue: 0,
+                            weeklyValue:0,
+                            monthlyValue:0,                            
+                            previousDailyValue: 0,
+                            previousWeeklyValue:0,
+                            previousMonthlyValue:0                            
+                        }
+                    }
+                }
+
+                firebase.database().ref().update(updates).then(function() {
+                    $('#new-KPI-modal').modal('hide')
+                    selectMetric(newMetricKey)
+                })
             })
 
             $('#btn-save-new-goals').click(function() {
@@ -554,7 +634,7 @@
             $('#' + kpiName + '-metric-description').text(newVal);
         }
 
-        function showMetricTimelineMonthly(kpiName) {
+        function showMetricTimelineMonthly() {
             lineData['labels'] = []
             lineData['datasets'][0]['data'] = []
             lineData['datasets'][1]['data'] = []
@@ -562,11 +642,11 @@
             for (month in selectedMetric['months']) {
                 var val = selectedMetric['months'][month];
                 startMonthDay = moment(val['start'])
-                endMonthDay = moment(startMonthDay).add(6, 'Days')
+                endMonthDay = moment(startMonthDay).endOf('month')
                 goal = selectedMetric['monthlyGoal']
                 value = val['value']
     
-                lineData['labels'].push(startMonthDay.format('DD/MM') + ' - ' + endMonthDay.format('DD/MM'))
+                lineData['labels'].push(startMonthDay.format('MMM'))
                 lineData['datasets'][0]['data'].push(goal)
                 lineData['datasets'][1]['data'].push(value)
             }
@@ -602,18 +682,6 @@
             myNewChart = new Chart(ctx).Line(lineData, lineOptions);
         }
 
-        function initializeGoals() {
-            var updates = {}
-            selectedMetric['dailyGoal'] = 0
-            selectedMetric['weeklyGoal'] = 0
-            selectedMetric['monthlyGoal'] = 0
-            selectedMetric['isPercent'] = true
-
-            updates['/KPIs/Coworking/Acquisition/' + selectedMetric['name'] + 'currentGoalsAndValues/goals/'] = {dailyGoal: 0, weeklyGoal:0, monthlyGoal:0}
-            updates['/KPIs/Coworking/Acquisition/' + selectedMetric['name'] + 'currentGoalsAndValues/values/'] = {dailyValue: 0, previousDailyValue: 0, weeklyValue: 0, previousWeeklyValue: 0, monthlyValue: 0, previousMonthlyValue: 0}
-            return firebase.database().ref().update(updates)
-        }
-
         function showMetricTimelineDaily() {
             lineData['labels'] = []
             lineData['datasets'][0]['data'] = []
@@ -627,7 +695,7 @@
         
                     values = lineData['datasets'][1]['data']
                     labels = lineData['labels']
-                    label = moment(day).format('DD')
+                    label = moment(day).format('DD/MM')
 
                     lineData['labels'].push(label)
 
@@ -641,13 +709,30 @@
             myNewChart = new Chart(ctx).Line(lineData, lineOptions);
         }
 
-        function selectMetric(kpiName) {
+        function initializeGoals() {
+            var updates = {}
+            selectedMetric['dailyGoal'] = 0
+            selectedMetric['weeklyGoal'] = 0
+            selectedMetric['monthlyGoal'] = 0
+            selectedMetric['isPercent'] = true
+
+            updates['/KPIs/Coworking/Acquisition/' + selectedMetric['id'] + '/name/'] = selectedMetric['name']
+            updates['/KPIs/Coworking/Acquisition/' + selectedMetric['id'] + '/currentGoalsAndValues/goals/'] = {dailyGoal: 0, weeklyGoal:0, monthlyGoal:0}
+            updates['/KPIs/Coworking/Acquisition/' + selectedMetric['id'] + '/currentGoalsAndValues/values/'] = {dailyValue: 0, previousDailyValue: 0, weeklyValue: 0, previousWeeklyValue: 0, monthlyValue: 0, previousMonthlyValue: 0}
+            return firebase.database().ref().update(updates)
+        }
+
+
+
+        function selectMetric(metricID) {
             //Se houver uma mudança nas KPIs 
             if (selectedMetric) {
                 firebase.database().ref('/Offers/Coworking/KPIs/Acquisition' + selectedMetric['name']).off()
             }
 
             selectedMetric = {
+                id: '',
+                timeline: 'day',
                 name: '',
                 description: '',
                 isPercent: false,
@@ -661,14 +746,15 @@
                 weeks: {},
                 months: {}            
             }
+            selectedMetric['id'] = metricID
+            selectedMetric['name'] = coworkingAcquisitionMetrics[metricID]['name']
+            selectedMetric['description'] = coworkingAcquisitionMetrics[metricID]['Description']
+            selectedMetric['isPercent'] = coworkingAcquisitionMetrics[metricID]['isPercent']
 
-            selectedMetric['name'] = kpiName
-            selectedMetric['description'] = coworkingAcquisitionMetrics[kpiName]['Description']
-            selectedMetric['isPercent'] = coworkingAcquisitionMetrics[kpiName]['isPercent']
-
-            firebase.database().ref('/Offers/Coworking/KPIs/Acquisition/' + selectMetric['name']).on('value', function(snapshot) {
+            firebase.database().ref('/Offers/Coworking/KPIs/Acquisition/' + selectedMetric['id']).on('value', function(snapshot) {
                 val = snapshot.val();
-                showMetricDescription(selectMetric['name'], val['Description']);
+                selectedMetric['description'] = val['Description']
+                showMetricDescription(selectedMetric['id'], val['Description']);
             })
 
             //setup weeks beginning on Jun 01 2016
@@ -686,35 +772,51 @@
             $('#KPI-metric-name').text(selectedMetric['name'])
             $('#KPI-metric-description').text(selectedMetric['description'])                
 
+            firebase.database().ref('/KPIs/Coworking/Acquisition/' + selectedMetric[
+                 'id'] + '/currentGoalsAndValues/goals').on('value', function(snapshot) {
+                var currentGoals = snapshot.val()
+                selectedMetric['dailyGoal'] = currentGoals['dailyGoal']
+                selectedMetric['weeklyGoal'] = currentGoals['weeklyGoal']
+                selectedMetric['monthlyGoal'] = currentGoals['monthlyGoal']
 
-            firebase.database().ref('/KPIs/Coworking/Acquisition/' + selectedMetric['name'] + '/currentGoalsAndValues/').on('value', function(snapshot) {
-
-                if (!snapshot.val()) {
-                    initializeGoals().then(function() {
+                if (selectedMetric['timeline'] == 'day') {
                     showSelectedMetric()
-                        calcMetric(kpiName, currentGoals['dailyGoal'], currentGoals['weeklyGoal'], currentGoals['monthlyGoal'], startWeek, endWeek).then(function() {
-                            showMetricTimelineDaily();
-                        });
-                    })
-                }else {
-                    var currentGoalsAndValues = snapshot.val()
-                    currentGoals = currentGoalsAndValues['goals']
-                    currentValues = currentGoalsAndValues['values']
-
-                    selectedMetric['dailyValue'] = currentValues['dailyValue']
-                    selectedMetric['weeklyValue'] = currentValues['weeklyValue']
-                    selectedMetric['monthlyValue'] = currentValues['monthlyValue']
-
-                    selectedMetric['dailyGoal'] = currentGoals['dailyGoal']
-                    selectedMetric['weeklyGoal'] = currentGoals['weeklyGoal']
-                    selectedMetric['monthlyGoal'] = currentGoals['monthlyGoal']
-
+                    showMetricTimelineDaily()
+                }else if (selectedMetric['timeline'] == 'week') {
                     showSelectedMetric()
+                    showMetricTimelineWeek()
+                }else if (selectedMetric['timeline'] == 'month') {
+                    showSelectedMetric()                    
+                    // showMetricTimelineMonthly()
+                }
+            })
 
-                    calcMetric(kpiName, currentGoals['dailyGoal'], currentGoals['weeklyGoal'], currentGoals['monthlyGoal'], startWeek, endWeek).then(function() {
+            firebase.database().ref('/KPIs/Coworking/Acquisition/' + selectedMetric['id'] + '/currentGoalsAndValues/').once('value', function(snapshot) {
+
+                var currentGoalsAndValues = snapshot.val()
+                currentGoals = currentGoalsAndValues['goals']
+                currentValues = currentGoalsAndValues['values']
+
+                // selectedMetric['dailyValue'] = currentValues['dailyValue']
+                // selectedMetric['weeklyValue'] = currentValues['weeklyValue']
+                // selectedMetric['monthlyValue'] = currentValues['monthlyValue']
+
+                selectedMetric['dailyGoal'] = currentGoals['dailyGoal']
+                selectedMetric['weeklyGoal'] = currentGoals['weeklyGoal']
+                selectedMetric['monthlyGoal'] = currentGoals['monthlyGoal']
+
+                if (selectedMetric['timeline'] == 'day') {
+                    calcMetricDaily().then(function() {
+                        showSelectedMetric()
                         showMetricTimelineDaily();
                     });
+                }else if (selectedMetric['timeline'] == 'week') {
+                    calcMetricDWeekly().then(function() {
+                        showSelectedMetric()
+                        showMetricTimelineWeekly();
+                    });                    
                 }
+
             })
         }
     </script>
@@ -737,17 +839,10 @@
 
         kpisRef = firebase.database().ref('/Offers/Coworking/KPIs/Acquisition/');        
 
-        kpisRef.on('child_changed', function(snapshot) {
-            var kpiName = snapshot.key
-            if (kpiName == selectedMetric['name']) {
-                selectedMetric['isPercent'] = snapshot.val()['isPercent']
-                showSelectedMetric()
-            }
-        })
-
         kpisRef.on('child_added', function(snapshot) {
             coworkingAcquisitionMetrics[snapshot.key] = snapshot.val()
-            var kpiName = snapshot.key
+            var metricID = snapshot.key
+            var kpiName = snapshot.val()['name']
 
             kpiDescription = snapshot.val()['Description']
             $kpiNameOption = $kpiNameOptionRef.clone()
@@ -756,66 +851,240 @@
             $kpiNameOption.appendTo($('#side-menu'))            
 
             $('.' + kpiName + '-kpi-link').click(function() {
-                selectMetric(kpiName)
+                selectMetric(metricID)
             })
         })
 
         function updateSelectedMetric() {
             var updates = {}
 
-            updates['/KPIs/Coworking/Acquisition/' + selectedMetric['name'] + '/currentGoalsAndValues/values/dailyValue'] = selectedMetric['dailyValue']
-            updates['/KPIs/Coworking/Acquisition/' + selectedMetric['name'] + '/currentGoalsAndValues/values/weeklyValue'] = selectedMetric['weeklyValue']
-            updates['/KPIs/Coworking/Acquisition/' + selectedMetric['name'] + '/currentGoalsAndValues/values/monthlyValue'] = selectedMetric['monthlyValue']
-            updates['/KPIs/Coworking/Acquisition/' + selectedMetric['name'] + '/currentGoalsAndValues/values/previousDailyValue'] = selectedMetric['previousDailyValue']
-            updates['/KPIs/Coworking/Acquisition/' + selectedMetric['name'] + '/currentGoalsAndValues/values/previousWeeklyValue'] = selectedMetric['previousWeeklyValue']
-            updates['/KPIs/Coworking/Acquisition/' + selectedMetric['name'] + '/currentGoalsAndValues/values/previousMonthlyValue'] = selectedMetric['previousMonthlyValue']
+            updates['/KPIs/Coworking/Acquisition/' + selectedMetric['id'] + '/currentGoalsAndValues/values/dailyValue'] = selectedMetric['dailyValue']
+            updates['/KPIs/Coworking/Acquisition/' + selectedMetric['id'] + '/currentGoalsAndValues/values/weeklyValue'] = selectedMetric['weeklyValue']
+            updates['/KPIs/Coworking/Acquisition/' + selectedMetric['id'] + '/currentGoalsAndValues/values/monthlyValue'] = selectedMetric['monthlyValue']
+            updates['/KPIs/Coworking/Acquisition/' + selectedMetric['id'] + '/currentGoalsAndValues/values/previousDailyValue'] = selectedMetric['previousDailyValue']
+            updates['/KPIs/Coworking/Acquisition/' + selectedMetric['id'] + '/currentGoalsAndValues/values/previousWeeklyValue'] = selectedMetric['previousWeeklyValue']
+            updates['/KPIs/Coworking/Acquisition/' + selectedMetric['id'] + '/currentGoalsAndValues/values/previousMonthlyValue'] = selectedMetric['previousMonthlyValue']
 
             for (day in selectedMetric['days']) {
-                updates['KPIs/Coworking/Acquisition/' + selectedMetric['name'] + '/days/' + day + '/value/'] = selectedMetric['days'][day]['value']
-                updates['KPIs/Coworking/Acquisition/' + selectedMetric['name'] + '/days/' + day + '/goal'] = selectedMetric['dailyGoal']
-                updates['KPIs/Coworking/Acquisition/' + selectedMetric['name'] + '/days/' + day + '/day'] = selectedMetric['days'][day]['day']
+                updates['KPIs/Coworking/Acquisition/' + selectedMetric['id'] + day + '/value/'] = selectedMetric['days'][day]['value']
+                updates['KPIs/Coworking/Acquisition/' + selectedMetric['id'] + day + '/goal'] = selectedMetric['dailyGoal']
+                updates['KPIs/Coworking/Acquisition/' + selectedMetric['id'] + day + '/day'] = selectedMetric['days'][day]['day']
             }
             for (startWeekDay in selectedMetric['weeks']) {
-                updates['KPIs/Coworking/Acquisition/' + selectedMetric['name'] + '/weeks/' + startWeekDay + '/value/'] = selectedMetric['weeks'][startWeekDay]['value']
-                updates['KPIs/Coworking/Acquisition/' + selectedMetric['name'] + '/weeks/' + startWeekDay + '/goal'] = selectedMetric['weeklyGoal']
-                updates['KPIs/Coworking/Acquisition/' + selectedMetric['name'] + '/weeks/' + startWeekDay + '/start'] = selectedMetric['weeks'][startWeekDay]['start']
+                updates['KPIs/Coworking/Acquisition/' + selectedMetric['id'] + startWeekDay + '/value/'] = selectedMetric['weeks'][startWeekDay]['value']
+                updates['KPIs/Coworking/Acquisition/' + selectedMetric['id'] + startWeekDay + '/goal'] = selectedMetric['weeklyGoal']
+                updates['KPIs/Coworking/Acquisition/' + selectedMetric['id'] + startWeekDay + '/start'] = selectedMetric['weeks'][startWeekDay]['start']
             }
             for (startMonthDay in selectedMetric['months']) {
-                updates['KPIs/Coworking/Acquisition/' + selectedMetric['name'] + '/months/' + startMonthDay + '/value/'] = selectedMetric['months'][startMonthDay]['value']
-                updates['KPIs/Coworking/Acquisition/' + selectedMetric['name'] + '/months/' + startMonthDay + '/goal'] = selectedMetric['monthlyGoal']
-                updates['KPIs/Coworking/Acquisition/' + selectedMetric['name'] + '/months/' + startMonthDay + '/start'] = selectedMetric['months'][startMonthDay]['start']
+                updates['KPIs/Coworking/Acquisition/' + selectedMetric['id'] + startMonthDay + '/value/'] = selectedMetric['months'][startMonthDay]['value']
+                updates['KPIs/Coworking/Acquisition/' + selectedMetric['id'] + startMonthDay + '/goal'] = selectedMetric['monthlyGoal']
+                updates['KPIs/Coworking/Acquisition/' + selectedMetric['id'] + startMonthDay + '/start'] = selectedMetric['months'][startMonthDay]['start']
             }
-            // updates['/KPIs/Coworking/Acquisition/' + selectedMetric['name'] + '/days/']
 
             return firebase.database().ref().update(updates)
         }
 
-        function calcMetric(metric, dailyGoal, weeklyGoal, monthlyGoal, startDate, finalDate) {
-            //Aqui fazer os calculos das métricas de aquisição do Coworking
+        function calcMetricDaily() {
+            selectedMetric['dailyValue'] = 0
+            selectedMetric['weeklyValue'] = 0
+            selectedMetric['monthlyValue'] = 0
 
-            // var updates = {}
-            var durationAsDays = Math.round(moment.duration(finalDate - startDate).asDays())
+            selectedMetric['previousDailyValue'] = 0
+            selectedMetric['previousWeeklyValue'] = 0
+            selectedMetric['previousMonthlyValue'] = 0
+
+
+            var previousDailyValue = 0
+            var currentDailyValue = 0
+
+            ref = firebase.database().ref('/Coworking/Acquisition/Days/').orderByChild('day').limitToLast(31)
+
+
+            var dailyDemands = {}
+            var promise = new Promise(function(resolve, reject) {
+                ref.on('value', function(snapshot) {
+                    selectedMetric['dailyValue'] = 0
+                    selectedMetric['previousDailyValue'] = 0
+                    selectedMetric['days'] = {}
+
+
+                    var days = snapshot.val()
+                    var lastDay = 0
+                    var firstDay = 0
+
+                    for (d in days) {
+                        lastDay = days[d]['day']
+
+                    }
+                    firstDay = moment(lastDay).subtract(30, 'days').valueOf()
+                    for (i = 0; i <= 30; i++) {
+                        var day = moment(firstDay).add(i, 'days').valueOf()
+                        switch (selectedMetric['name']) {
+                            case ('DOT'): {                                
+                                selectedMetric['days']['/days/' + day] = {day: day, value:0}
+                                break
+                            }
+                        }
+                    }
+                    for (d in days) {
+                        var day = days[d]['day']
+                        if (day > firstDay) {
+                            var numSeatsDemandedForDay = 0
+                            // var startWeekDay = moment(day).startOf('week').valueOf()
+                            // var startMonthDay = moment(day).startOf('month').valueOf()
+                            var availability = days[d]['availability']
+                            var schedules = days[d]['schedules']
+                            for (schedule in schedules) {
+                                var teamsDemandsForSchedule = schedules[schedule]
+                                for (teamDemandForSchedule in teamsDemandsForSchedule) {
+                                    numSeatsDemandedForDay += teamsDemandsForSchedule[teamDemandForSchedule]['seats']
+                                }                             
+                            }
+                            switch (selectedMetric['name']) {
+                                //AQUI DEFINIR COMO SÃO CALCULADAS AS MÉTRICAS
+                                case ('DOT'): {
+                                    // selectedMetric['days']
+                                    selectedMetric['days']['/days/' + day]['value'] = numSeatsDemandedForDay
+                                    selectedMetric['days']['/days/' + day]['day'] = day
+
+                                    var previousDay = moment(day).subtract(1, 'days').valueOf()
+                                    selectedMetric['previousDailyValue'] = selectedMetric['days']['/days/' + previousDay]['value']
+                                    selectedMetric['dailyValue'] = numSeatsDemandedForDay
+                                    break
+                                }
+                            }                            
+                        }
+                    }
+                    updateSelectedMetric().then(function() {
+                        resolve()
+                    })
+                })
+            })
+
+            return promise                            
+        }
+
+        function calcMetricWeekly() {
+            selectedMetric['dailyValue'] = 0
+            selectedMetric['weeklyValue'] = 0
+            selectedMetric['monthlyValue'] = 0
+
+            selectedMetric['previousDailyValue'] = 0
+            selectedMetric['previousWeeklyValue'] = 0
+            selectedMetric['previousMonthlyValue'] = 0
+
+
+            var previousDailyValue = 0
+            var currentDailyValue = 0
+
+            ref = firebase.database().ref('/Coworking/Acquisition/Days/').orderByChild('day').limitToLast(31)
+
+
+            var dailyDemands = {}
+            var promise = new Promise(function(resolve, reject) {
+                ref.on('value', function(snapshot) {
+                    selectedMetric['dailyValue'] = 0
+                    selectedMetric['previousDailyValue'] = 0
+                    selectedMetric['weeks'] = {}
+
+
+                    var days = snapshot.val()
+                    var lastDay = 0
+                    var firstDay = 0
+
+                    for (d in days) {
+                        lastDay = days[d]['day']
+
+                    }
+                    firstDay = moment(lastDay).startOf('week').subtract(4, 'weeks').valueOf()
+                    lastDay = moment(lastDay).endOf('week')
+                    var durationAsWeeks = Math.round(moment.duration(lastDay - firstDay).asWeeks())
+
+                    for (i = 0; i < durationAsWeeks; i++) {
+                        var startWeek = moment(firstDay).add(i, 'weeks').valueOf()
+                        switch (selectedMetric['name']) {
+                            case ('DOT'): {                                
+                                selectedMetric['weeks']['/weeks/' + startWeek] = {start: startWeek, value:0}
+                                break
+                            }
+                        }
+                    }
+                    for (d in days) {
+                        var day = days[d]['day']
+                        if (day > firstDay) {
+                            var weekStartDay = moment(day).startOf('week').valueOf()
+                            var previousWeekStartDay = moment(weekStartDay).subtract(1, 'weeks').valueOf()
+                            var numSeatsDemandedForDay = 0
+                            // var startWeekDay = moment(day).startOf('week').valueOf()
+                            // var startMonthDay = moment(day).startOf('month').valueOf()
+                            var availability = days[d]['availability']
+                            var schedules = days[d]['schedules']
+                            for (schedule in schedules) {
+                                var teamsDemandsForSchedule = schedules[schedule]
+                                for (teamDemandForSchedule in teamsDemandsForSchedule) {
+                                    numSeatsDemandedForDay += teamsDemandsForSchedule[teamDemandForSchedule]['seats']
+                                }                             
+                            }
+                            switch (selectedMetric['name']) {
+                                //AQUI DEFINIR COMO SÃO CALCULADAS AS MÉTRICAS
+                                case ('DOT'): {
+                                    // selectedMetric['days']
+                                    selectedMetric['weeks']['/weeks/' + weekStartDay]['value'] += numSeatsDemandedForDay
+                                    // selectedMetric['weeks']['/weeks/' + weekStartDay]['day'] = day
+
+                                    if (moment(day).startOf('week').valueOf() == weekStartDay.valueOf()) {
+                                        selectedMetric['weeklyValue'] += numSeatsDemandedForDay
+                                    }
+                                    if (moment(day).startOf('week').valueOf() == previousWeekStartDay.valueOf()) {
+                                        selectedMetric['previousWeeklyValue'] += numSeatsDemandedForDay
+                                    }
+                                    break
+                                }
+                            }                            
+                        }
+                    }
+                    updateSelectedMetric().then(function() {
+                        resolve()
+                    })
+                })
+            })
+
+            return promise                            
+        }
+
+        function calcMetric() {
+            //Aqui fazer os calculos das métricas de aquisição do Coworking
+            //setup weeks beginning on Jun 01 2016
+            startDate = moment().startOf('month')
+            finalDate = moment().startOf('month').add(1, 'Months')
+
+            startWeek = moment(startDate).startOf('week')
+            endWeek = moment(finalDate).endOf('week')
+
+            var startMonth = moment(startDate).startOf('month').valueOf()
+            var endMonth = moment(finalDate).endOf('month').valueOf()
+
+            durationDays = Math.round(moment.duration(endWeek - startWeek).asDays())
+            durationWeeks = Math.round(moment.duration(endWeek - startWeek).asWeeks())
+
+
+            var durationAsDays = Math.round(moment.duration(endMonth - startDate).asDays())
 
             for (i = 0; i < durationAsDays; i++) {
                 var day = moment(startDate).add(i, 'days').valueOf()
                 selectedMetric['days']['/days/' + day] = {day: day, value:0}
-                // updates['/KPIs/Coworking/Acquisition/' + metric + '/days/' + day] = {day: day, goal:dailyGoal, value:0}
             }
 
-            var durationAsWeeks = Math.round(moment.duration(finalDate - startDate).asWeeks())
+            var durationAsWeeks = Math.round(moment.duration(endWeek - startWeek).asWeeks())
             for (i = 0; i < durationAsWeeks; i++) {
-                var day = moment(startDate).add(i, 'weeks').valueOf()
+                var day = moment(startWeek).add(i, 'weeks').valueOf()
                 selectedMetric['weeks']['/weeks/' + day] = {start:day, value:0}
-                // updates['/KPIs/Coworking/Acquisition/' + metric + '/weeks/' + day] = {start: day, goal: weeklyGoal, value: 0}
             }
 
-            var startMonth = moment(startDate).startOf('month').valueOf()
-            var endMonth = moment(finalDate).endOf('month').valueOf()
             var durationAsMonths = Math.round(moment.duration(endMonth - startMonth).asMonths())
             for (i = 0; i < durationAsMonths; i++) {
                 var day = moment(startMonth).add(i, 'months').valueOf()
                 selectedMetric['months']['/months/' + day] = {start:day, value:0}
-                // updates['/KPIs/Coworking/Acquisition/' + metric + '/months/' + day] = {start: day, goal: monthlyGoal, value: 0}
             }
 
             selectedMetric['dailyValue'] = 0
@@ -836,7 +1105,7 @@
             var previousDailyValue = 0
             var currentDailyValue = 0
 
-            ref = firebase.database().ref('/Coworking/Acquisition/Days/').endAt(finalDate.valueOf())
+            ref = firebase.database().ref('/Coworking/Acquisition/Days/').orderByChild('day').startAt(startDate.valueOf()).endAt(finalDate.valueOf())
 
 
             var dailyDemands = {}
@@ -857,14 +1126,10 @@
                                 numSeatsDemandedForDay += teamsDemandsForSchedule[teamDemandForSchedule]['seats']
                             }                             
                         }
-                        switch (metric) {
+                        switch (selectedMetric['name']) {
                             //AQUI DEFINIR COMO SÃO CALCULADAS AS MÉTRICAS
                             case ('DOT'): {
                                 selectedMetric['days']
-                                // updates['/KPIs/Coworking/Acquisition/DOT/days/' + day]['value'] = numSeatsDemandedForDay
-                                // updates['/KPIs/Coworking/Acquisition/DOT/weeks/' + startWeekDay]['value'] += numSeatsDemandedForDay
-                                // updates['/KPIs/Coworking/Acquisition/DOT/months/' + startMonthDay]['value'] += numSeatsDemandedForDay
-
                                 selectedMetric['days']['/days/' + day]['value'] = numSeatsDemandedForDay
                                 selectedMetric['days']['/days/' + day]['day'] = day
                                 selectedMetric['weeks']['/weeks/' + startWeekDay]['value'] += numSeatsDemandedForDay
@@ -900,15 +1165,14 @@
                         }
                     }
                     updateSelectedMetric().then(function() {
-                        // firebase.database().ref().update(updates).then(function() {
-                            resolve()
-                        // })
+                        resolve()
                     })
                 })
             })
 
             return promise                            
         }
+
     </script>
 
     <script type="text/javascript">
