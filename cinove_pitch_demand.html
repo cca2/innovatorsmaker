@@ -576,15 +576,6 @@
                 $('#KPI-current-goal').text(selectedMetric['weeklyGoal'] + percentSymbol)
             }
 
-            // $('#KPI-current-weekly-value').text(selectedMetric['weeklyValue'] + percentSymbol)
-            // $('#KPI-current-monthly-value').text(selectedMetric['monthlyValue'] + percentSymbol)
-
-            // $('#KPI-previous-weekly-value').text(selectedMetric['previousWeeklyValue'] + percentSymbol)
-            // $('#KPI-previous-monthly-value').text(selectedMetric['previousMonthlyValue'] + percentSymbol)
-
-            // $('#KPI-current-weekly-goal').text(selectedMetric['weeklyGoal'] + percentSymbol)
-            // $('#KPI-current-monthly-goal').text(selectedMetric['monthlyGoal'] + percentSymbol)
-
             $('#input-new-daily-goal').val(selectedMetric['dailyGoal'])
             $('#input-new-weekly-goal').val(selectedMetric['weeklyGoal'])
             $('#input-new-monthly-goal').val(selectedMetric['monthlyGoal'])
@@ -756,10 +747,6 @@
                 var currentGoalsAndValues = snapshot.val()
                 currentGoals = currentGoalsAndValues['goals']
                 currentValues = currentGoalsAndValues['values']
-
-                // selectedMetric['dailyValue'] = currentValues['dailyValue']
-                // selectedMetric['weeklyValue'] = currentValues['weeklyValue']
-                // selectedMetric['monthlyValue'] = currentValues['monthlyValue']
 
                 selectedMetric['dailyGoal'] = currentGoals['dailyGoal']
                 selectedMetric['weeklyGoal'] = currentGoals['weeklyGoal']

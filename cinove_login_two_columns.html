@@ -118,11 +118,9 @@
             firebase.auth().onAuthStateChanged(function(user) {
               if (user) {
                 // User is signed in.
-                console.log('>>> 0 <<<');
-                window.location = 'cinove_management.html';       
+                // window.location = 'cinove_management.html';       
               } else {
                 // No user is signed in.
-                console.log('>>> 1 <<<');
               }
             });            
         });
@@ -130,7 +128,9 @@
             event.preventDefault();
             var userName = $('#input-username').val().trim();
             var password = $('#input-password').val().trim();
-            firebase.auth().signInWithEmailAndPassword(userName, password).catch(function(e) {
+            firebase.auth().signInWithEmailAndPassword(userName, password).then(function() {
+                window.location = 'cinove_pitch_coworking_schedule.html'
+            }).catch(function(e) {
                 console.log(e);
             })
         });
