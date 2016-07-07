@@ -78,6 +78,7 @@
             margin: 0;            
             padding: 10px;
             border-radius: 2px;
+            height: 40px;
         }
 
         .schedules-list li .team-demand {
@@ -107,6 +108,11 @@
             position: absolute;
             top: 10px;
             right: 10px;
+            font-size: large;
+        }
+
+        .weekspan {
+            text-align: center;
         }
     </style>    
 </head>
@@ -273,6 +279,9 @@
         </nav>
         </div>
         <div class="wrapper wrapper-content">
+            <div class="row wrapper border-bottom white-bg page-heading">
+                <span class="weekspan">Semana: 04/07 - 09/07</span>
+            </div>
             <div class="weekdays row">
                 <div class="col-lg-2 weekday-col">
                     <div class="ibox">
@@ -280,11 +289,10 @@
                             <h3 class="week-day">Seg 30/6</h3>
                             <p class="day-availability"><span class="badge badge-primary">96</span></p>
                             <ul class="schedules-list">
-                                <li class="warning-element">
+                                <li class="">
                                     <span class="time-slot">8 - 9hs</span>
                                     <input type="text" class="schedule-availability-input form-control">
                                     <h4 class="team-demand">0</h4>
-                                    <!-- <div class="time-slot-selector"><input type="checkbox" class="i-checks"></div> -->
                                 </li>
                             </ul>
                         </div>
@@ -293,7 +301,8 @@
             </div>
             <div class="row"><button id="btn-publish-availability" type="button" class="btn btn-block btn-outline btn-primary">Atualizar</button></div>
             <div class="timeslot-demands row">
-                <div class="timeslot-demand-panel panel">
+                <div class="timeslot-demand-panel">
+                <div class="panel">
                     <div class="panel-heading">
                         <span class="timeslot-demand-time">Primary Panel</span>
                     </div>
@@ -313,7 +322,8 @@
                             </div>                            
                         </div>
                     </div>
-                </div>            
+                </div>                                
+                </div>
             </div>
         </div>
         <div class="footer">
@@ -395,15 +405,6 @@
     <script type="text/javascript">
         var weekSlots = {}
         var teams = []
-
-        // function test1() {
-        //     entrepreneurId = 'afst@bepid.cin.ufpe.br'
-        //     firebase.database().ref('/entrepreneurs/').orderByChild('email').equalTo(entrepreneurId).on('value', function(snapshot) {
-        //         var entrepreneurId = Object.keys(snapshot.val())[0]
-        //         entrepreneur = snapshot.val()[entrepreneurId]
-        //         console.log(entrepreneur)
-        //     })
-        // }        
 
         function test() {
             var testDay = moment().startOf('week').add(2, 'days').valueOf()
@@ -535,37 +536,43 @@
             for (i = 0; i < timeSlotDemands.length; i++) {
                 var demand = timeSlotDemands[i]
                 day = moment(demand['timeSlot']).startOf('day')
-                if (day.valueOf() != previousDay.valueOf()) {
-                    previousDay = day
-                    $weekDayCol = $weekDayColRef.clone()
-                    $timeSlotRef = $weekDayCol.find('li').detach()
-                    var timeSlot = demand['timeSlot']
-                    var availability = demand['schedule']['availability']
-                    $timeSlot = $timeSlotRef.clone()                    
-                    $timeSlot.find('.schedule-availability-input').val(availability)
-                    $timeSlot.find('.time-slot').text(moment(timeSlot).format('HH:mm'))
-                    $timeSlot.appendTo($weekDayCol.find('.schedules-list'))
-                    $weekDayCol.find('.week-day').text(moment(day).format('ddd DD/MM'))
-                    $weekDayCol.appendTo($('.weekdays'))
-                }else {
-                    var timeSlot = demand['timeSlot']
-                    var availability = demand['schedule']['availability']
-                    $timeSlot = $timeSlotRef.clone()
-                    $timeSlot.find('.schedule-availability-input').val(availability)
-                    $timeSlot.find('.time-slot').text(moment(timeSlot).format('HH:mm'))
-                    $timeSlot.appendTo($weekDayCol.find('.schedules-list'))
-                }
-
-                var teams = demand['schedule']['teams']
-                if (teams) {
-                    $timeSlot.addClass('success-element')
-                    var numTeams = 0
-                    for (t in teams) {
-                        numTeams++
+                if (day.day() != 0) {
+                    if (day.valueOf() != previousDay.valueOf()) {
+                        previousDay = day
+                        $weekDayCol = $weekDayColRef.clone()
+                        $timeSlotRef = $weekDayCol.find('li').detach()
+                        var timeSlot = demand['timeSlot']
+                        var availability = demand['schedule']['availability']
+                        $timeSlot = $timeSlotRef.clone()                    
+                        $timeSlot.find('.schedule-availability-input').val(availability)
+                        $timeSlot.find('.time-slot').text(moment(timeSlot).format('HH:mm'))
+                        $timeSlot.appendTo($weekDayCol.find('.schedules-list'))
+                        $weekDayCol.find('.week-day').text(moment(day).format('ddd DD/MM'))
+                        $weekDayCol.appendTo($('.weekdays'))
+                    }else {
+                        var timeSlot = demand['timeSlot']
+                        var availability = demand['schedule']['availability']
+                        $timeSlot = $timeSlotRef.clone()
+                        $timeSlot.find('.schedule-availability-input').val(availability)
+                        $timeSlot.find('.time-slot').text(moment(timeSlot).format('HH:mm'))
+                        $timeSlot.appendTo($weekDayCol.find('.schedules-list'))
                     }
-                    $timeSlot.find('.team-demand').text(numTeams)
-                }else {
-                    $timeSlot.addClass('danger-element')                    
+
+                    if (moment(timeSlot).valueOf() < moment().valueOf()) {
+                        $timeSlot.find('input').attr('readonly', 'true')
+                    }
+
+                    var teams = demand['schedule']['teams']
+                    if (teams) {
+                        $timeSlot.addClass('success-element')
+                        var numTeams = 0
+                        for (t in teams) {
+                            numTeams++
+                        }
+                        $timeSlot.find('.team-demand').text(numTeams)
+                    }else {
+                        $timeSlot.addClass('danger-element')                    
+                    }
                 }
             }
          }
@@ -574,31 +581,35 @@
             $('.timeslot-demands').empty()
             for (i = 0; i < timeSlotDemands.length; i++) {
                 var demand = timeSlotDemands[i]
-                var $timeSlotDemandPanel = $timeSlotDemandPanelRef.clone()
-                $timeSlotDemandPanel.find('.timeslot-demand-time').text(moment(demand['timeSlot']).format('ddd DD/MM HH:mm'))
-                var teams = demand['schedule']['teams']
-                if (teams) {
-                    $timeSlotDemandPanel.addClass('panel-primary')
-                    for (t in teams) {
-                        var team = teams[t]
-                        var name = team['name']
-                        var numSeats = team['seats']
-                        var $timeSlotTeamDemand = $timeSlotTeamDemandRef.clone()
-                        $timeSlotTeamDemand.find('.team-name').text(name)
-                        $timeSlotTeamDemand.find('.num-seats').text(numSeats)
-                        if (numSeats == 4) {
-                            $timeSlotTeamDemand.find('.num-seats').addClass('badge-primary')
-                        }else if (numSeats < 4) {
-                            $timeSlotTeamDemand.find('.num-seats').addClass('badge-warning')
-                        }else if (numSeats > 4) {
-                            $timeSlotTeamDemand.find('.num-seats').addClass('badge-danger')
-                        }
-                        $timeSlotTeamDemand.appendTo($timeSlotDemandPanel.find('.timeslot-team-demands'))
-                    }         
-                }else {
-                    $timeSlotDemandPanel.addClass('panel-danger')
+                if (moment(demand['timeSlot']).day() != 0) {
+                    var $timeSlotDemandPanel = $timeSlotDemandPanelRef.clone()
+                    $timeSlotDemandPanel.find('.timeslot-demand-time').text(moment(demand['timeSlot']).format('ddd DD/MM HH:mm'))
+                    var teams = demand['schedule']['teams']
+                    if (teams) {
+                        $timeSlotDemandPanel.find('.panel').addClass('panel-primary')
+                        $timeSlotDemandPanel.addClass('col-lg-12')
+                        for (t in teams) {
+                            var team = teams[t]
+                            var name = team['name']
+                            var numSeats = team['seats']
+                            var $timeSlotTeamDemand = $timeSlotTeamDemandRef.clone()
+                            $timeSlotTeamDemand.find('.team-name').text(name)
+                            $timeSlotTeamDemand.find('.num-seats').text(numSeats)
+                            if (numSeats == 4) {
+                                $timeSlotTeamDemand.find('.num-seats').addClass('badge-primary')
+                            }else if (numSeats < 4) {
+                                $timeSlotTeamDemand.find('.num-seats').addClass('badge-warning')
+                            }else if (numSeats > 4) {
+                                $timeSlotTeamDemand.find('.num-seats').addClass('badge-danger')
+                            }
+                            $timeSlotTeamDemand.appendTo($timeSlotDemandPanel.find('.timeslot-team-demands'))
+                        }         
+                    }else {
+                        $timeSlotDemandPanel.find('.panel').addClass('panel-danger')
+                        $timeSlotDemandPanel.addClass('col-lg-2')
+                    }
+                    $timeSlotDemandPanel.appendTo($('.timeslot-demands'))
                 }
-                $timeSlotDemandPanel.appendTo($('.timeslot-demands'))
             }
          }
     </script>
