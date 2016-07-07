@@ -80,6 +80,10 @@
             border-radius: 2px;
         }
 
+        .schedules-list li .team-demand {
+            text-align: center;
+        }
+
         .schedules-list li.success-element {
             border-left: 3px solid #1ab394;
             min-height: 42px;
@@ -547,6 +551,11 @@
                 var teams = demand['schedule']['teams']
                 if (teams) {
                     $timeSlot.addClass('success-element')
+                    var numTeams = 0
+                    for (t in teams) {
+                        numTeams++
+                    }
+                    $timeSlot.find('.team-demand').text(numTeams)
                 }else {
                     $timeSlot.addClass('danger-element')                    
                 }
