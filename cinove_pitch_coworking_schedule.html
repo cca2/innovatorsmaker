@@ -99,20 +99,47 @@
             margin-top: 10px;
         } 
 
-        .team-box {
+        .timeslot-team-demand {
             margin-bottom: 10px;
+        }
+
+        .timeslot-team-demand .team-box.team-selected {
+            background: rgba(26, 179, 148, 0.43);
+        }
+
+        .team-box {
             position: relative;
+            height: 130px;
         }
 
-        .team-box .num-seats {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            font-size: large;
+        .team-box .demands-badge-list {
+            float: right;
         }
 
-        .weekspan {
+        .weekspan-wrapper {
             text-align: center;
+            position: relative;
+            padding: 10px;
+        }
+
+        #btn-publish-availability {
+            height: 36px;
+        }
+
+        .demands-badge-list li {
+            display: inline;
+        }
+
+        .team-badges {
+            float: left;
+        }
+
+        .team-usage {
+            background: red;
+            color: white;
+            padding: 2px;
+            border-radius: 10px;     
+            float: right;       
         }
     </style>    
 </head>
@@ -147,7 +174,7 @@
                 <li class="kpi-name-option">
                     <a id="btn-show-timeslots-demands" href="#"><i class="fa fa-pie-chart"></i> <span class="kpi-label nav-label">Demanda</span></a>
                 </li>
-                <li><button id="btn-test">Test</button></li>                
+                <!-- <li><button id="btn-test">Test</button></li>                 -->
             </ul>
         </div>
     </nav>
@@ -279,8 +306,14 @@
         </nav>
         </div>
         <div class="wrapper wrapper-content">
-            <div class="row wrapper border-bottom white-bg page-heading">
-                <span class="weekspan">Semana: 04/07 - 09/07</span>
+            <div class="row">
+                <div class="col-lg-8 weekspan-wrapper wrapper border-bottom white-bg page-heading">
+                    <span class="weekspan">Semana: 04/07 - 09/07</span>
+                    <a href="#" class="pull-left"><span class="fa fa-arrow-left"></span></a>
+                    <a href="#" class="pull-right"><span class="fa fa-arrow-right"></span></a>
+                </div>
+                <div class="col-lg-4"><button id="btn-publish-availability" type="button" class="btn btn-block btn-outline btn-primary">Atualizar</button></div>
+
             </div>
             <div class="weekdays row">
                 <div class="col-lg-2 weekday-col">
@@ -299,33 +332,60 @@
                     </div>
                 </div>                
             </div>
-            <div class="row"><button id="btn-publish-availability" type="button" class="btn btn-block btn-outline btn-primary">Atualizar</button></div>
             <div class="timeslot-demands row">
                 <div class="timeslot-demand-panel">
-                <div class="panel">
-                    <div class="panel-heading">
-                        <span class="timeslot-demand-time">Primary Panel</span>
-                    </div>
-                    <div class="panel-body">
-                        <div class="timeslot-team-demands row">
-                            <div class="timeslot-team-demand col-lg-4">
-                                <div class="team-box widget-text-box">
-                                    <span class="num-seats badge">4</span>
-                                    <h4 class="team-name media-heading">Alex Smith</h4>
-                                    <p class="team-purpose">Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
-                                    <div class="text-right">
-                                        <span class="label label-primary">Portfolio</span>
-                                        <span class="label label-primary">PhD</span>
-                                        <span class="label label-primary">MsC</span>
-                                    </div>
-                                </div>
-                            </div>                            
+                    <div class="panel">
+                        <div class="panel-heading">
+                            <span class="timeslot-demand-time">Primary Panel</span>
                         </div>
-                    </div>
-                </div>                                
+                        <div class="panel-body">
+                            <div class="timeslot-team-demands row">
+                                <div class="timeslot-team-demand col-lg-4">
+                                    <div class="team-box widget-text-box">
+                                        <ul class="demands-badge-list">
+                                            <li><span class="num-seats badge">4</span></li>
+                                            <li><span class="num-tables badge">4</span></li>
+                                        </ul>                                        
+                                        <h4 class="team-name media-heading">Alex Smith</h4>
+                                        <p class="team-purpose">Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
+                                        <div class="team-badges">
+                                            <span class="label label-primary">Portfolio</span>
+                                            <span class="label label-primary">PhD</span>
+                                            <span class="label label-primary">MsC</span>
+                                        </div>
+                                        <div class="team-usage">
+                                            <span>70%</span>
+                                        </div>
+                                    </div>
+                                    <button type="button" class="btn-toggle-select btn btn-block btn-outline btn-primary">selecionar</button>
+                                </div>                            
+                            </div>
+                        </div>
+                    </div>                                
                 </div>
             </div>
-        </div>
+            <div class="row">
+                <div class="col-lg-8 weekspan-wrapper wrapper border-bottom white-bg page-heading">
+                    <span class="weekspan">Semana: 04/07 - 09/07</span>
+                    <a href="#" class="pull-left"><span class="fa fa-arrow-left"></span></a>
+                    <a href="#" class="pull-right"><span class="fa fa-arrow-right"></span></a>
+                </div>
+                <!-- <div class="col-lg-4"><button id="btn-publish-availability" type="button" class="btn btn-block btn-outline btn-primary">Atualizar</button></div> -->
+
+            </div>            
+<!--             <div class="timeslot-allocations row">
+                <div class="timeslot-allocation-panel col-lg-12">
+                    <div class="panel panel-danger">
+                        <div class="panel-heading">
+                            <span class="timeslot-allocation-time">Fri 08/07 15:00</span>
+                        </div>
+                        <div class="panel-body">
+                            <div class="col-md-6"></div>
+                        </div>
+                    </div>                                
+                </div>                
+            </div>
+ -->        </div>
         <div class="footer">
             <div class="pull-right">
                 10GB of <strong>250GB</strong> Free.
@@ -519,7 +579,7 @@
                     for (s in schedules) {
                         schedule = schedules[s]
                         var timeSlot = Number(s)
-                        var demand = {timeSlot: timeSlot, schedule}
+                        var demand = {timeSlot: timeSlot, schedule:schedule}
                         timeSlotDemands.push(demand)
                     }
                 }
@@ -564,12 +624,17 @@
 
                     var teams = demand['schedule']['teams']
                     if (teams) {
-                        $timeSlot.addClass('success-element')
-                        var numTeams = 0
+                        var numTables = 0
                         for (t in teams) {
-                            numTeams++
+                            var team = teams[t]
+                            numTables += Math.ceil(team['seats']/4)
                         }
-                        $timeSlot.find('.team-demand').text(numTeams)
+                        
+                        $timeSlot.addClass('success-element')
+                        // for (t in teams) {
+                        //     numTables++
+                        // }
+                        $timeSlot.find('.team-demand').text(numTables)
                     }else {
                         $timeSlot.addClass('danger-element')                    
                     }
@@ -592,23 +657,32 @@
                             var team = teams[t]
                             var name = team['name']
                             var numSeats = team['seats']
+                            var numTables = Math.ceil(numSeats/4)
                             var $timeSlotTeamDemand = $timeSlotTeamDemandRef.clone()
                             $timeSlotTeamDemand.find('.team-name').text(name)
                             $timeSlotTeamDemand.find('.num-seats').text(numSeats)
+                            $timeSlotTeamDemand.find('.num-tables').text(numTables)
                             if (numSeats == 4) {
                                 $timeSlotTeamDemand.find('.num-seats').addClass('badge-primary')
+                                $timeSlotTeamDemand.find('.num-tables').addClass('badge-primary')
                             }else if (numSeats < 4) {
                                 $timeSlotTeamDemand.find('.num-seats').addClass('badge-warning')
+                                $timeSlotTeamDemand.find('.num-tables').addClass('badge-warning')
                             }else if (numSeats > 4) {
                                 $timeSlotTeamDemand.find('.num-seats').addClass('badge-danger')
+                                $timeSlotTeamDemand.find('.num-tables').addClass('badge-danger')
                             }
                             $timeSlotTeamDemand.appendTo($timeSlotDemandPanel.find('.timeslot-team-demands'))
                         }         
+                        $timeSlotDemandPanel.appendTo($('.timeslot-demands'))
+                        $timeSlotDemandPanel.find('.btn-toggle-select').click(function() {
+                            $teamBox = $(this).parents('.timeslot-team-demand').find('.team-box')
+                            $teamBox.toggleClass('team-selected')
+                        })                        
                     }else {
-                        $timeSlotDemandPanel.find('.panel').addClass('panel-danger')
-                        $timeSlotDemandPanel.addClass('col-lg-2')
+                        // $timeSlotDemandPanel.find('.panel').addClass('panel-danger')
+                        // $timeSlotDemandPanel.addClass('col-lg-2')
                     }
-                    $timeSlotDemandPanel.appendTo($('.timeslot-demands'))
                 }
             }
          }
