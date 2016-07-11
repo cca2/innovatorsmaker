@@ -147,6 +147,12 @@
             border-radius: 10px;     
             float: right;       
         }
+
+        .back-to-top {
+            color: white;
+            float: right;
+            font-size: x-large;
+        }
     </style>    
 </head>
 
@@ -343,6 +349,7 @@
                     <div class="panel">
                         <div class="panel-heading">
                             <span class="timeslot-demand-time">Primary Panel</span>
+                            <a href="#" class="back-to-top"><span class="fa fa-angle-double-up"></span></a>
                         </div>
                         <div class="panel-body">
                             <div class="timeslot-team-demands row">
@@ -671,15 +678,17 @@
                     $timeSlotDemandPanel.attr('id', demand['timeSlot'])
                     $timeSlotDemandPanel.find('.timeslot-demand-time').text(moment(demand['timeSlot']).format('ddd DD/MM HH:mm'))
                     var teams = demand['schedule']['teams']
-                    if (teams) {
-                        $timeSlotDemandPanel.find('.panel').addClass('panel-primary')
+                    if (teams) {                        
                         $timeSlotDemandPanel.addClass('col-lg-12')
+                        var totalTables = 0
                         for (t in teams) {
                             var team = teams[t]
                             var name = team['name']
                             var numSeats = team['seats']
                             var numTables = Math.ceil(numSeats/4)
                             var $timeSlotTeamDemand = $timeSlotTeamDemandRef.clone()
+
+                            totalTables += numTables
                             $timeSlotTeamDemand.find('.team-name').text(name)
                             $timeSlotTeamDemand.find('.num-seats').text(numSeats)
                             $timeSlotTeamDemand.find('.num-tables').text(numTables)
@@ -694,7 +703,13 @@
                                 $timeSlotTeamDemand.find('.num-tables').addClass('badge-danger')
                             }
                             $timeSlotTeamDemand.appendTo($timeSlotDemandPanel.find('.timeslot-team-demands'))
-                        }         
+                        } 
+
+                        if (totalTables > 3) {
+                            $timeSlotDemandPanel.find('.panel').addClass('panel-warning')
+                        }else {
+                            $timeSlotDemandPanel.find('.panel').addClass('panel-primary')
+                        }     
                         $timeSlotDemandPanel.appendTo($('.timeslot-demands'))
                         $timeSlotDemandPanel.find('.btn-toggle-select').click(function() {
                             $teamBox = $(this).parents('.timeslot-team-demand').find('.team-box')
