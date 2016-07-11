@@ -79,6 +79,7 @@
             padding: 10px;
             border-radius: 2px;
             height: 40px;
+            min-height: 42px;
         }
 
         .schedules-list li .team-demand {
@@ -87,7 +88,12 @@
 
         .schedules-list li.success-element {
             border-left: 3px solid #1ab394;
-            min-height: 42px;
+            background: rgba(26, 179, 148, 0.43);
+        }
+
+        .schedules-list li.warning-element {
+            border-left: 3px solid #f8ac59;
+            background: rgba(248, 172, 89, 0.71);
         }
 
         .schedules-list li.danger-element {
@@ -174,7 +180,7 @@
                 <li class="kpi-name-option">
                     <a id="btn-show-timeslots-demands" href="#"><i class="fa fa-pie-chart"></i> <span class="kpi-label nav-label">Demanda</span></a>
                 </li>
-                <!-- <li><button id="btn-test">Test</button></li>                 -->
+                <li><button id="btn-setup">setup</button></li>                
             </ul>
         </div>
     </nav>
@@ -322,8 +328,8 @@
                             <h3 class="week-day">Seg 30/6</h3>
                             <p class="day-availability"><span class="badge badge-primary">96</span></p>
                             <ul class="schedules-list">
-                                <li class="">
-                                    <span class="time-slot">8 - 9hs</span>
+                                <li class="timeslot">
+                                    <a class="timeslot-link"><span class="time-slot">8 - 9hs</span></a>
                                     <input type="text" class="schedule-availability-input form-control">
                                     <h4 class="team-demand">0</h4>
                                 </li>
@@ -467,14 +473,22 @@
         var teams = []
 
         function test() {
-            var testDay = moment().startOf('week').add(2, 'days').valueOf()
-            var testSlot = moment(testDay).add(8, 'hours')
-            firebase.database().ref('/teams/').limitToFirst(3).on('child_added', function(snapshot) {
+            firebase.database().ref('/teams/').limitToFirst(20).on('child_added', function(snapshot) {
+                var weekDay = Math.round(Math.random() * 6)
+                var hour = Math.round(Math.random() * 8) + 8
+                var numSeats = Math.round(Math.random() * 7) + 1
+                var duration = Math.round(Math.random() * 3) + 1
+
+                var testDay = moment().startOf('week').add(weekDay, 'days').valueOf()
+
                 teams.push({id: snapshot.key, team:snapshot.val()})
-                    var updates = {}
+                var updates = {}
+                for (i = 0; i < duration; i++) {
+                    var testSlot = moment(testDay).add(hour + i, 'hours')
                     updates['/Coworking/Acquisition/Days/' + testDay + '/schedules/' + testSlot + '/teams/' + snapshot.key + '/name/'] = snapshot.val()['name']
-                    updates['/Coworking/Acquisition/Days/' + testDay + '/schedules/' + testSlot + '/teams/' + snapshot.key + '/seats/'] = 4
-                    firebase.database().ref().update(updates)
+                    updates['/Coworking/Acquisition/Days/' + testDay + '/schedules/' + testSlot + '/teams/' + snapshot.key + '/seats/'] = numSeats
+                }
+                firebase.database().ref().update(updates)
             })
         }
 
@@ -529,20 +543,22 @@
 
         function setup() {
             var startOfWeek = moment().startOf('week')
+            updates = {}
             for (i = 1  ; i <= 7; i++) {
                 var day = moment(startOfWeek).add(i, 'days')
-                weekSlots['Days/' + day.valueOf()] = {day: day.valueOf()}
-                weekSlots['Days/' + day.valueOf()]['schedules'] = {}
+                updates['/Coworking/Acquisition/Days/' + day.valueOf()] = {day: day.valueOf()}
+                updates['/Coworking/Acquisition/Days/' + day.valueOf()]['schedules'] = {}
                 for (j = 8; j < 18; j++) {
                     var timeSlot = moment(day).add(j, 'hours')
                     if (j != 12) {
-                        weekSlots['Days/' + day.valueOf()]['schedules'][timeSlot.valueOf()] = {availability:12}
+                        updates['/Coworking/Acquisition/Days/' + day.valueOf()]['schedules'][timeSlot.valueOf()] = {availability:3}
                     }else {
-                        weekSlots['Days/' + day.valueOf()]['schedules'][timeSlot.valueOf()] = {availability:0}                        
+                        updates['/Coworking/Acquisition/Days/' + day.valueOf()]['schedules'][timeSlot.valueOf()] = {availability:0}                        
                     }
                 }
-            }
+            }  
 
+            firebase.database().ref().update(updates)          
         }
 
         function makeTimeslotsAvailableForWorkingHours() {
@@ -556,7 +572,7 @@
                 for (j = 8; j < 18; j++) {
                     var timeSlot = moment(day).add(j, 'hours')
                     if (j != 12) {
-                        updates['/Coworking/Acquisition/Days/' + day.valueOf()]['schedules'][timeSlot.valueOf()] = {availability:12, teams: {}}
+                        updates['/Coworking/Acquisition/Days/' + day.valueOf()]['schedules'][timeSlot.valueOf()] = {availability:3, teams: {}}
                     }else {
                         updates['/Coworking/Acquisition/Days/' + day.valueOf()]['schedules'][timeSlot.valueOf()] = {availability:0, teams: {}}
                     }
@@ -570,7 +586,8 @@
         }
 
          function loadTimeSlotDemands() {
-            firebase.database().ref('/Coworking/Acquisition/Days/').orderByChild('day').limitToFirst(7).on('value', function(snapshot) {
+            var firstDay = moment().startOf('week').valueOf()
+            firebase.database().ref('/Coworking/Acquisition/Days/').orderByChild('day').startAt(firstDay).limitToFirst(7).on('value', function(snapshot) {
                 var timeSlotDemands = []
                 var days = snapshot.val()
                 for (d in days) {
@@ -583,8 +600,8 @@
                         timeSlotDemands.push(demand)
                     }
                 }
-                showTimeSlotsDemands(timeSlotDemands)
                 showTimeSlotsOptions(timeSlotDemands)
+                showTimeSlotsDemands(timeSlotDemands)
             })
          }
 
@@ -603,7 +620,8 @@
                         $timeSlotRef = $weekDayCol.find('li').detach()
                         var timeSlot = demand['timeSlot']
                         var availability = demand['schedule']['availability']
-                        $timeSlot = $timeSlotRef.clone()                    
+                        $timeSlot = $timeSlotRef.clone()
+                        $timeSlot.find('.timeslot-link').attr('href', '#' + timeSlot)
                         $timeSlot.find('.schedule-availability-input').val(availability)
                         $timeSlot.find('.time-slot').text(moment(timeSlot).format('HH:mm'))
                         $timeSlot.appendTo($weekDayCol.find('.schedules-list'))
@@ -613,6 +631,7 @@
                         var timeSlot = demand['timeSlot']
                         var availability = demand['schedule']['availability']
                         $timeSlot = $timeSlotRef.clone()
+                        $timeSlot.find('.timeslot-link').attr('href', '#' + timeSlot)
                         $timeSlot.find('.schedule-availability-input').val(availability)
                         $timeSlot.find('.time-slot').text(moment(timeSlot).format('HH:mm'))
                         $timeSlot.appendTo($weekDayCol.find('.schedules-list'))
@@ -630,10 +649,11 @@
                             numTables += Math.ceil(team['seats']/4)
                         }
                         
-                        $timeSlot.addClass('success-element')
-                        // for (t in teams) {
-                        //     numTables++
-                        // }
+                        if (numTables <= 3) {
+                            $timeSlot.addClass('success-element')
+                        }else {
+                            $timeSlot.addClass('warning-element')
+                        }
                         $timeSlot.find('.team-demand').text(numTables)
                     }else {
                         $timeSlot.addClass('danger-element')                    
@@ -648,6 +668,7 @@
                 var demand = timeSlotDemands[i]
                 if (moment(demand['timeSlot']).day() != 0) {
                     var $timeSlotDemandPanel = $timeSlotDemandPanelRef.clone()
+                    $timeSlotDemandPanel.attr('id', demand['timeSlot'])
                     $timeSlotDemandPanel.find('.timeslot-demand-time').text(moment(demand['timeSlot']).format('ddd DD/MM HH:mm'))
                     var teams = demand['schedule']['teams']
                     if (teams) {
@@ -702,8 +723,6 @@
         });
 
         $(document).ready(function() {
-            setup();
-
             firebase.auth().onAuthStateChanged(function(user) {
               if (user) {
                 // User is signed in.
@@ -725,6 +744,11 @@
 
                 $('#btn-show-timeslots-demands').click(function() {
                     loadTimeSlotDemands()
+                })
+
+                $('#btn-setup').click(function() {
+                    // setup()
+                    test()
                 })
               } else {
                 // No user is signed in.
