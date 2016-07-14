@@ -44,10 +44,10 @@
         }
 
 
-        .schedules-list li input {
+        .schedules-list li.timeslot input {
             width: 45px;
             position: absolute;
-            top: 3px;
+            bottom: 3px;
             right: 5px;
         }
 
@@ -70,34 +70,58 @@
             padding: 0;
         }
 
-        .schedules-list li {
+        .schedules-list li.timeslot {
+            height: 200px;
+            text-align: center;
             position: relative;
             background: #FAFAFB;
             border: 1px solid #e7eaec;
-            /*margin: 0px 0 10px 0;*/
             margin: 0;            
             padding: 10px;
-            border-radius: 2px;
-            height: 40px;
-            min-height: 42px;
+            border-radius: 2px;            
         }
 
-        .schedules-list li .team-demand {
+        .schedules-list li.timeslot .timeslot-link {
+            float: left;
+        }
+
+        .schedules-list li.timeslot .team-demand {
+            height: 130px;
+            margin-top: 50px;
+        }
+
+        .schedules-list li.timeslot .team-demand .tables-demand {
+            font-size: large;
+            font-weight: bold;
+        }
+
+        .schedules-list li.break {
+            height: 50px;
+            position: relative;
+        }
+
+        .schedules-list li.break .timeslot-break {
+            height: 50px;
+            line-height: 50px;
             text-align: center;
         }
 
-        .schedules-list li.success-element {
+        .schedules-list li.timeslot.success-element {
             border-left: 3px solid #1ab394;
-            background: rgba(26, 179, 148, 0.43);
+            /*background: rgba(26, 179, 148, 0.43);*/
+            color: #1ab394;
         }
 
-        .schedules-list li.warning-element {
+        .schedules-list li.timeslot.warning-element {
             border-left: 3px solid #f8ac59;
-            background: rgba(248, 172, 89, 0.71);
+            color: #f8ac59;
+            /*background: rgba(248, 172, 89, 0.71);*/
         }
 
-        .schedules-list li.danger-element {
+        .schedules-list li.timeslot.danger-element {
             border-left: 3px solid #ed5565;
+            color: #ed5565;
+            /*background: rgba(237, 85, 101, 0.71);*/
             min-height: 42px;
         }
 
@@ -332,12 +356,40 @@
                     <div class="ibox">
                         <div class="ibox-content weekday-content">
                             <h3 class="week-day">Seg 30/6</h3>
-                            <p class="day-availability"><span class="badge badge-primary">96</span></p>
                             <ul class="schedules-list">
                                 <li class="timeslot">
-                                    <a class="timeslot-link"><span class="time-slot">8 - 9hs</span></a>
+                                    <a class="timeslot-link"><span class="time-slot">8:00 - 12:00</span></a>
                                     <input type="text" class="schedule-availability-input form-control">
-                                    <h4 class="team-demand">0</h4>
+                                    <div class="team-demand">                                        
+                                        <div class="row">
+                                            <div class="tables-demand">
+                                                <div class="row">Mesas</div>
+                                                <div class="num-tables row">0</div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-lg-6">
+                                                <!-- <div class="panel panel-default"> -->
+                                                    <div class="teams-demand">
+                                                        <div class="row">Times</div>
+                                                        <div class="num-teams row">0</div>
+                                                    </div>
+                                                <!-- </div> -->
+                                            </div>    
+                                            <div class="col-lg-6">
+                                                <!-- <div class="panel panel-default"> -->
+                                                    <div class="seats-demand">
+                                                        <div class="row">Lugares</div>
+                                                        <div class="num-seats row">0</div>
+                                                    </div>
+                                                <!-- </div> -->
+                                            </div>    
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="break">
+                                    <a class="timeslot-link"><span class="time-slot">12:00 - 13:00</span></a>
+                                    <div class="timeslot-break">intervalo</div>
                                 </li>
                             </ul>
                         </div>
@@ -479,23 +531,61 @@
         var weekSlots = {}
         var teams = []
 
+        function demandShift(team, numSeats, weekDay, shift) {
+            var duration = 4
+
+            var testDay
+
+            if (shift == 'MORNING') {
+                testDay = moment(weekDay).startOf('day').add(8, 'hours').valueOf()
+            }else if (shift == 'AFTERNOON') {
+                testDay = moment(weekDay).startOf('day').add(14, 'hours').valueOf()
+            }else if (shift == 'NIGHT') {
+
+            }
+
+            var updates = {}
+
+            updates['/Coworking/Acquisition/Days/' + weekDay.valueOf() + '/day/'] = weekDay.valueOf()
+            for (i = 0; i < duration; i++) {
+                var testSlot = moment(testDay).add(i, 'hours').valueOf()
+                updates['/Coworking/Acquisition/Days/' + weekDay.valueOf() + '/schedules/' + testSlot + '/availability/'] = 3
+                updates['/Coworking/Acquisition/Days/' + weekDay.valueOf() + '/schedules/' + testSlot + '/teams/' + team['id'] + '/name/'] = team['team']['name']
+                updates['/Coworking/Acquisition/Days/' + weekDay.valueOf() + '/schedules/' + testSlot + '/teams/' + team['id'] + '/seats/'] = numSeats
+            }
+            firebase.database().ref().update(updates)
+        }
+
         function test() {
             firebase.database().ref('/teams/').limitToFirst(20).on('child_added', function(snapshot) {
-                var weekDay = Math.round(Math.random() * 6)
-                var hour = Math.round(Math.random() * 8) + 8
-                var numSeats = Math.round(Math.random() * 7) + 1
-                var duration = Math.round(Math.random() * 3) + 1
 
-                var testDay = moment().startOf('week').add(weekDay, 'days').valueOf()
+                var team = {id: snapshot.key, team: snapshot.val()}
+                var wDay = Math.round(Math.random() * 6)
+                var weekDay = moment().startOf('week').add(wDay + 1, 'days')
+                var shiftProb = Math.round(Math.random())
 
-                teams.push({id: snapshot.key, team:snapshot.val()})
-                var updates = {}
-                for (i = 0; i < duration; i++) {
-                    var testSlot = moment(testDay).add(hour + i, 'hours')
-                    updates['/Coworking/Acquisition/Days/' + testDay + '/schedules/' + testSlot + '/teams/' + snapshot.key + '/name/'] = snapshot.val()['name']
-                    updates['/Coworking/Acquisition/Days/' + testDay + '/schedules/' + testSlot + '/teams/' + snapshot.key + '/seats/'] = numSeats
+                var shift = 'MORNING'
+                if (shiftProb == 1) {
+                    shift = 'AFTERNOON'
                 }
-                firebase.database().ref().update(updates)
+
+                // var shift = Math.round(Math.random() * 1)
+                var numSeats = Math.round(Math.random() * 7) + 1
+
+                console.log(weekDay.toString())
+                demandShift(team, numSeats, weekDay, shift)
+                // var duration = 4
+
+                // var testDay = moment().startOf('week').add(weekDay, 'days').valueOf()
+
+                // teams.push({id: snapshot.key, team:snapshot.val()})
+                // var updates = {}
+                // for (i = 0; i < duration; i++) {
+                //     var testSlot = moment(testDay).add(hour + i, 'hours')
+                //     updates['/Coworking/Acquisition/Days/' + testDay + '/schedules/' + testSlot + '/teams/' + snapshot.key + '/name/'] = snapshot.val()['name']
+                //     updates['/Coworking/Acquisition/Days/' + testDay + '/schedules/' + testSlot + '/teams/' + snapshot.key + '/seats/'] = numSeats
+                // }
+                // firebase.database().ref().update(updates)
             })
         }
 
@@ -617,35 +707,55 @@
             var previousDay = -1
             var $timeSlotRef = null
             var $weekDayCol = null
+            var morningShift = {}
+            var afterNoonShift = {}
             for (i = 0; i < timeSlotDemands.length; i++) {
                 var demand = timeSlotDemands[i]
                 day = moment(demand['timeSlot']).startOf('day')
+                console.log(day.toString())
                 if (day.day() != 0) {
-                    if (day.valueOf() != previousDay.valueOf()) {
-                        previousDay = day
-                        $weekDayCol = $weekDayColRef.clone()
-                        $timeSlotRef = $weekDayCol.find('li').detach()
+                    if (day.valueOf() != previousDay.valueOf()) {                        
+                        previousDay = day                       
+
+                        morningShift = {start: moment(day).add(8, 'hours'), end: moment(day).add(12, 'hours'), demand: 0}
+                        afterNoonShift = {start: moment(day).add(13, 'hours'), end: moment(day).add(18, 'hours'), demand: 0}
+
                         var timeSlot = demand['timeSlot']
                         var availability = demand['schedule']['availability']
-                        $timeSlot = $timeSlotRef.clone()
-                        $timeSlot.find('.timeslot-link').attr('href', '#' + timeSlot)
-                        $timeSlot.find('.schedule-availability-input').val(availability)
-                        $timeSlot.find('.time-slot').text(moment(timeSlot).format('HH:mm'))
-                        $timeSlot.appendTo($weekDayCol.find('.schedules-list'))
+
+                        $weekDayCol = $weekDayColRef.clone()
+                        $timeSlotRef = $weekDayCol.find('li.timeslot').detach()
+                        $break = $weekDayCol.find('li.break').detach()
+
+                        $morningShift = $timeSlotRef.clone()
+                        $morningShift.addClass('danger-element')
+
+                        $morningShift.find('.timeslot-link').attr('href', '#' + timeSlot)
+                        $morningShift.find('.schedule-availability-input').val(availability)
+                        $morningShift.find('.time-slot').text(moment(morningShift['start']).format('HH:mm') + ' - ' + morningShift['end'].format('HH:mm'))
+
+                        $morningShift.appendTo($weekDayCol.find('.schedules-list'))
+
+                        $break.appendTo($weekDayCol.find('.schedules-list'))
+                        $afterNoonShift = $timeSlotRef.clone()
+                        $afterNoonShift.addClass('danger-element')
+
+                        $afterNoonShift.find('.timeslot-link').attr('href', '#' + timeSlot)
+                        $afterNoonShift.find('.schedule-availability-input').val(availability)
+                        $afterNoonShift.find('.time-slot').text(moment(afterNoonShift['start']).format('HH:mm') + ' - ' + afterNoonShift['end'].format('HH:mm'))
+
+                        $afterNoonShift.appendTo($weekDayCol.find('.schedules-list'))
+
                         $weekDayCol.find('.week-day').text(moment(day).format('ddd DD/MM'))
                         $weekDayCol.appendTo($('.weekdays'))
-                    }else {
-                        var timeSlot = demand['timeSlot']
-                        var availability = demand['schedule']['availability']
-                        $timeSlot = $timeSlotRef.clone()
-                        $timeSlot.find('.timeslot-link').attr('href', '#' + timeSlot)
-                        $timeSlot.find('.schedule-availability-input').val(availability)
-                        $timeSlot.find('.time-slot').text(moment(timeSlot).format('HH:mm'))
-                        $timeSlot.appendTo($weekDayCol.find('.schedules-list'))
-                    }
+                        
+                        if (moment() >= morningShift['start']) {
+                            $morningShift.find('input').attr('readonly', 'true')
+                        }
 
-                    if (moment(timeSlot).valueOf() < moment().valueOf()) {
-                        $timeSlot.find('input').attr('readonly', 'true')
+                        if (moment() >= afterNoonShift['start']) {
+                            $afterNoonShift.find('input').attr('readonly', 'true')
+                        }
                     }
 
                     var teams = demand['schedule']['teams']
@@ -657,14 +767,43 @@
                         }
                         
                         if (numTables <= 3) {
-                            $timeSlot.addClass('success-element')
+                            if (moment(timeSlot) >= morningShift['start'] && moment(timeSlot) < morningShift['end']) {
+                                $morningShift.removeClass('danger-element')
+                                $morningShift.addClass('success-element')
+                            }else if (moment(timeSlot) >= afterNoonShift['start'] && moment(timeSlot) < afterNoonShift['end']) {
+                                $afterNoonShift.removeClass('danger-element')
+                                $afterNoonShift.addClass('success-element')
+                            }
                         }else {
-                            $timeSlot.addClass('warning-element')
+                            if (moment(timeSlot) >= morningShift['start'] && moment(timeSlot) < morningShift['end']) {
+                                $morningShift.removeClass('danger-element')
+                                $morningShift.addClass('warning-element')
+                            }else if (moment(timeSlot) >= afterNoonShift['start'] && moment(timeSlot) < afterNoonShift['end']) {
+                                $afterNoonShift.removeClass('danger-element')
+                                $afterNoonShift.addClass('warning-element')
+                            }
                         }
-                        $timeSlot.find('.team-demand').text(numTables)
+
+                        if (moment(timeSlot) >= morningShift['start'] && moment(timeSlot) < morningShift['end']) {
+                            if (numTables > morningShift['demand']) {
+                                morningShift['demand'] = numTables
+                            }
+                        }else if (moment(timeSlot) >= afterNoonShift['start'] && moment(timeSlot) < afterNoonShift['end']) {
+                            if (numTables > afterNoonShift['demand']) {
+                                afterNoonShift['demand'] = numTables
+                            }
+                        }
+
                     }else {
-                        $timeSlot.addClass('danger-element')                    
+                        if (moment(timeSlot) >= morningShift['start'] && moment(timeSlot) < morningShift['end']) {
+                            $morningShift.addClass('danger-element')
+                        }else if (moment(timeSlot) >= afterNoonShift['start'] && moment(timeSlot) < afterNoonShift['end']) {
+                            $afterNoonShift.addClass('danger-element')
+                        }                        
                     }
+
+                    // $morningShift.find('.team-demand').text(morningShift['demand'])
+                    // $afterNoonShift.find('.team-demand').text(afterNoonShift['demand'])
                 }
             }
          }
@@ -674,6 +813,9 @@
             for (i = 0; i < timeSlotDemands.length; i++) {
                 var demand = timeSlotDemands[i]
                 if (moment(demand['timeSlot']).day() != 0) {
+                    morningShift = {start: moment(day).add(8, 'hours'), end: moment(day).add(12, 'hours'), demand: 0}
+                    afterNoonShift = {start: moment(day).add(13, 'hours'), end: moment(day).add(18, 'hours'), demand: 0}
+
                     var $timeSlotDemandPanel = $timeSlotDemandPanelRef.clone()
                     $timeSlotDemandPanel.attr('id', demand['timeSlot'])
                     $timeSlotDemandPanel.find('.timeslot-demand-time').text(moment(demand['timeSlot']).format('ddd DD/MM HH:mm'))
