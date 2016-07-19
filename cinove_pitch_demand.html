@@ -37,7 +37,7 @@
     <div id="wrapper">
     <nav class="navbar-default navbar-static-side" role="navigation">
         <div class="sidebar-collapse">
-            <ul class="nav metismenu" id="side-menu">
+            <ul class="nav metismenu" id="side-menu1">
                 <li class="nav-header">
                     <div class="dropdown profile-element"> <span>
                             <img alt="image" class="img-circle" src="img/profile_small.jpg" />
@@ -62,6 +62,8 @@
                 <li class="kpi-name-option">
                     <a href="#"><i class="fa fa-pie-chart"></i> <span class="kpi-label nav-label">Todos</span></a>
                 </li>
+            </ul>
+            <ul class="nav metismenu" id="side-menu">
             </ul>
         </div>
     </nav>
@@ -875,6 +877,7 @@
             kpisRef = firebase.database().ref('/Offers/Coworking/KPIs/Acquisition/');        
 
             kpisRef.once('value').then(function(snapshot) {
+                $('#side-menu').empty()
                 var kpis = snapshot.val()
                 for (k in kpis) {
                     kpi = kpis[k]
