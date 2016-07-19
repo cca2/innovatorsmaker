@@ -45,10 +45,11 @@
 
 
         .schedules-list li.timeslot input {
-            width: 45px;
-            position: absolute;
-            bottom: 3px;
-            right: 5px;
+            /*width: 45px;*/
+            /*position: absolute;*/
+            /*bottom: 3px;*/
+            /*right: 5px;*/
+            text-align: center;
         }
 
         .time-slot {
@@ -86,8 +87,8 @@
         }
 
         .schedules-list li.timeslot .team-demand {
-            height: 130px;
-            margin-top: 50px;
+            height: 95px;
+            margin-top: 30px;
         }
 
         .schedules-list li.timeslot .team-demand .tables-demand {
@@ -341,9 +342,9 @@
         <div class="wrapper wrapper-content">
             <div class="row">
                 <div class="col-lg-8 weekspan-wrapper wrapper border-bottom white-bg page-heading">
-                    <span class="weekspan">Semana: 04/07 - 09/07</span>
-                    <a href="#" class="pull-left"><span class="fa fa-arrow-left"></span></a>
-                    <a href="#" class="pull-right"><span class="fa fa-arrow-right"></span></a>
+                    <span class="weekspan">Semana: <span class="start-week">04/07</span> - <span class="end-week">09/07</span></span>
+                    <a href="#" class="btn-previous-week pull-left"><span class="fa fa-arrow-left"></span></a>
+                    <a href="#" class="btn-next-week pull-right"><span class="fa fa-arrow-right"></span></a>
                 </div>
                 <div class="col-lg-4"><button id="btn-publish-availability" type="button" class="btn btn-block btn-outline btn-primary">Atualizar</button></div>
 
@@ -356,7 +357,6 @@
                             <ul class="schedules-list">
                                 <li class="timeslot">
                                     <a class="timeslot-link"><span class="time-slot">8:00 - 12:00</span></a>
-                                    <input type="text" class="schedule-availability-input form-control">
                                     <div class="team-demand">                                        
                                         <div class="row">
                                             <div class="tables-demand">
@@ -383,6 +383,8 @@
                                             </div>    
                                         </div>
                                     </div>
+                                    <label>Disponibilidade</label>
+                                    <input type="text" class="schedule-availability-input form-control" value='0'>
                                 </li>
                                 <li class="break">
                                     <a class="timeslot-link"><span class="time-slot">12:00 - 13:00</span></a>
@@ -525,6 +527,8 @@
     </script>
 
     <script type="text/javascript">
+        var currentWeekStart
+
         var weekSlots = {}
         var teams = []
 
@@ -655,10 +659,10 @@
             firebase.database().ref().update(updates)          
         }
 
-        function makeTimeslotsAvailableForWorkingHours() {
+        function makeTimeslotsAvailableForWorkingHours(startOfWeek) {
             var updates = {}
             var weekSlots = {}
-            var startOfWeek = moment().startOf('week')
+            // var startOfWeek = moment().startOf('week')
             for (i = 0  ; i <= 6; i++) {
                 var day = moment(startOfWeek).add(i, 'days')
                 updates['/Coworking/Acquisition/Days/' + day.valueOf()] = {day: day.valueOf()}
@@ -948,8 +952,11 @@
          }
 
         function showTimeSlotsOptions(firstDayWeek, weekDemand) {
-            $('.weekdays').empty()
+            currentWeekStart = firstDayWeek
 
+            $('.weekdays').empty()
+            $('.weekspan-wrapper').find('.start-week').text(firstDayWeek.format('DD/MM'))
+            $('.weekspan-wrapper').find('.end-week').text(moment(firstDayWeek).add(6,'days').format('DD/MM'))
             for (d in weekDemand) {      
                 if (d != 'sun') {
                     var demand = weekDemand[d]
@@ -967,6 +974,10 @@
 
                     $morningShift.find('.timeslot-link').attr('href', '#' + morningShift['start'].valueOf())
                     // $morningShift.find('.schedule-availability-input').val(availability)
+                    if (moment() >= morningShift['start']) {
+                        $morningShift.find('input').attr('readonly', 'true')
+                    }
+
                     $morningShift.find('.num-tables').text(morningShift['numTables'])
                     if (morningShift['numTables'] > 0 && morningShift['numTables'] <= 3) {
                         $morningShift.removeClass('warning-element')
@@ -985,6 +996,9 @@
 
                     $afterNoonShift.find('.timeslot-link').attr('href', '#' + afterNoonShift['start'].valueOf())
                     // $afterNoonShift.find('.schedule-availability-input').val(availability)
+                    if (moment() >= afterNoonShift['start']) {
+                        $afterNoonShift.find('input').attr('readonly', 'true')
+                    }
                     $afterNoonShift.find('.num-tables').text(afterNoonShift['numTables'])
                     if (afterNoonShift['numTables'] > 0 && afterNoonShift['numTables'] <= 3) {
                         $afterNoonShift.removeClass('warning-element')
@@ -1186,7 +1200,8 @@
                 // loadTimeSlotDemands()                
 
                 $('#btn-make-coworking-available').click(function() {
-                    makeTimeslotsAvailableForWorkingHours().then(function() {
+                    currentWeekStart = moment().startOf('week')
+                    makeTimeslotsAvailableForWorkingHours(currentWeekStart).then(function() {
                         // showTimeSlotsOptions()    
                     })                    
                 })
@@ -1203,6 +1218,15 @@
                 $('#btn-setup').click(function() {
                     // setup()
                     test()
+                })
+
+                $('.btn-previous-week').click(function() {
+                    currentWeekStart = currentWeekStart.subtract(1, 'week')
+                    loadTimeSlotDemands(currentWeekStart)
+                })
+                $('.btn-next-week').click(function() {
+                    currentWeekStart = currentWeekStart.add(1, 'week')
+                    loadTimeSlotDemands(currentWeekStart)
                 })
               } else {
                 // No user is signed in.
