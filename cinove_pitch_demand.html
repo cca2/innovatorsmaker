@@ -874,28 +874,34 @@
         function monitorAndUpdateMetricsMenu() {
             kpisRef = firebase.database().ref('/Offers/Coworking/KPIs/Acquisition/');        
 
-            kpisRef.on('child_added', function(snapshot) {
-                coworkingAcquisitionMetrics[snapshot.key] = snapshot.val()
-                var metricID = snapshot.key
-                var kpiName = snapshot.val()['name']
+            kpisRef.once('value').then(function(snapshot) {
+                var kpis = snapshot.val()
+                for (k in kpis) {
+                    kpi = kpis[k]
+                    var metricID = k
+                    var kpiName = kpi['name']
+                    coworkingAcquisitionMetrics[k] = kpi
 
-                $kpiNameOption = $kpiNameOptionRef.clone()
-                $kpiNameOption.find('.kpi-label').text(kpiName)
-                $kpiNameOption.find('a').addClass(metricID + '-kpi-link')
-                $kpiNameOption.appendTo($('#side-menu'))            
+                    $kpiNameOption = $kpiNameOptionRef.clone()
+                    $kpiNameOption.find('.kpi-label').text(kpiName)
+                    $kpiNameOption.find('a').addClass(metricID + '-kpi-link')
+                    $kpiNameOption.find('a').attr('metric-id', metricID)
+                    $kpiNameOption.appendTo($('#side-menu'))            
 
-                $('.' + metricID + '-kpi-link').click(function() {
-                    selectMetric(metricID)
-                })
+                    $('.' + metricID + '-kpi-link').click(function() {
+                        var id = $(this).attr('metric-id')
+                        selectMetric(id)
+                    })
+                }
             })
 
-            kpisRef.on('child_changed', function(snapshot) {
-                coworkingAcquisitionMetrics[snapshot.key] = snapshot.val()
-                var metricID = snapshot.key
-                var kpiName = snapshot.val()['name']
+            // kpisRef.on('child_changed', function(snapshot) {
+            //     coworkingAcquisitionMetrics[snapshot.key] = snapshot.val()
+            //     var metricID = snapshot.key
+            //     var kpiName = snapshot.val()['name']
 
-                $('.' + metricID + '-kpi-link').find('.kpi-label').text(kpiName)
-            })
+            //     $('.' + metricID + '-kpi-link').find('.kpi-label').text(kpiName)
+            // })
         }
 
         function updateSelectedMetric() {
