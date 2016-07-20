@@ -175,6 +175,16 @@
             float: right;
             font-size: x-large;
         }
+
+        .week-not-available .panel-body {
+            height: 400px;
+            text-align: center;
+        }
+
+        .week-not-available .panel-body .week-not-available-message {
+            margin-top: 120px;
+            margin-bottom: 30px;
+        }
     </style>    
 </head>
 
@@ -349,7 +359,17 @@
                 <div class="col-lg-4"><button id="btn-publish-availability" type="button" class="btn btn-block btn-outline btn-primary">Atualizar</button></div>
 
             </div>
-            <div class="weekdays row">
+            <div class="week-not-available week-panel row">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <h2 class="week-not-available-message">Esta semana ainda não está disponível</h2>
+                        <p>
+                            <button type="button" class="btn-make-week-available btn btn-block btn-outline btn-primary">Disponibilizar semana <span>10/07</span> - <span>17/07</span></button>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="weekdays week-panel row">
                 <div class="col-lg-2 weekday-col">
                     <div class="ibox">
                         <div class="ibox-content weekday-content">
@@ -384,7 +404,7 @@
                                         </div>
                                     </div>
                                     <label>Disponibilidade</label>
-                                    <input type="text" class="schedule-availability-input form-control" value='0'>
+                                    <input type="text" class="schedule-availability-input form-control" value='3'>
                                 </li>
                                 <li class="break">
                                     <a class="timeslot-link"><span class="time-slot">12:00 - 13:00</span></a>
@@ -428,28 +448,7 @@
                     </div>                                
                 </div>
             </div>
-            <div class="row">
-                <div class="col-lg-8 weekspan-wrapper wrapper border-bottom white-bg page-heading">
-                    <span class="weekspan">Semana: 04/07 - 09/07</span>
-                    <a href="#" class="pull-left"><span class="fa fa-arrow-left"></span></a>
-                    <a href="#" class="pull-right"><span class="fa fa-arrow-right"></span></a>
-                </div>
-                <!-- <div class="col-lg-4"><button id="btn-publish-availability" type="button" class="btn btn-block btn-outline btn-primary">Atualizar</button></div> -->
-
-            </div>            
-<!--             <div class="timeslot-allocations row">
-                <div class="timeslot-allocation-panel col-lg-12">
-                    <div class="panel panel-danger">
-                        <div class="panel-heading">
-                            <span class="timeslot-allocation-time">Fri 08/07 15:00</span>
-                        </div>
-                        <div class="panel-body">
-                            <div class="col-md-6"></div>
-                        </div>
-                    </div>                                
-                </div>                
-            </div>
- -->        </div>
+        </div>
         <div class="footer">
             <div class="pull-right">
                 10GB of <strong>250GB</strong> Free.
@@ -690,22 +689,28 @@
             firebase.database().ref('/Coworking/Acquisition/Days/').orderByChild('day').startAt(firstDayValue).endAt(lastDayValue).on('value', function(snapshot) {
                 var timeSlotDemands = []
                 var days = snapshot.val()
-                for (d in days) {
-                    var day = days[d]
-                    var schedules = day['schedules']
-                    for (s in schedules) {
-                        schedule = schedules[s]
-                        var timeSlot = Number(s)
-                        var demand = {timeSlot: timeSlot, schedule:schedule}
-                        timeSlotDemands.push(demand)
+                if (days) {
+                    for (d in days) {
+                        var day = days[d]
+                        var schedules = day['schedules']
+                        for (s in schedules) {
+                            schedule = schedules[s]
+                            var timeSlot = Number(s)
+                            var demand = {timeSlot: timeSlot, schedule:schedule}
+                            timeSlotDemands.push(demand)
+                        }
                     }
+                    var weekDemand = calcTimeWeeklySlotDemands(firstDayWeek, timeSlotDemands)
+                    showTimeSlotsOptions(firstDayWeek, weekDemand)                    
+                }else {
+                    showWeekNotAvailable()
                 }
-
-                var weekDemand = calcTimeWeeklySlotDemands(firstDayWeek, timeSlotDemands)
-                showTimeSlotsOptions(firstDayWeek, weekDemand)
-                // showTimeSlotsOptions(timeSlotDemands)
-                // showTimeSlotsDemands(timeSlotDemands)
             })
+         }
+
+         function showWeekNotAvailable() {
+            $('.week-panel').addClass('hide')
+            $('.week-not-available').removeClass('hide')
          }
 
          function calcTimeWeeklySlotDemands(firstDayWeek, timeSlotDemands) {
@@ -953,8 +958,9 @@
 
         function showTimeSlotsOptions(firstDayWeek, weekDemand) {
             currentWeekStart = firstDayWeek
-
+            $('.week-panel').addClass('hide')
             $('.weekdays').empty()
+            $('.weekdays').removeClass('hide')
             $('.weekspan-wrapper').find('.start-week').text(firstDayWeek.format('DD/MM'))
             $('.weekspan-wrapper').find('.end-week').text(moment(firstDayWeek).add(6,'days').format('DD/MM'))
             for (d in weekDemand) {      
@@ -971,6 +977,8 @@
 
                     $morningShift = $timeSlotRef.clone()
                     $morningShift.addClass('warning-element')
+                    $morningShift.attr('start', morningShift['start'])
+                    $morningShift.attr('end', morningShift['end'])
 
                     $morningShift.find('.timeslot-link').attr('href', '#' + morningShift['start'].valueOf())
                     // $morningShift.find('.schedule-availability-input').val(availability)
@@ -995,6 +1003,8 @@
                     $afterNoonShift.addClass('warning-element')
 
                     $afterNoonShift.find('.timeslot-link').attr('href', '#' + afterNoonShift['start'].valueOf())
+                    $afterNoonShift.attr('start', afterNoonShift['start'])
+                    $afterNoonShift.attr('end', afterNoonShift['end'])
                     // $afterNoonShift.find('.schedule-availability-input').val(availability)
                     if (moment() >= afterNoonShift['start']) {
                         $afterNoonShift.find('input').attr('readonly', 'true')
